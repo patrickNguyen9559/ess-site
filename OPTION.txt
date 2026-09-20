@@ -1,0 +1,7 @@
+ESS Website v36 — Editorial Liquid Glass Concept
+- Full website folder based on v35
+- Homepage redesigned with current ESS logo asset
+- New editorial flat-vector technician illustration
+- Restrained ESS navy/teal/blue/orange palette
+- Liquid-glass header, feature cards and trust strip
+- Existing subpages preserved
