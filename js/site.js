@@ -366,9 +366,11 @@
       backBtn.hidden = step === 0;
       nextBtn.textContent = step === 2 ? 'Confirm the demo' : 'Continue';
       nextBtn.disabled = !canContinue();
-      hint.textContent = (step === 2 && slot)
-        ? 'Calendar invite sent on confirm.'
-        : HINTS[step];
+      if (hint) {
+        hint.textContent = (step === 2 && slot)
+          ? 'Calendar invite sent on confirm.'
+          : HINTS[step];
+      }
     }
 
     // Single-choice chips (fleet size) and slot buttons.
@@ -496,19 +498,53 @@
     document.title = page + ' — coming soon — Expert Service Solutions';
   }
 
+  /* ----------------------------------------------- legal page contents --- */
+
+  function initLegalToc() {
+    var toc = document.querySelector('[data-legal-toc]');
+    var content = document.querySelector('.legal-content');
+    if (!toc || !content) return;
+
+    toc.textContent = '';  // idempotent: the router may run this again
+    Array.prototype.forEach.call(content.querySelectorAll('section[id]'), function (section) {
+      var heading = section.querySelector('h2');
+      if (!heading) return;
+      var a = document.createElement('a');
+      a.href = '#' + section.id;
+      a.textContent = heading.textContent.replace(/^\d+\.\s*/, '');
+      toc.appendChild(a);
+    });
+  }
+
   /* --------------------------------------------------------------- go --- */
 
-  function init() {
+  /* Behaviour that lives inside <main>. js/router.js replaces that element on
+     every navigation, so this has to run again each time. Everything it binds
+     is scoped to nodes inside the new content, so nothing leaks. */
+  function initContent() {
     initReveal();
-    initHeader();
     initScrollSpy();
-    initMobileNav();
     initModuleTabs();
     initStats();
     initFaq();
     initWizard();
     initComingSoon();
+    initLegalToc();
   }
+
+  /* Behaviour attached to the header, body or window. The router keeps those
+     mounted, so this runs exactly once per full document load. */
+  function initChrome() {
+    initHeader();
+    initMobileNav();
+  }
+
+  function init() {
+    initChrome();
+    initContent();
+  }
+
+  document.addEventListener('ess:contentswap', initContent);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -525,22 +561,9 @@
     requestAnimationFrame(function () { document.body.classList.remove('page-entering'); });
   });
 
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-
-  document.addEventListener('click', function (event) {
-    var link = event.target.closest('a[href]');
-    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    if (link.target === '_blank' || link.hasAttribute('download')) return;
-    var href = link.getAttribute('href');
-    if (!href || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:)/.test(href)) return;
-    var target = new URL(link.href, window.location.href);
-    if (target.origin !== window.location.origin) return;
-    if (target.pathname === window.location.pathname && target.search === window.location.search && target.hash) return;
-    event.preventDefault();
-    document.body.classList.add('page-leaving');
-    setTimeout(function () { window.location.href = target.href; }, 105);
-  });
+  /* Navigation itself is handled by js/router.js, which swaps <main> in place
+     and leaves the header and footer mounted. The old handler here forced a
+     full document load on every link, which is exactly what we no longer want. */
 })();
 
 // Visual scroll progress
@@ -567,6 +590,8 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   window.addEventListener('load', onScroll, { passive: true });
+  // A swapped page is a different height, so the bar has to be recalculated.
+  document.addEventListener('ess:contentswap', update);
   update();
 })();
 
@@ -591,22 +616,8 @@
 
   window.addEventListener('scroll', updateBackToTop, { passive: true });
   window.addEventListener('resize', updateBackToTop, { passive: true });
+  document.addEventListener('ess:contentswap', updateBackToTop);
   updateBackToTop();
 })();
 
 
-// Legal page table of contents
-(() => {
-  const toc = document.querySelector('[data-legal-toc]');
-  const content = document.querySelector('.legal-content');
-  if (!toc || !content) return;
-  const sections = [...content.querySelectorAll('section[id]')];
-  sections.forEach(section => {
-    const heading = section.querySelector('h2');
-    if (!heading) return;
-    const a = document.createElement('a');
-    a.href = '#' + section.id;
-    a.textContent = heading.textContent.replace(/^\d+\.\s*/, '');
-    toc.appendChild(a);
-  });
-})();

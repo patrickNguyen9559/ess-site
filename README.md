@@ -19,9 +19,76 @@ Optional local server (nicer URLs, correct MIME types):
     contact-demo.html  Book a demo (3-step wizard, FAQ, contact channels)
     coming-soon.html   Shared placeholder; takes ?page=<name>
     css/site.css       All styles — tokens, components, keyframes
-    js/site.js         Reveal-on-scroll, sticky header, module tabs,
-                       stat counter, FAQ accordion, booking wizard
+    js/site.js         Reveal-on-scroll, module tabs, stat counter,
+                       FAQ accordion, booking wizard, legal TOC
+    js/router.js       Shared header behaviour + content-only navigation
+    tools/             Header/footer generator (see below)
     assets/            Logos (colour + white)
+
+
+## Shared header and footer
+
+The header is **generated**, not hand-edited. One route table drives all
+19 pages:
+
+    tools/nav-config.mjs      ← the only file you edit to change the nav
+    tools/render-header.mjs   route table -> header markup
+    tools/partials/footer.html the shared footer, verbatim
+    tools/sync-layout.mjs     stamps both into every *.html
+
+After editing `tools/nav-config.mjs`:
+
+    node tools/sync-layout.mjs          rewrite every page
+    node tools/sync-layout.mjs --check  CI guard: fail if a page drifted
+
+`sync-layout` replaces only `<header>` and `<footer>`. Each page keeps its
+own `<main>`, `<title>`, meta description and body classes, and gets the
+correct `is-active` / `aria-current` for its place in the nav. It also
+reports any page that is not reachable from the header or footer.
+
+Node is needed **only** to regenerate the chrome. The site itself still has
+no build step — every page is a complete HTML document.
+
+### Nav structure
+
+    Home
+    Products ▾    Mobile Office Manager · Mobile Service ·
+                  GPS Tracker & Route Builder · Customer Portal
+    Industries
+    Why ESS ▾     About ESS · Customer stories · Implementation
+    Resources ▾   Resources library · Support · Free trial
+    Pricing
+
+Dropdown parents are real links, so Products still opens `products.html`.
+Panels open on hover and on keyboard focus, Escape dismisses them, and on
+screens ≤900px they flatten into an indented list inside the mobile menu
+(44px minimum hit target, scrolls when it exceeds the viewport).
+
+
+## Content-only navigation
+
+`js/router.js` intercepts internal links and swaps **only `<main>`**. The
+header and footer DOM nodes are never re-created, so there is no flash, no
+CSS re-parse and no re-run of the header on navigation. It also updates the
+title, meta description, body class and active nav state, restores scroll
+position on Back/Forward, and warms the cache on hover so most clicks are
+instant.
+
+This is progressive enhancement, not a SPA rewrite:
+
+- Every page remains a standalone HTML document with the full header baked
+  in, so crawlers and no-JS visitors get the same markup.
+- `fetch` is blocked on `file://`, so opening `index.html` by double-click
+  falls back to ordinary page loads. Everything still works, just without
+  the content-only swap.
+- Any fetch failure, non-200 or page without a `<main>` falls back to a
+  normal browser navigation.
+
+Behaviour that lives inside `<main>` is re-initialised on every swap via the
+`ess:contentswap` event — see `initContent()` in `js/site.js`. Anything bound
+to the header, body or window is initialised once in `initChrome()`. If you
+add a new content behaviour, register it in `initContent()` and make it
+idempotent.
 
 ## Notes
 
@@ -95,3 +162,200 @@ Layout normalization: v42 — unified page margins/background/header spacing and
 - Widened and shortened the first hero sections for Mobile Service, GPS/Route Builder, Customer Portal, Mobile Office Manager, Industries, and Support on desktop.
 - Replaced the Industries hero with `assets/illustrations-series/industries-operations.png` and aligned its technician mark with the current ESS branding.
 - Restored vertical editorial stacking for Home `Why ESS`, Resources `Guides & field notes`, and the Pricing model heading/description group.
+
+
+## v53 — shared header, organised routes, content-only navigation
+- Replaced 8 divergent per-page headers with one generated header. Home and
+  the demo page no longer use `#products` / `#industries` / `#why` anchors;
+  every page links to the real page, so routes and active state are
+  consistent site-wide.
+- Grouped the nav into Products / Why ESS / Resources dropdowns. The four
+  product subpages, Implementation, Customer stories, Support and Free trial
+  were previously reachable only from body copy or the footer; all 19 pages
+  are now reachable from the shared chrome.
+- Navigation swaps only `<main>`. The header and footer stay mounted.
+- Fixed a pre-existing bug where the mobile menu was see-through: its
+  `backdrop-filter` never applied because the ancestor `.header-inner`
+  already establishes a backdrop root. The menu and the new dropdown panels
+  now carry their own opacity.
+- Removed the old click handler in `js/site.js` that forced a full document
+  load on every internal link.
+
+Dropped in this pass: the demo page's page-specific `The 30 minutes` and
+`FAQ` nav items, which were the reason its header differed. They were the
+only per-page nav entries on the site.
+
+
+## v54 — one layout system
+
+The v50/v52 passes tuned each page with its own `!important` block. That left
+278 `!important` declarations across ~20 blocks, and no two pages agreed on a
+width or a heading size. Measured at 1440px, the site had **13 different
+content widths** — text started at x=24, 39, 100, 124, 130, 160, 164, 229 and
+237 — and **four different page-title sizes**.
+
+Those blocks are now reduced to content layout only (how items inside a
+section arrange). Width, vertical rhythm and type come from one token block
+at the end of `css/site.css`.
+
+- **One column.** Every top-level `<section>` is capped at `--shell` and
+  centred. Rounded surfaces pad by the larger `--surface-pad` and bleed
+  outward by exactly that difference, so their text lands on the same left
+  edge as every other section. The bleed is `max(0px, min(want, (100vw -
+  shell)/2))`, so once the viewport is narrower than the column it collapses
+  to zero instead of stepping the card's text inward.
+  Result: **13 content widths → 3** at 1440px (the column, a 1px rounding
+  difference on surfaces, and the deliberate 900px text measure), and 2 on a
+  phone.
+- **Three h1 tiers**, not four accidental sizes: default, `.subhero.is-compact`
+  (about, pricing, products, resources) and `.subhero.is-dense` (the six
+  subpage heroes from the v52 review). Same rendered sizes as before — now
+  three named choices instead of twenty override blocks.
+- **`.h2-sm` works again.** `.option-air .h2` (0,2,0) outranked `.h2-sm`
+  (0,1,0), so all nine headings marked as the small tier silently rendered at
+  the large size. It is a real tier now, and a heading in a split-section's
+  narrow side column takes it automatically.
+- **`.section-head` always stacks** eyebrow → heading → description. The v52
+  pass stacked `#why`, `#guides` and pricing but missed `#news`, which kept a
+  170px label column while the section directly above it did not.
+- Three section headings that were bare `<h2>` now carry `.h2`.
+
+See `ASSETS.md` for the image spec — the site still ships 55 MB of assets, of
+which 38.8 MB is unreferenced and every hero is a ~1.3 MB PNG in a 486px slot.
+
+
+## v55–v57 — surface separation, contrast, stat row
+
+**Surfaces.** The trust bar's white panel began exactly where the hero card
+ended, so two white surfaces merged with a seam instead of a gap. Surfaces
+that follow another block now get `--surface-gap`. The logo marquee scrolls a
+2635px track through a 1192px window, so words were sliced mid-letter at both
+edges; it now fades out instead.
+
+**Contrast.** Audited every text node on all 19 pages against WCAG AA,
+resolving the effective background by walking ancestors and averaging
+gradient stops — a solid-colour scan misses `.resource-band`, which is a
+gradient. 22 failures found, now 0.
+
+- Worst case: the `#chain` heading at **1.22:1**, ESS navy-deep on ESS navy.
+  Introduced in v54 by adding `.h2` to a previously unclassed `<h2>`, which
+  picked up `.ess-glass-site .h2 { color: var(--ess-navy-deep) }`.
+- All seven dark surfaces now invert as a group. The orange `.btn` inside
+  them is excluded — it is a light surface of its own, and was the only
+  light-background child in any dark card.
+- On light surfaces the brand orange reached only 3.08:1 as text. It is kept
+  for fills, rules, dots and icons; where the orange *is* the text or sits
+  behind it, it darkens to `--accent-ink` (5.02:1 on white). The header CTA
+  keeps the brighter orange — it sits on navy, where it already passes.
+
+**Stat row.** The customer-story figures were four equal `1fr` columns while
+`.stat-n` is `white-space: nowrap`. "4,000+" needs 110px of ink and "53" needs
+35px, so wide figures crossed the next column's divider (+10px at 1440, +45px
+at 900) while narrow ones wasted 60px. Tracks are content-driven now, each
+cell shrinks only to its own min-content, and the dividers are real borders
+rather than pseudo-elements a sibling could paint over.
+
+
+## v58–v59 — controls, store badges, responsive pass
+
+- **Filled buttons keep the bright brand orange.** The AA-darkened version
+  read as muddy, so `.btn-primary` / `.btn-header` / `.btn-next` are back to
+  `#f47b25 → #e65e0c`. White on that is 3.09:1, under the 4.5:1 AA threshold —
+  a deliberate brand call, and the only remaining contrast exception on the
+  site. Orange used *as text* stays darkened, where it costs nothing visually.
+- **Disabled buttons are grey again.** The `!important` on the gradient had
+  been overriding the disabled background, leaving it orange at 58% opacity —
+  which just looked like a paler button. That mattered more once the wizard
+  hint copy was removed, since the disabled state is now the only cue that a
+  slot still has to be picked.
+- **Wizard footer** puts Back and Continue on one row; the hint line is gone.
+- **Mobile menu toggle** is a 44px circle.
+- **Google Play mark was malformed** — its four sub-paths chained relative
+  `m` commands after `Z`, producing a notched triangle with a detached tip.
+  Replaced with the correct mark. It existed in three places: the shared
+  footer partial plus in-page copies on `index.html` and `mobile-service.html`
+  that `sync-layout` does not touch.
+- **Footer store badges** sit side by side, stacking only below 380px.
+
+### Responsive audit — 19 pages x 10 viewports (320 → 1680px)
+
+No horizontal scroll and no clipped text anywhere. Two real issues found:
+
+- **Legal table of contents** was one `nowrap` row up to 2087px wide inside
+  `overflow-x:auto` with the scrollbar hidden, so nine of the twelve sections
+  sat off-screen with nothing to indicate they existed. It wraps now.
+- **Touch targets** below WCAG 2.5.8's 24px on `.arrow-link` (19px), `.tab`
+  (32px), `.channel-value` (22px) and the story link (19px) — all raised to
+  44px under 900px. One link is left alone: "Contact support." is inline in a
+  sentence, which 2.5.8 exempts, and enlarging it would break the line rhythm.
+
+
+## v60–v63 — photographic heroes, feathered edges, navigation feedback
+
+- **All 15 heroes replaced** with the new WebP set in `assets/heroes/`, wired
+  with `srcset` + `sizes` so phones fetch the 700px variant. Referenced assets
+  went from ~19 MB to 1.41 MB; the largest single download on any page is now
+  83 KB. `width`/`height` are set, so the hero no longer shifts the text.
+  `about`, `mobile-office-manager` and `products` had been sharing one
+  illustration and now each have their own.
+- **Fit.** `contain` letterboxed the photo inside its box, so the corner radius
+  clipped the element and the photo's own corners stayed square. Switched to
+  `cover`, which needed the box locked to 4:3 first — it was capped by
+  `max-height`, giving a 1.77 box against a 1.33 image at 700px, which would
+  have cropped a third of the frame. The caps are widths now: 0% crop at every
+  breakpoint.
+- **Feathered edges.** Two crossed gradient masks dissolve the photo into the
+  page rather than ending on a hard rectangle. The subpage media card dropped
+  its white fill, border and shadow at the same time, since fading a photo
+  into an opaque card just moves the hard edge outwards.
+- **Removed the five floating feature cards** over the home hero.
+- **Navigation feedback.** A spinning ESS mark (`ess-logo-2026-white.svg` on a
+  navy chip) covers the gap between click and swapped content, with a 180ms
+  show-delay so prefetched navigations — the common case — never flash it.
+  Verified: peak opacity 0 on a prefetched navigation. `<main>` carries
+  `aria-busy` while loading, and the new content eases in over 320ms.
+- **Fixed a long-standing dead animation.** The enter transition added
+  `page-entering` to `<body>` and removed it two frames later, which cancelled
+  the animation before it rendered — it had never actually been visible. It is
+  now scoped to the swapped `<main>` and cleared on `animationend`.
+
+See `ASSETS.md` for what is left: 47 unused files (57 MB) from the old
+illustration sets, and the still-missing social image and favicon.
+
+
+## v64–v66 — features page
+
+New `features.html`, modelled on servicetitan.com/features: a product hero, a
+three-product switcher, then stacked capability bands of heading + subtitle +
+card grid. Reachable from Products → **All features** (carrying a "New" badge,
+which `tools/nav-config.mjs` now supports via a `badge` field).
+
+**Where the content came from.** Next Level is not on the public site — it is
+the new-generation UI of Mobile Office Manager, and it lives in a separate
+repo (`nextlevel/MOMAPI`) as 24 `nl_*` design docs plus a side-menu spec and
+discovery notes. Those were mined for capabilities, each cited back to the
+file that proves it. 163 candidates came out; the 124 marked *shipped* are
+what this page draws on. Mobile Service 6.0 and Customer Portal content was
+extracted the same way from the existing site.
+
+The adversarial verification pass over those claims **did not complete** — it
+hit the session rate limit after the extraction phase. The cards were written
+from single-source extractions and reviewed by hand, not double-checked by a
+second agent. Worth a read-through before this page goes live.
+
+**Real logo, not a placeholder.** The Next Level prototype referenced a live
+URL, so `assets/products/next-level.svg` is the actual mark. A white variant
+sits beside it because the wordmark is `#102b5c` and disappears on the navy
+footer and CTA strips.
+
+**Fixed along the way**
+- `index.html` product pill said "iOS + Android 2.0" while every App Store
+  link on the site points at `mobile-service-6-0`. Now 6.0.
+- One Mobile Service card credited the app with opening the ticket against the
+  right unit; that is a dispatch action, so the card now names dispatch.
+- The product hero sat outside the content column (1240px at x=152 against
+  1192px at x=176) and its copy started 64px down against ~139px on every
+  other hero, crowding the floating header. Both now match.
+- The nav dropdown was 98.4% white, which let a dark hero headline read
+  through it. Opaque now.
+
