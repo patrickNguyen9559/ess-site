@@ -25,25 +25,25 @@ export const NAV = [
     href: 'index.html',
   },
   {
-    label: 'Products',
+    label: 'Platform',
     href: 'products.html',
-    blurb: 'Office, field, routing and customer self-service.',
+    blurb: 'Smart Connections — office, field, routing and customer self-service.',
     children: [
       {
         label: 'All features',
         href: 'features.html',
         badge: 'New',
-        desc: 'Every capability across Next Level, Mobile Service and the portal.',
+        desc: 'Every capability across Mobile Office Manager, Mobile Service and the portal.',
       },
       {
         label: 'Mobile Office Manager',
         href: 'mobile-office-manager.html',
-        desc: 'Dispatch, contracts, inventory and accounting in one web ERP.',
+        desc: 'Nine connected modules — the back-office ERP for service contractors.',
       },
       {
         label: 'Mobile Service',
         href: 'mobile-service.html',
-        desc: 'The field app for iOS and Android — including offline work.',
+        desc: 'The field app that connects the office to the unit — offline included.',
       },
       {
         label: 'GPS Tracker & Route Builder',
@@ -53,13 +53,42 @@ export const NAV = [
       {
         label: 'Customer Portal',
         href: 'customer-portal.html',
-        desc: 'Let customers self-serve instead of calling the office.',
+        desc: 'The self-service portal more RFPs are asking for.',
       },
     ],
   },
   {
     label: 'Industries',
     href: 'industries.html',
+    blurb: 'Built for elevator. Trusted by the trades next door.',
+    children: [
+      {
+        label: 'Elevator',
+        href: 'industry-elevator.html',
+        badge: 'Primary',
+        desc: 'MCP, category tests, callbacks, modernization and new install.',
+      },
+      {
+        label: 'Escalator & moving walks',
+        href: 'industry-escalator.html',
+        desc: 'The same unit-level service model and inspection cadence.',
+      },
+      {
+        label: 'Overhead door & dock',
+        href: 'industry-overhead-door.html',
+        desc: 'Commercial door service, anchored on Hamburg Overhead Door.',
+      },
+      {
+        label: 'Fire & life safety',
+        href: 'industry-fire-life-safety.html',
+        desc: 'Inspection-driven, code-bound, multi-year contracts.',
+      },
+      {
+        label: 'All industries',
+        href: 'industries.html',
+        desc: 'Every trade ESS serves, and the pattern they share.',
+      },
+    ],
   },
   {
     label: 'Why ESS',
@@ -69,7 +98,7 @@ export const NAV = [
       {
         label: 'About ESS',
         href: 'about.html',
-        desc: 'Building software for contractors since 2003.',
+        desc: 'Over 15 years building software for service contractors.',
       },
       {
         label: 'Customer stories',

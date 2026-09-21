@@ -92,7 +92,7 @@ idempotent.
 
 ## Notes
 
-- Fonts load from Google Fonts (Plus Jakarta Sans). Offline, the browser
+- Fonts load from Google Fonts (Inter, since v68). Offline, the browser
   falls back to system-ui and the layout still holds.
 - The booking form confirms optimistically — see `TODO(backend)` in
   `js/site.js` for where to POST to the CRM / scheduling endpoint.
@@ -359,3 +359,96 @@ footer and CTA strips.
 - The nav dropdown was 98.4% white, which let a dark hero headline read
   through it. Opaque now.
 
+
+
+## v67–v78 — rebuilt on the client `index.html`
+
+The client supplied a new `index.html` as the direction for the whole site.
+Every page's content now follows it, and the visual system was replaced with
+its palette, type and controls. Three decisions were confirmed with the client
+before the work started, and they explain most of what changed:
+
+1. **The palette follows the upload completely** — type, buttons, accents.
+2. **Four new industry pages** were created, because the upload links to them.
+3. **The upload's figures win** where they contradict the old site's.
+
+### Colour, type and controls
+
+Orange is gone. It was the action colour in every earlier layer; the upload has
+no orange at all, so `--ess-orange` and the ~110 hard-coded warm values were
+swept to the upload's blues. The only warm ink left is the amber used for an
+"in progress" status chip, which the upload keeps too.
+
+    --navy-950 #07142A   --blue-600 #1E8FC9   --slate-900 #0A1422
+    --navy-900 #0B1B30   --blue-500 #2DA5DA   --slate-700 #324356
+    --navy-800 #122944   --blue-400 #4FB8E6   --slate-500 #6B7B8C
+
+Type leads with Inter. Buttons are flat pills: `--blue-500`, hover
+`--blue-600`, 15px/600, one box for every variant (no vertical padding, one
+`min-height`, flex centring) — four earlier layers had been setting button
+padding independently, so a filled button and an outline button in the same row
+could differ in height.
+
+**The one contrast exception.** White on `#2DA5DA` is 2.80:1, under AA. A
+gradient was tried and rejected: the upload's button is flat and the client
+asked for it flat. This replaces the orange exception v56 documented; every
+other pair on the site clears AA, including blue used *as* text, which darkens
+to `--accent-ink` `#187AA9` (4.78:1 on white).
+
+### Layout
+
+New components, built in ESS tokens rather than by importing the mockup's
+sheet: `.op-card` (the hero's live route board), `.outcome-band`, `.trade-grid`,
+`.story-panel`, `.persona-grid`, `.voice-grid`, `.tick-list`, `.brand-line`.
+
+Section heads centre over a 760px measure, bands run 80px apart, radii collapse
+to the upload's two (22px for a surface, 14px for anything small), and cards are
+opaque white with a hairline instead of translucent glass. Onward links under a
+band ("See every feature", "Read the customer stories") centre under the heading
+they belong to, and the CTA band is one centred navy column.
+
+### Content
+
+`index.html` follows the upload band for band: hero → logo strip → about →
+three products → outcomes → industries → customer story → personas →
+testimonials → CTA. The hero headline is the client's own — *Your back office.
+Your field team. Your customers. One system.* — over the upload's eyebrow.
+
+The *We Solve, You Succeed!* tag line was added, then withdrawn at the client's
+request; it appears nowhere on the site now. Every CTA band across the site
+carries the same eyebrow, **Book time with us**, since they all carry the same
+heading and body — the one exception is `pricing.html`, whose CTA has its own
+copy.
+
+Every other page was rewritten to the same content system by one agent and
+reviewed by a second. Pages the upload says nothing about — pricing, resources,
+support, implementation, free trial, login, the legal pages — keep their
+content and only take the new palette.
+
+**Figures.** The only numbers allowed anywhere are now 50% (payroll prep at
+Elevator One), 15+ years, 100s of field teams and 9 modules. The old site's
+"since 2003", "4,000+ elevators", "1,200+ customers", "53 technicians",
+"~70 years", "seven modules" and "twelve industries" are retired — a deliberate
+call, since several were more impressive than what replaced them. Mobile Office
+Manager is nine modules now (sales, contracts, projects, finance, inventory,
+equipment, scheduling, dispatch, analytics), in `js/site.js` and on its page.
+
+### Chrome
+
+Products → **Platform**. Industries became a dropdown carrying the four new
+`industry-*.html` pages. The footer is the upload's: a brand block with the
+affiliation badges, then Platform / Industries / Company at four links each,
+over a flat `--navy-950` panel. Its app-store badges moved out, since the
+upload's footer has none.
+
+### Checks
+
+`node tools/sync-layout.mjs --check` passes on all 24 pages. A QA script
+(retired figures, dead links, classes with no rule in the sheet, chrome damage,
+inline colour, tag balance) reports 0 problems across all 24. Renders were
+verified in Chrome at 1440px.
+
+**Not done:** the independent review pass over the 15 rewritten pages was cut
+short by rate limits twice. The deterministic checks above all pass, but the
+copy on those pages has had one writing pass and one mechanical audit, not a
+second editorial read.

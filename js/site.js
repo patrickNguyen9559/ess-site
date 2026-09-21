@@ -152,48 +152,63 @@
 
   /* -------------------------------------------------- module tabs --- */
 
+  /* The nine connected modules of Mobile Office Manager, in the order the
+     platform page lists them. Keep this array and the tab buttons on
+     mobile-office-manager.html in step — the buttons carry the index. */
   var MODULES = [
-    {
-      name: 'Scheduling & Dispatching',
-      benefit: 'Send the right tech, not the next name on the list.',
-      pain: 'Dispatch from memory and the truck you send is rarely the closest one. Repeat calls on the same unit get logged as if they were new.',
-      bullets: ['Dispatch on technician location', 'Two-way messaging between office and field', 'Repeat-call recognition on the same unit', 'Drag-and-drop tickets on a colour-coded board']
-    },
-    {
-      name: 'Projects & Contracts',
-      benefit: 'Find out a job is losing money while you can still fix it.',
-      pain: 'On most modernisation jobs the overrun surfaces at close-out, weeks after anything could be done about it.',
-      bullets: ['Live job costing against budget', 'Material, labour and other cost tracking', 'Audit trail and timestamps on every change', 'Templates for work you repeat']
-    },
-    {
-      name: 'Customers',
-      benefit: 'Every unit, every visit, in one record.',
-      pain: 'Service history lives in a filing cabinet, three inboxes and one long-serving dispatcher.',
-      bullets: ['Maintenance history per unit', 'Financial transactions by account', 'Multi-site customers handled properly']
-    },
     {
       name: 'Sales & CRM',
       benefit: 'Quotes stop going cold because nobody followed up.',
-      pain: 'The proposal goes out, the follow-up lands on a sticky note, and the bid is gone.',
-      bullets: ['Opportunity tracking', 'Assigned follow-up tasks', 'Quote and proposal generation', 'Won bids convert straight into projects']
+      pain: 'The proposal goes out, the follow-up lands on a sticky note, and the bid is gone to the OEM.',
+      bullets: ['Opportunity tracking by building and portfolio', 'Assigned follow-up tasks with owners', 'Quote and proposal generation', 'Won bids convert straight into a contract or project']
     },
     {
-      name: 'Inventory & Purchasing',
-      benefit: 'Know what is on the truck before the tech is on site.',
-      pain: 'Parts get bought twice, or a second trip happens because the first one was short a controller board.',
-      bullets: ['Assets across warehouses and locations', 'Full transaction history', 'Purchase orders tied to a project', 'Receive into stock or straight to the job']
+      name: 'Contracts',
+      benefit: 'The MCP book is a record, not a spreadsheet.',
+      pain: 'Coverage, escalators and renewal dates live in three places, so nobody is certain what a customer is actually owed.',
+      bullets: ['Contracts built around unit-level equipment', 'Coverage, exclusions and billing cycle on the record', 'Escalation and renewal dates tracked', 'Contract-level profitability, not just revenue']
+    },
+    {
+      name: 'Projects',
+      benefit: 'Find out a modernization is losing money while you can still fix it.',
+      pain: 'On most modernization jobs the overrun surfaces at close-out, weeks after anything could be done about it.',
+      bullets: ['Live job costing against budget', 'Material, labour and other cost tracking', 'Audit trail and timestamps on every change', 'Templates for the installs you repeat']
     },
     {
       name: 'Finance',
-      benefit: 'Bill on the day the work happened.',
+      benefit: 'Close the month, not the office.',
       pain: 'Invoices wait on paperwork that is still in a van, and the cash waits with it.',
-      bullets: ['Automated recurring billing cycles', 'AP and AR accounts', 'Ledger entries and reports', 'Invoice generation and collection']
+      bullets: ['Automated recurring billing for maintenance contracts', 'AP and AR accounts', 'Ledger entries and reports', 'Invoice the same day the work is done']
     },
     {
-      name: 'Reporting',
+      name: 'Inventory',
+      benefit: 'Know what is on the truck before the tech is on site.',
+      pain: 'Parts get bought twice, or a second trip happens because the first one was short a controller board.',
+      bullets: ['Stock across warehouses, trucks and job sites', 'Full transaction history', 'Purchase orders tied to a project', 'Receive into stock or straight to the job']
+    },
+    {
+      name: 'Equipment',
+      benefit: 'Every unit, every visit, in one record.',
+      pain: 'Service history lives in a filing cabinet, three inboxes and one long-serving dispatcher.',
+      bullets: ['Unit-level records by building and car number', 'Maintenance control programme per unit', 'Category test results and due dates', 'Certificates and sign-offs attached to the unit']
+    },
+    {
+      name: 'Scheduling',
+      benefit: 'The inspection calendar stops being a wall chart.',
+      pain: 'Category tests and quarterly MCP visits get planned by memory, and the ones that slip are the ones nobody sees.',
+      bullets: ['Inspection and MCP calendar by unit', 'Recurring visits generated from the contract', 'Due-soon and overdue surfaced before they bite', 'Crew capacity visible while you plan']
+    },
+    {
+      name: 'Dispatch',
+      benefit: 'Send the right tech, not the next name on the list.',
+      pain: 'Dispatch from memory and the truck you send is rarely the closest one. Repeat callbacks on the same unit get logged as if they were new.',
+      bullets: ['Dispatch on real technician location', 'Two-way messaging between office and field', 'Repeat-callback recognition on the same unit', 'Drag-and-drop tickets on a colour-coded board']
+    },
+    {
+      name: 'Analytics',
       benefit: 'The numbers you actually check, on one screen.',
       pain: 'The answer is in the system somewhere; getting it out takes someone half a day.',
-      bullets: ['Custom reports', 'Saved dashboards for the figures you watch', 'Internal news for the team', 'Bookmarked sites, documents and reports']
+      bullets: ['Custom reports across contracts, units and crews', 'Saved dashboards for the figures you watch', 'Branch and crew performance', 'Bookmarked sites, documents and reports']
     }
   ];
 
