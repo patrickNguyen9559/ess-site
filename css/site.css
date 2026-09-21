@@ -4298,36 +4298,6 @@ body.ess-glass-site {
   padding-top: 2px;
 }
 
-/* Resources first screen should fit cleanly within one screen more easily. */
-.resources-page .subhero-inner{
-  max-width: 1080px !important;
-  padding-top: 26px !important;
-  padding-bottom: 24px !important;
-  align-items: center !important;
-}
-.resources-page .subhero-copy{
-  max-width: 640px !important;
-}
-.resources-page .subhero h1{
-  font-size: clamp(46px, 4.9vw, 78px) !important;
-  line-height: .94 !important;
-  letter-spacing: -.05em;
-  margin-bottom: 14px !important;
-}
-.resources-page .subhero p{
-  font-size: 17px !important;
-  line-height: 1.62 !important;
-  max-width: 610px !important;
-}
-.resources-page .subhero-actions{
-  margin-top: 20px !important;
-}
-.resources-page .subhero-media{
-  max-width: 470px !important;
-}
-.resources-page .subhero-media img{
-  max-height: 315px !important;
-}
 
 /* News & events cards should share the same rounded-card language. */
 .ess-glass-site .news-list article{
@@ -4462,450 +4432,136 @@ body.ess-glass-site {
   max-width:112px !important;
 }
 
-/* Shared wide-screen rhythm for the three split sections called out in review. */
-@media (min-width:1180px){
-  .about-page .split-section,
-  .implementation-page .split-section,
-  .free-trial-page .split-section{
-    width:min(100%,1160px) !important;
-    max-width:1160px !important;
-    gap:34px !important;
-    align-items:center !important;
-    padding-top:44px !important;
-  }
+/* ======================================================================
+   Per-page CONTENT layout only.
 
-  /* What ESS optimizes for: one horizontal row on wide displays. */
+   Container width, section padding and heading/lede type sizes are NOT set
+   here — they come from the layout system at the end of this file. These
+   blocks carry the one thing that is genuinely page-specific: how the items
+   inside a section arrange themselves at each breakpoint.
+   ====================================================================== */
+
+@media (min-width:1180px){
+  /* What ESS optimizes for: four principles across, not a tall stack. */
   .about-page .split-section{
-    grid-template-columns:minmax(280px,.72fr) minmax(0,1.48fr) !important;
-  }
-  .about-page .split-section > div:first-child .h2{
-    font-size:clamp(29px,2.15vw,38px) !important;
-    line-height:1.08 !important;
-    max-width:390px;
+    grid-template-columns:minmax(280px,.72fr) minmax(0,1.48fr);
+    gap:34px;
+    align-items:center;
   }
   .about-page .principle-list{
-    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-    gap:10px !important;
-    background:transparent !important;
-    overflow:visible !important;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;
+    background:transparent;
+    overflow:visible;
   }
   .about-page .principle-list > div{
-    grid-template-columns:1fr !important;
+    grid-template-columns:1fr;
     align-content:start;
-    gap:7px !important;
+    gap:7px;
     min-height:156px;
-    padding:17px 16px !important;
+    padding:17px 16px;
     border-radius:18px;
   }
   .about-page .principle-list b{font-size:14px;}
   .about-page .principle-list span{font-size:13px;line-height:1.48;}
 
-  /* What to prepare: six items become 3 x 2 instead of a tall 2 x 3 stack. */
+  /* What to prepare: six items become 3 x 2 instead of a tall 2 x 3. */
   .implementation-page .split-section{
-    grid-template-columns:minmax(260px,.7fr) minmax(0,1.5fr) !important;
-  }
-  .implementation-page .split-section > div:first-child .h2{
-    font-size:clamp(29px,2vw,36px) !important;
-    line-height:1.08 !important;
-    max-width:390px;
+    grid-template-columns:minmax(260px,.7fr) minmax(0,1.5fr);
+    gap:34px;
+    align-items:center;
   }
   .implementation-page .check-list{
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-    gap:10px !important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
   }
   .implementation-page .check-list span{
-    padding:14px 15px !important;
+    padding:14px 15px;
     font-size:13.5px;
     line-height:1.4;
   }
 
-  /* A better trial: keep the copy narrow, let the form use the horizontal room. */
+  /* A better trial: narrow copy, the form uses the horizontal room. */
   .free-trial-page .split-section{
-    grid-template-columns:minmax(270px,.68fr) minmax(0,1.52fr) !important;
-  }
-  .free-trial-page .split-section > div:first-child .h2{
-    font-size:clamp(30px,2.1vw,38px) !important;
-    line-height:1.08 !important;
-    margin-bottom:10px !important;
-  }
-  .free-trial-page .split-section .lede{
-    font-size:14px !important;
-    line-height:1.55 !important;
-    max-width:390px;
+    grid-template-columns:minmax(270px,.68fr) minmax(0,1.52fr);
+    gap:34px;
+    align-items:center;
   }
   .free-trial-page .simple-form{
-    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-    gap:12px !important;
-    padding:20px !important;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px;
+    padding:20px;
   }
   .free-trial-page .simple-form label{gap:6px;font-size:12px;}
   .free-trial-page .simple-form input,
   .free-trial-page .simple-form select{height:44px;}
   .free-trial-page .simple-form .btn,
   .free-trial-page .simple-form .form-success{grid-column:1/-1;}
-}
 
-/* Why ESS page hero: use desktop width instead of forcing the headline into a
-   narrow column that grows vertically. */
-@media (min-width:1100px){
-  .about-page .subhero-inner,
-  .pricing-page .subhero-inner{
-    max-width:1180px !important;
-    grid-template-columns:minmax(0,1.16fr) minmax(360px,.84fr) !important;
-    gap:30px !important;
-    padding-top:30px !important;
-    padding-bottom:30px !important;
-  }
-  .about-page .subhero-copy,
-  .pricing-page .subhero-copy{
-    max-width:720px !important;
-  }
-  .about-page .subhero h1,
-  .pricing-page .subhero h1{
-    font-size:clamp(44px,3.8vw,64px) !important;
-    line-height:.98 !important;
-    margin-bottom:12px !important;
-  }
-  .about-page .subhero p,
-  .pricing-page .subhero p{
-    max-width:680px !important;
-    font-size:16px !important;
-    line-height:1.56 !important;
-  }
-  .about-page .subhero-media,
-  .pricing-page .subhero-media{max-width:430px !important;}
-  .about-page .subhero-media img,
-  .pricing-page .subhero-media img{max-height:300px !important;}
-
-  /* Resources hero gets the same wide, compact editorial composition. */
-  .resources-page .subhero-inner{
-    max-width:1180px !important;
-    grid-template-columns:minmax(0,1.2fr) minmax(350px,.8fr) !important;
-    gap:28px !important;
-    padding-top:28px !important;
-    padding-bottom:26px !important;
-  }
-  .resources-page .subhero-copy{max-width:760px !important;}
-  .resources-page .subhero h1{
-    font-size:clamp(44px,3.75vw,64px) !important;
-    line-height:.98 !important;
-    max-width:760px !important;
-  }
-  .resources-page .subhero p{
-    max-width:690px !important;
-    font-size:16px !important;
-    line-height:1.55 !important;
-  }
-  .resources-page .subhero-media{max-width:410px !important;}
-  .resources-page .subhero-media img{max-height:285px !important;}
-}
-
-/* Home Why ESS: heading and all five reasons sit across the viewport on desktop. */
-@media (min-width:1180px){
-  .ess-glass-home #why{
-    padding-top:46px !important;
-    padding-bottom:46px !important;
-  }
-  .ess-glass-home #why .section-head{
-    display:grid !important;
-    grid-template-columns:125px minmax(0,1fr) !important;
-    align-items:start;
-    gap:24px !important;
-    max-width:none !important;
-    margin-bottom:20px !important;
-  }
-  .ess-glass-home #why .section-head .h2{
-    margin:0 !important;
-    max-width:980px;
-    font-size:clamp(30px,2.35vw,40px) !important;
-    line-height:1.08 !important;
-  }
+  /* Home Why ESS: five reasons across the row. */
   .ess-glass-home #why .advantages{
-    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
-    gap:12px !important;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:12px;
   }
   .ess-glass-home #why .advantage,
   .ess-glass-home #why .advantage:nth-child(4),
   .ess-glass-home #why .advantage:nth-child(5){
-    grid-column:auto !important;
-    min-height:0 !important;
-    padding:18px !important;
+    grid-column:auto;
+    min-height:0;
+    padding:18px;
   }
-  .ess-glass-home #why .advantage:before{margin-bottom:10px !important;}
-  .ess-glass-home #why .advantage h3{font-size:14.5px !important;margin-bottom:7px;}
-  .ess-glass-home #why .advantage p{font-size:12.7px !important;line-height:1.45 !important;}
-}
+  .ess-glass-home #why .advantage:before{margin-bottom:10px;}
+  .ess-glass-home #why .advantage h3{font-size:14.5px;margin-bottom:7px;}
+  .ess-glass-home #why .advantage p{font-size:12.7px;line-height:1.45;}
 
-/* Resources: place label + heading horizontally and keep cards compact. */
-@media (min-width:1180px){
-  .resources-page #guides,
-  .resources-page #news{
-    padding-top:46px !important;
-    padding-bottom:46px !important;
-  }
-  .resources-page #guides .section-head,
-  .resources-page #news .section-head{
-    display:grid !important;
-    grid-template-columns:170px minmax(0,1fr) !important;
-    align-items:start;
-    gap:26px !important;
-    max-width:none !important;
-    margin-bottom:18px !important;
-  }
-  .resources-page #guides .section-head .h2,
-  .resources-page #news .section-head .h2{
-    margin:0 !important;
-    max-width:900px;
-    font-size:clamp(29px,2.15vw,38px) !important;
-    line-height:1.08 !important;
-  }
+  /* Resources + Products + Pricing: compact cards so the rows stay wide. */
   .resources-page .resource-card,
-  .resources-page .news-list article{
-    padding:20px !important;
-  }
+  .resources-page .news-list article{padding:20px;}
   .resources-page .resource-card h3,
-  .resources-page .news-list h3{
-    font-size:18px !important;
-    line-height:1.2 !important;
-  }
+  .resources-page .news-list h3{font-size:18px;line-height:1.2;}
   .resources-page .resource-card p,
-  .resources-page .news-list p{
-    font-size:13px !important;
-    line-height:1.48 !important;
-  }
-  .resources-page #training{padding-top:40px !important;padding-bottom:40px !important;}
-  .resources-page .resource-band{padding:28px 32px !important;}
-  .resources-page .resource-band > div{max-width:850px !important;}
-  .resources-page .resource-band .h2{
-    font-size:clamp(28px,2vw,36px) !important;
-    line-height:1.08 !important;
-    margin-bottom:8px !important;
-  }
+  .resources-page .news-list p{font-size:13px;line-height:1.48;}
+  .resources-page .resource-band{padding:28px 32px;}
   .resources-page .resource-band p{font-size:13.5px;line-height:1.5;margin-bottom:0;}
-}
 
-/* Pricing: heading, explanation and cards use width before height. */
-@media (min-width:1180px){
-  .pricing-page .compact-section{
-    padding-top:46px !important;
-    padding-bottom:46px !important;
-  }
-  .pricing-page .compact-section > .section-head{
-    display:grid !important;
-    grid-template-columns:140px minmax(0,1.2fr) minmax(300px,.8fr) !important;
-    align-items:start;
-    gap:24px !important;
-    max-width:none !important;
-    margin-bottom:20px !important;
-  }
-  .pricing-page .compact-section > .section-head .h2{
-    margin:0 !important;
-    font-size:clamp(29px,2.15vw,38px) !important;
-    line-height:1.08 !important;
-  }
-  .pricing-page .compact-section > .section-head .lede{
-    margin:0 !important;
-    font-size:13.5px !important;
-    line-height:1.5 !important;
-  }
-  .pricing-page .pricing-grid{gap:12px !important;}
-  .pricing-page .pricing-card{
-    padding:20px !important;
-  }
-  .pricing-page .pricing-card h3{font-size:19px !important;margin:6px 0 7px !important;}
-  .pricing-page .pricing-card p,
-  .pricing-page .pricing-card li{font-size:13px !important;line-height:1.48 !important;}
-  .pricing-page .pricing-card ul{margin-top:12px !important;line-height:1.55 !important;}
-  .pricing-page .pricing-cta{
-    margin-top:8px !important;
-    padding:28px 34px !important;
-  }
-}
-
-@media (max-width:1179px){
-  .about-page .principle-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;background:transparent;overflow:visible;}
-  .about-page .principle-list > div{grid-template-columns:1fr;gap:6px;border-radius:18px;}
-}
-
-@media (max-width:1000px){
-  .about-page .principle-list{grid-template-columns:1fr 1fr;}
-  .free-trial-page .simple-form{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
-}
-
-@media (max-width:700px){
-  .ess-glass-site .footer-brand img{
-    width:102px !important;
-    max-width:102px !important;
-  }
-  .about-page .principle-list{grid-template-columns:1fr;}
-  .free-trial-page .simple-form{grid-template-columns:1fr !important;}
-  .free-trial-page .simple-form .btn,
-  .free-trial-page .simple-form .form-success{grid-column:auto;}
-}
-
-
-/* ======================================================================
-   v51 — compact the product-detail heroes + keep overview sections in one view
-   ====================================================================== */
-@media (min-width:1180px){
-  /* Product detail hero sections: let the eyebrow + headline use more width so
-     "Field service app" / "ERP for the office" do not become tall stacks. */
-  .office-app-page .subhero-inner,
-  .field-app-page .subhero-inner,
-  .products-page .subhero-inner{
-    max-width:1180px !important;
-    grid-template-columns:minmax(0,1.14fr) minmax(380px,.86fr) !important;
-    gap:28px !important;
-    padding-top:28px !important;
-    padding-bottom:26px !important;
-    align-items:center !important;
-  }
-  .office-app-page .subhero-copy,
-  .field-app-page .subhero-copy,
-  .products-page .subhero-copy{
-    max-width:760px !important;
-  }
-  .office-app-page .subhero h1,
-  .field-app-page .subhero h1,
-  .products-page .subhero h1{
-    font-size:clamp(44px,3.8vw,62px) !important;
-    line-height:.98 !important;
-    margin-bottom:12px !important;
-    max-width:760px !important;
-  }
-  .office-app-page .subhero p,
-  .field-app-page .subhero p,
-  .products-page .subhero p{
-    max-width:700px !important;
-    font-size:16px !important;
-    line-height:1.56 !important;
-  }
-  .office-app-page .subhero-media,
-  .field-app-page .subhero-media,
-  .products-page .subhero-media{
-    max-width:450px !important;
-    min-height:0 !important;
-  }
-  .office-app-page .subhero-media img,
-  .field-app-page .subhero-media img,
-  .products-page .subhero-media img{
-    max-height:315px !important;
-  }
-
-  /* Products overview: put eyebrow + title + lead on one horizontal system so
-     the section reads wide first, not tall first. */
-  .products-page .compact-section{
-    padding-top:46px !important;
-    padding-bottom:46px !important;
-  }
-  .products-page .compact-section > .section-head{
-    display:grid !important;
-    grid-template-columns:150px minmax(0,1.15fr) minmax(260px,.85fr) !important;
-    align-items:start !important;
-    gap:24px !important;
-    max-width:none !important;
-    margin-bottom:20px !important;
-  }
-  .products-page .compact-section > .section-head .h2{
-    margin:0 !important;
-    font-size:clamp(29px,2.15vw,38px) !important;
-    line-height:1.08 !important;
-  }
-  .products-page .compact-section > .section-head .lede{
-    margin:0 !important;
-    font-size:13.5px !important;
-    line-height:1.5 !important;
-    max-width:none !important;
-  }
-  .products-page .page-card-grid.four{ gap:12px !important; }
-  .products-page .feature-page-card{ padding:20px !important; }
-  .products-page .feature-page-card h3{ font-size:18px !important; line-height:1.2 !important; }
-  .products-page .feature-page-card p{ font-size:13px !important; line-height:1.48 !important; }
+  .products-page .page-card-grid.four{gap:12px;}
+  .products-page .feature-page-card{padding:20px;}
+  .products-page .feature-page-card h3{font-size:18px;line-height:1.2;}
+  .products-page .feature-page-card p{font-size:13px;line-height:1.48;}
   .products-page .split-section{
-    grid-template-columns:155px minmax(0,1.3fr) !important;
-    gap:24px !important;
-    padding-top:44px !important;
-    padding-bottom:44px !important;
-    align-items:start !important;
+    grid-template-columns:minmax(260px,.72fr) minmax(0,1.48fr);
+    gap:34px;
+    align-items:start;
   }
-  .products-page .split-section .h2{
-    font-size:clamp(28px,2vw,35px) !important;
-    line-height:1.08 !important;
-    margin:0 !important;
-  }
-  .products-page .flow-list{ gap:10px !important; background:transparent !important; }
+  .products-page .flow-list{gap:10px;background:transparent;}
   .products-page .flow-list > div{
-    border-radius:18px !important;
-    grid-template-columns:42px 1fr !important;
-    padding:17px 18px !important;
+    border-radius:18px;
+    grid-template-columns:42px 1fr;
+    padding:17px 18px;
   }
-  .products-page .flow-list span{ font-size:13px !important; line-height:1.48 !important; }
+  .products-page .flow-list span{font-size:13px;line-height:1.48;}
+
+  .pricing-page .pricing-grid{gap:12px;}
+  .pricing-page .pricing-card{padding:20px;}
+  .pricing-page .pricing-card h3{font-size:19px;margin:6px 0 7px;}
+  .pricing-page .pricing-card p,
+  .pricing-page .pricing-card li{font-size:13px;line-height:1.48;}
+  .pricing-page .pricing-card ul{margin-top:12px;line-height:1.55;}
 }
 
-/* ======================================================================
-   v52 — wider product/subpage heroes + restore vertical editorial headers
-   ====================================================================== */
-
-/* Six subpage heroes called out in review: use width before height. */
+/* Hero image proportions. The hero container itself is sized by the system;
+   only the illustration's own footprint is tuned per page group. */
 @media (min-width:1100px){
-  .office-app-page .subhero-inner,
-  .field-app-page .subhero-inner,
-  .routing-page .subhero-inner,
-  .customer-portal-page .subhero-inner,
-  .industries-page .subhero-inner,
-  .support-page .subhero-inner{
-    width:min(calc(100% - 48px),1380px) !important;
-    max-width:1380px !important;
-    grid-template-columns:minmax(0,1.42fr) minmax(320px,.58fr) !important;
-    gap:26px !important;
-    align-items:center !important;
-    padding-top:24px !important;
-    padding-bottom:24px !important;
-  }
+  .about-page .subhero-media,
+  .pricing-page .subhero-media{max-width:430px;}
+  .about-page .subhero-media img,
+  .pricing-page .subhero-media img{max-height:300px;}
 
-  .office-app-page .subhero-copy,
-  .field-app-page .subhero-copy,
-  .routing-page .subhero-copy,
-  .customer-portal-page .subhero-copy,
-  .industries-page .subhero-copy,
-  .support-page .subhero-copy{
-    max-width:900px !important;
-  }
+  .resources-page .subhero-media{max-width:410px;}
+  .resources-page .subhero-media img{max-height:285px;}
 
-  .office-app-page .subhero h1,
-  .field-app-page .subhero h1,
-  .routing-page .subhero h1,
-  .customer-portal-page .subhero h1,
-  .industries-page .subhero h1,
-  .support-page .subhero h1{
-    max-width:900px !important;
-    margin:7px 0 11px !important;
-    font-size:clamp(42px,3.25vw,56px) !important;
-    line-height:.98 !important;
-    letter-spacing:-.04em !important;
-    text-wrap:balance;
-  }
-
-  .office-app-page .subhero p,
-  .field-app-page .subhero p,
-  .routing-page .subhero p,
-  .customer-portal-page .subhero p,
-  .industries-page .subhero p,
-  .support-page .subhero p{
-    max-width:820px !important;
-    margin:0 !important;
-    font-size:15.5px !important;
-    line-height:1.52 !important;
-  }
-
-  .office-app-page .subhero-actions,
-  .field-app-page .subhero-actions,
-  .routing-page .subhero-actions,
-  .customer-portal-page .subhero-actions,
-  .industries-page .subhero-actions,
-  .support-page .subhero-actions{
-    margin-top:20px !important;
-  }
+  .products-page .subhero-media{max-width:450px;min-height:0;}
+  .products-page .subhero-media img{max-height:315px;}
 
   .office-app-page .subhero-media,
   .field-app-page .subhero-media,
@@ -4913,81 +4569,1195 @@ body.ess-glass-site {
   .customer-portal-page .subhero-media,
   .industries-page .subhero-media,
   .support-page .subhero-media{
-    width:100% !important;
-    max-width:390px !important;
-    min-height:0 !important;
-    justify-self:end !important;
+    width:100%;
+    max-width:390px;
+    min-height:0;
+    justify-self:end;
   }
-
   .office-app-page .subhero-media img,
   .field-app-page .subhero-media img,
   .routing-page .subhero-media img,
   .customer-portal-page .subhero-media img,
   .industries-page .subhero-media img,
   .support-page .subhero-media img{
-    width:100% !important;
-    max-height:290px !important;
-    object-fit:contain !important;
+    width:100%;
+    max-height:290px;
+    object-fit:contain;
   }
 }
 
-/* Keep these editorial labels and their headings stacked vertically.
-   The previous wide-screen pass put them into columns; review calls for the
-   natural reading order: eyebrow -> heading -> description. */
-@media (min-width:1180px){
-  .ess-glass-home #why .section-head{
-    display:block !important;
-    max-width:820px !important;
-    margin-bottom:20px !important;
+@media (max-width:1179px){
+  .about-page .principle-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;background:transparent;overflow:visible;}
+  .about-page .principle-list > div{grid-template-columns:1fr;gap:6px;border-radius:18px;}
+}
+@media (max-width:1000px){
+  .about-page .principle-list{grid-template-columns:1fr 1fr;}
+  .free-trial-page .simple-form{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:700px){
+  .ess-glass-site .footer-brand img{
+    width:102px !important;
+    max-width:102px !important;
   }
-  .ess-glass-home #why .section-head .eyebrow{
-    margin-bottom:9px !important;
-  }
-  .ess-glass-home #why .section-head .h2{
-    max-width:820px !important;
-    margin:0 !important;
-    font-size:clamp(30px,2.35vw,40px) !important;
-    line-height:1.08 !important;
-  }
-
-  .resources-page #guides .section-head{
-    display:block !important;
-    max-width:780px !important;
-    margin-bottom:18px !important;
-  }
-  .resources-page #guides .section-head .eyebrow{
-    margin-bottom:9px !important;
-  }
-  .resources-page #guides .section-head .h2{
-    max-width:780px !important;
-    margin:0 !important;
-    font-size:clamp(29px,2.15vw,38px) !important;
-    line-height:1.08 !important;
-  }
-
-  .pricing-page .compact-section > .section-head{
-    display:block !important;
-    max-width:900px !important;
-    margin-bottom:20px !important;
-  }
-  .pricing-page .compact-section > .section-head .eyebrow{
-    margin-bottom:9px !important;
-  }
-  .pricing-page .compact-section > .section-head .h2{
-    max-width:820px !important;
-    margin:0 0 10px !important;
-    font-size:clamp(29px,2.15vw,38px) !important;
-    line-height:1.08 !important;
-  }
-  .pricing-page .compact-section > .section-head .lede{
-    max-width:860px !important;
-    margin:0 !important;
-    font-size:13.5px !important;
-    line-height:1.5 !important;
-  }
+  .about-page .principle-list{grid-template-columns:1fr;}
+  .free-trial-page .simple-form{grid-template-columns:1fr;}
+  .free-trial-page .simple-form .btn,
+  .free-trial-page .simple-form .form-success{grid-column:auto;}
 }
 
 /* Industries uses the refreshed illustration series visual. */
 .industries-page .subhero-media img{
   object-position:center !important;
 }
+
+/* ==========================================================================
+   v53 — shared header: grouped routes + content-only navigation
+
+   The header and footer are generated from tools/nav-config.mjs and are
+   identical on every page. js/router.js swaps only <main>, so the styles
+   below are mounted once and never re-parsed during navigation.
+   ========================================================================== */
+
+/* ------------------------------------------------------ dropdown groups --- */
+
+.main-nav .nav-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.main-nav .nav-parent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.main-nav .nav-caret {
+  width: 10px;
+  height: 6px;
+  flex: none;
+  opacity: .62;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+.nav-panel {
+  position: absolute;
+  /* Clears the header pill, not just the nav link. js/router.js measures the
+     real distance and overrides the fallback below before the panel shows. */
+  top: calc(100% + var(--nav-panel-top, 28px));
+  left: 50%;
+  z-index: 60;
+  width: max-content;
+  min-width: 268px;
+  max-width: min(600px, calc(100vw - 32px));
+  padding: 14px;
+  border-radius: 20px;
+  /* Deliberately near-opaque. The panel sits inside .header-inner, which
+     already has a backdrop-filter, and a backdrop-filter establishes a new
+     backdrop root for its descendants — so a blur here would sample the
+     header, not the page, and the content underneath would stay sharp and
+     unreadable through the panel. */
+  background: rgba(255, 255, 255, .985);
+  border: 1px solid rgba(255, 255, 255, .95);
+  box-shadow: 0 24px 60px rgba(18, 63, 85, .18), 0 2px 8px rgba(18, 63, 85, .06),
+              inset 0 1px 0 rgba(255, 255, 255, .95);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(calc(-50% + var(--nav-panel-shift, 0px)), -6px);
+  transition: opacity .16s ease, transform .22s cubic-bezier(.22, 1, .36, 1),
+              visibility 0s linear .22s;
+}
+
+/* Bridges the gap between the trigger and the panel so the pointer can
+   travel down without the panel closing underneath it. Tracks the same
+   offset, otherwise a wider gap would break the hover path. */
+.nav-panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--nav-panel-top, 28px));
+  height: var(--nav-panel-top, 28px);
+}
+
+.main-nav .nav-group:hover > .nav-panel,
+.main-nav .nav-group:focus-within > .nav-panel,
+.main-nav .nav-group.is-open > .nav-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(calc(-50% + var(--nav-panel-shift, 0px)), 0);
+  transition: opacity .16s ease, transform .22s cubic-bezier(.22, 1, .36, 1),
+              visibility 0s linear 0s;
+}
+
+/* Escape-dismissed: must come after, and match the specificity of, the
+   :hover / :focus-within rules above so it can override them. */
+.main-nav .nav-group.is-dismissed > .nav-panel {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.main-nav .nav-group:hover > .nav-parent .nav-caret,
+.main-nav .nav-group:focus-within > .nav-parent .nav-caret,
+.main-nav .nav-group.is-open > .nav-parent .nav-caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.main-nav .nav-group.is-dismissed > .nav-parent .nav-caret {
+  transform: none;
+}
+
+.nav-panel-blurb {
+  margin: 2px 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #6c8494;
+}
+
+.nav-panel-list {
+  display: grid;
+  gap: 2px;
+}
+
+.nav-panel.wide .nav-panel-list {
+  grid-template-columns: repeat(2, minmax(238px, 1fr));
+  gap: 2px 8px;
+}
+
+.nav-sub {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 13px;
+  color: inherit;
+  transition: background .16s ease;
+}
+
+.nav-sub:hover,
+.nav-sub:focus-visible {
+  background: rgba(91, 189, 228, .13);
+}
+
+.nav-sub-label {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--navy);
+}
+
+.nav-sub-desc {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--grey-600);
+}
+
+.nav-sub.is-active {
+  background: rgba(91, 189, 228, .16);
+}
+
+.nav-sub.is-active .nav-sub-label {
+  color: var(--ess-navy, var(--navy));
+}
+
+/* Dark header variants keep a light panel — it reads as a surface, not chrome. */
+.modern-site .nav-panel { color: var(--ink); }
+.modern-site .nav-sub-label { color: var(--navy); }
+
+/* ------------------------------------------------- stacked mobile menu --- */
+
+@media (max-width: 900px) {
+  /* The menu now contains nested groups, so let it flow and scroll rather
+     than relying on the old fixed offsets. */
+  .option-air .header-menu-content {
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* Same backdrop-root problem as .nav-panel above: the declared blur never
+     applies, so the panel has to carry its own opacity to stay readable over
+     page content. */
+  .ess-glass-site .header-menu-content {
+    background: #fff !important;
+    box-shadow: 0 20px 52px rgba(18, 63, 85, .20), 0 2px 8px rgba(18, 63, 85, .07) !important;
+  }
+
+  .main-nav .nav-group {
+    display: block;
+    width: 100%;
+  }
+
+  .main-nav .nav-parent { width: 100%; }
+  .main-nav .nav-caret { display: none; }
+
+  /* Children are shown inline as an indented list — no second tap needed. */
+  .nav-panel,
+  .main-nav .nav-group:hover > .nav-panel,
+  .main-nav .nav-group.is-open > .nav-panel {
+    position: static;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    margin: 0 0 4px;
+    padding: 0 0 4px 12px;
+    border: 0;
+    border-left: 2px solid rgba(91, 189, 228, .28);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    transition: none;
+  }
+
+  .nav-panel::before { display: none; }
+  .nav-panel-blurb { display: none; }
+  .nav-panel.wide .nav-panel-list { grid-template-columns: 1fr; }
+
+  /* 44px minimum hit target, matching the buttons. Sixteen rows will not fit
+     on a phone screen, so the menu scrolls rather than shrinking the targets. */
+  .nav-sub {
+    align-content: center;
+    min-height: 44px;
+    padding: 6px 10px;
+  }
+  .option-air .header-menu-content .main-nav .nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 6px 12px !important;
+  }
+  .nav-sub-desc { display: none; }
+  .nav-sub-label { font-size: 14px; font-weight: 600; color: #315b6e; }
+  .nav-sub.is-active .nav-sub-label { color: var(--navy); font-weight: 700; }
+}
+
+/* ------------------------------------------------------ navigation state --- */
+
+/* The swap is usually instant from cache; this only shows on a cold fetch. */
+body.is-navigating { cursor: progress; }
+body.is-navigating .site-header { pointer-events: none; }
+
+/* <main> is focused after a swap so keyboard and screen readers land in the
+   new content. That focus is programmatic, so it should not draw a ring. */
+main[data-page-main]:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-panel,
+  .main-nav .nav-caret { transition: none !important; }
+  .nav-panel { transform: translateX(calc(-50% + var(--nav-panel-shift, 0px))) !important; }
+}
+
+/* ==========================================================================
+   v54 — ESS LAYOUT SYSTEM (authoritative; keep this block last)
+
+   One content column, one vertical rhythm, one type scale. Everything above
+   that set a bespoke max-width, section padding or heading size per page has
+   been reduced to content layout only, so these tokens are what actually
+   decide the measurements.
+
+   The column
+     Every top-level <section> is capped at --shell and centred. Plain
+     sections pad by --gutter. Rounded surfaces (hero, trust bar, CTA cards)
+     pad by the larger --surface-pad and bleed outward by exactly the
+     difference, so their text still lands on the same left edge as every
+     other section rather than stepping inward.
+
+   The scale
+     h1 has three tiers. The default is the full editorial size; .is-compact
+     and .is-dense reproduce the two smaller heroes signed off in the v50 and
+     v52 reviews — same result as before, but now three named choices rather
+     than twenty !important blocks.
+   ========================================================================== */
+
+:root {
+  --gutter: 24px;
+  --surface-pad: clamp(28px, 3.4vw, 56px);
+  --section-pad: 68px;
+  --section-pad-tight: 46px;
+
+  /* Typographic measures — headings and body text stay readable inside the
+     full-width column instead of running the whole 1192px. */
+  --measure-head: 900px;
+  --measure-text: 700px;
+
+  --h1-hero: clamp(44px, 4.55vw, 66px);
+  --h1-compact: clamp(40px, 3.8vw, 56px);
+  --h1-dense: clamp(36px, 3.2vw, 48px);
+  --h2-size: clamp(32px, 3.05vw, 46px);
+  --h2-sm-size: clamp(27px, 2.45vw, 36px);
+  --lede-size: 16px;
+  --hero-sub-size: 17px;
+}
+
+@media (max-width: 1099px) {
+  :root { --gutter: 20px; --section-pad: 54px; --section-pad-tight: 38px; }
+}
+@media (max-width: 699px) {
+  /* Below tablet the surface padding collapses to the gutter so card text and
+     section text share the same edge on a phone too. */
+  :root { --gutter: 16px; --surface-pad: 16px; --section-pad: 44px; --section-pad-tight: 32px; }
+}
+
+/* ------------------------------------------------------- 1. the column --- */
+
+.ess-glass-site main > section,
+.ess-glass-site main > .section,
+.ess-glass-site main > .subhero,
+.ess-glass-site main > .glass-hero,
+.ess-glass-site main > .trust,
+.ess-glass-site main > .contact-hero {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: var(--shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--gutter) !important;
+  padding-right: var(--gutter) !important;
+}
+
+/* Rounded surfaces bleed out by the extra padding they carry, which keeps
+   their content on the column edge instead of inset from it. */
+.ess-glass-site main > .subhero,
+.ess-glass-site main > .glass-hero,
+.ess-glass-site main > .trust,
+.ess-glass-site main > .contact-hero {
+  /* How far the surface WANTS to bleed, and how far it actually can: once the
+     viewport is narrower than the column there is no room left, so the bleed
+     collapses to zero and the surface pads by the plain gutter. Without this
+     the card keeps its wide padding while the column has stopped growing, and
+     its text steps inward from every section below it. */
+  --bleed-want: calc(var(--surface-pad) - var(--gutter));
+  --bleed: max(0px, min(var(--bleed-want), (100vw - var(--shell)) / 2));
+  max-width: calc(var(--shell) + 2 * var(--bleed)) !important;
+  padding-left: calc(var(--gutter) + var(--bleed)) !important;
+  padding-right: calc(var(--gutter) + var(--bleed)) !important;
+}
+
+/* A .wrap inside a section would re-apply the column and double the inset. */
+.ess-glass-site main > section > .wrap {
+  max-width: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Dark CTA cards align with the column like everything else. */
+.ess-glass-site .callout-strip,
+.ess-glass-site .pricing-cta,
+.ess-glass-site .cta-band {
+  width: 100% !important;
+  max-width: none !important;
+  padding: var(--surface-pad) !important;
+}
+
+/* ---------------------------------------------------- 2. vertical rhythm --- */
+
+.ess-glass-site main > section {
+  padding-top: var(--section-pad) !important;
+  padding-bottom: 0 !important;
+}
+.ess-glass-site main > .compact-section,
+.ess-glass-site main > .split-section,
+.ess-glass-site main > .login-section,
+.ess-glass-site main > .legal-layout {
+  padding-top: var(--section-pad) !important;
+  padding-bottom: var(--section-pad) !important;
+}
+.ess-glass-site main > section:last-child {
+  padding-bottom: var(--section-pad) !important;
+}
+.ess-glass-site main > .subhero,
+.ess-glass-site main > .glass-hero,
+.ess-glass-site main > .contact-hero {
+  padding-top: var(--surface-pad) !important;
+  padding-bottom: var(--surface-pad) !important;
+}
+.ess-glass-site .subhero-inner {
+  min-height: 0 !important;
+  padding-top: var(--section-pad-tight) !important;
+  padding-bottom: var(--section-pad-tight) !important;
+}
+
+/* --------------------------------------------------------- 3. type scale --- */
+
+.ess-glass-site .subhero h1 {
+  font-size: var(--h1-hero);
+  line-height: .99;
+  margin: 6px 0 14px;
+  max-width: var(--measure-head);
+}
+.ess-glass-site .subhero.is-compact h1 { font-size: var(--h1-compact); }
+.ess-glass-site .subhero.is-dense h1 { font-size: var(--h1-dense); }
+
+.ess-glass-site .subhero p {
+  max-width: var(--measure-text);
+  font-size: var(--hero-sub-size);
+  line-height: 1.58;
+}
+.ess-glass-site .subhero.is-compact p,
+.ess-glass-site .subhero.is-dense p { font-size: var(--lede-size); }
+.ess-glass-site .subhero-copy { max-width: var(--measure-head) !important; }
+
+/* .h2-sm used to be dead: `.option-air .h2` outranked it, so every heading
+   marked as the small tier rendered at the large size. It is a real tier now. */
+.option-air .h2,
+.ess-glass-site .h2 { font-size: var(--h2-size); line-height: 1.08; }
+.option-air .h2.h2-sm,
+.ess-glass-site .h2.h2-sm { font-size: var(--h2-sm-size); line-height: 1.1; }
+
+.ess-glass-site .lede { font-size: var(--lede-size); line-height: 1.58; }
+
+/* ------------------------------------------------- 4. section head block --- */
+
+/* Eyebrow -> heading -> description, always stacked. The wide-screen pass put
+   some of these into columns and missed others (News & events kept a 170px
+   label column while Guides next to it did not), which is what made the page
+   look like it used two different layouts. */
+.ess-glass-site .section-head {
+  display: block !important;
+  max-width: var(--measure-head) !important;
+  margin-bottom: 20px !important;
+}
+.ess-glass-site .section-head .eyebrow { margin-bottom: 9px !important; }
+.ess-glass-site .section-head .h2 { margin: 0 0 10px !important; }
+.ess-glass-site .section-head .h2:last-child { margin-bottom: 0 !important; }
+.ess-glass-site .section-head .lede { max-width: var(--measure-text) !important; margin: 0 !important; }
+
+/* Split sections keep their two-column content but share the column above.
+   The heading sits in the narrow side column, so it always takes the small
+   tier — at the full .h2 size it wraps to eight lines and drags the whole
+   section tall. */
+.ess-glass-site .split-section > div:first-child .h2 {
+  font-size: var(--h2-sm-size);
+  line-height: 1.1;
+  max-width: 34ch;
+}
+.ess-glass-site .split-section > div:first-child .lede {
+  max-width: 38ch;
+}
+
+/* ==========================================================================
+   v55 — surface separation + text contrast on dark surfaces
+   ========================================================================== */
+
+/* ------------------------------------------- 1. surfaces need a seam --- */
+
+/* The trust bar's own background is white and it sat flush against the
+   bottom of the hero card, so the two surfaces merged into one block with a
+   seam instead of a gap. Any surface that follows another block gets the
+   same separation the hero gets from the header. */
+:root { --surface-gap: 20px; }
+
+.ess-glass-site main > * + .trust,
+.ess-glass-site main > * + .subhero,
+.ess-glass-site main > * + .glass-hero,
+.ess-glass-site main > * + .contact-hero {
+  margin-top: var(--surface-gap) !important;
+}
+
+.ess-glass-site main > .trust {
+  border-radius: 28px;
+  padding-bottom: var(--section-pad-tight) !important;
+}
+
+/* The logo marquee scrolls a 2635px track through a 1192px window, so words
+   were being sliced mid-letter at both edges. Fade them out instead. */
+.ess-glass-site .mq-wrap {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* --------------------------------------- 2. text on dark surfaces --- */
+
+/* These seven surfaces are navy or charcoal. Anything inheriting the normal
+   light-background palette disappears on them — most visibly the chain-panel
+   heading, which was ESS navy-deep on ESS navy at a contrast ratio of 1.22.
+   Orange accents are swapped for the lighter tint already used on the CTA
+   strips, which clears 4.5:1 on both navy and charcoal.
+   The orange .btn keeps its own colours: it is a light surface of its own. */
+
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta,
+                    .pricing-card.featured, .story, .pull-quote, .resource-band) {
+  color: rgba(255, 255, 255, .86);
+}
+
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta,
+                    .pricing-card.featured, .story, .pull-quote, .resource-band)
+  :is(h1, h2, h3, h4, h5, .h1, .h2, .h3, b, strong, dt) {
+  color: #fff !important;
+}
+
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta,
+                    .pricing-card.featured, .story, .pull-quote, .resource-band)
+  :is(p, li, span, small, dd, figcaption, .lede, .chain-text, .chain-note, .small) {
+  color: rgba(255, 255, 255, .86) !important;
+}
+
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta,
+                    .pricing-card.featured, .story, .pull-quote, .resource-band)
+  :is(.eyebrow, .eyebrow-sm, .page-card-kicker, .chain-step, time) {
+  color: #ffad73 !important;
+}
+
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta,
+                    .pricing-card.featured, .story, .pull-quote, .resource-band)
+  a:not(.btn) {
+  color: #bce4f5 !important;
+}
+
+/* The CTA button inside a dark card is its own light surface — leave it. */
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta,
+                    .pricing-card.featured, .story, .pull-quote, .resource-band)
+  .btn-primary {
+  color: #fff !important;
+}
+
+/* ==========================================================================
+   v56 — WCAG AA on light surfaces
+
+   The brand orange (#ef6c17 / #e66e0b) only reaches 3.08:1 on white, so every
+   small orange element — eyebrows, kickers, arrow links, list markers — sat
+   under the 4.5:1 minimum, and white-on-orange buttons failed the same way.
+
+   Brand orange is kept for fills, rules, dots and icons, where contrast rules
+   do not apply. Wherever the orange IS the text, or sits behind text, it
+   darkens to --accent-ink. Dark surfaces are unaffected: those rules are more
+   specific and continue to win.
+   ========================================================================== */
+
+:root {
+  --accent-ink: #B4530A;        /* 5.02:1 on #fff, 4.82:1 on the tinted page bg */
+  --accent-ink-deep: #97430A;   /* hover/active */
+  --muted-ink: #5A6670;         /* 5.88:1 on #fff — replaces the pale slates */
+}
+
+/* --------------------------------------------- orange used AS text --- */
+
+.ess-glass-site :is(.eyebrow, .eyebrow-sm, .glass-kicker, .page-card-kicker,
+                    .arrow-link, .industry-index, .news-list time,
+                    .resource-card > span:first-child),
+.ess-glass-site :is(.flow-list, .principle-list) b,
+.ess-glass-site .story-full strong,
+.ess-glass-site .login-option i,
+.ess-glass-site .check-list span::before {
+  color: var(--accent-ink) !important;
+}
+
+.ess-glass-site .arrow-link:hover,
+.ess-glass-site .arrow-link:focus-visible {
+  color: var(--accent-ink-deep) !important;
+}
+
+/* --------------------------------------- orange used BEHIND text --- */
+
+/* Filled buttons keep the bright brand orange: it is the site's primary
+   signal and the darkened version read as muddy. White-on-#ef6c17 is 3.08:1,
+   under the 4.5:1 AA threshold — a deliberate brand call, not an oversight.
+   The orange used AS text above is still darkened, where it costs nothing. */
+.ess-glass-site .btn-primary,
+.ess-glass-site .btn-header,
+.ess-glass-site .btn-next,
+.ess-glass-site .tab[aria-selected="true"] {
+  background: linear-gradient(180deg, #f47b25 0%, #e65e0c 100%) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+.ess-glass-site .btn-primary:hover,
+.ess-glass-site .btn-header:hover,
+.ess-glass-site .btn-next:hover,
+.ess-glass-site .tab[aria-selected="true"]:hover {
+  background: linear-gradient(180deg, #e96b16 0%, #cf5004 100%) !important;
+  color: #fff !important;
+}
+
+/* --------------------------------------------- pale slate greys --- */
+
+.ess-glass-site :is(.glass-stat span, .glass-trust-label, .glass-benefits,
+                    .glass-feature small) {
+  color: var(--muted-ink) !important;
+}
+
+/* ==========================================================================
+   v57 — customer story stat row
+
+   The four figures were laid out as four equal 1fr columns while .stat-n is
+   white-space:nowrap. "4,000+" needs 110px of ink and "53" needs 35px, so the
+   wide figures overflowed their cell and crossed the next column's divider
+   (+10px at 1440, +45px at 900) while the narrow ones wasted 60px.
+
+   Now the track is content-driven: each cell may shrink only to its own
+   min-content, so a figure can never outgrow its cell, and the dividers are
+   real borders rather than absolutely-positioned pseudo-elements that
+   siblings could paint over.
+   ========================================================================== */
+
+.ess-glass-site .story .stats {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  margin: 20px 0 22px;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  border-bottom: 1px solid rgba(255, 255, 255, .14);
+}
+
+.ess-glass-site .story .stats > div {
+  flex: 1 1 auto;
+  min-width: min-content;   /* the figure sets the floor — no overflow */
+  padding: 0 18px;
+  border-left: 1px solid rgba(255, 255, 255, .14);
+}
+.ess-glass-site .story .stats > div:first-child { border-left: 0; padding-left: 0; }
+.ess-glass-site .story .stats > div:last-child { padding-right: 0; }
+
+/* Retire the old overlap-prone pseudo-element dividers. */
+.ess-glass-site .story .stats > div + div::before { content: none; }
+
+.ess-glass-site .story .stat-n {
+  font-size: clamp(25px, 1.95vw, 33px);
+  line-height: 1.04;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+
+.ess-glass-site .story .stat-k {
+  margin-top: 9px;
+  font-size: 11.5px;
+  line-height: 1.32;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+/* Two-up once one row would squeeze the figures. */
+@media (max-width: 960px) {
+  .ess-glass-site .story .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 20px;
+  }
+  .ess-glass-site .story .stats > div:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .ess-glass-site .story .stats > div:nth-child(even) { padding-right: 0; }
+}
+
+/* ==========================================================================
+   v58 — control shapes and footer badge row
+   ========================================================================== */
+
+/* --- 3. the mobile menu control reads better as a circle --- */
+.ess-glass-site .menu-toggle,
+.option-air .menu-toggle,
+.modern-site .menu-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+/* --- 4. wizard footer: both controls on one row, no hint copy --- */
+.ess-glass-site .wizard-foot,
+.option-air .wizard-foot {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
+}
+.ess-glass-site .wizard-foot .btn-quiet { flex: 0 0 auto; }
+.ess-glass-site .wizard-foot .btn-next {
+  flex: 1 1 auto;
+  margin-left: auto;
+  max-width: 320px;
+}
+.ess-glass-site .wizard-hint { display: none; }
+
+@media (max-width: 700px) {
+  .ess-glass-site .wizard-foot { align-items: center; }
+  .ess-glass-site .wizard-foot .btn-next { max-width: none; }
+}
+
+/* --- 6. the two store badges sit side by side --- */
+.ess-glass-site .footer-store-badges {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: stretch;
+}
+.ess-glass-site .footer-store-badges .store-kicker { grid-column: 1 / -1; }
+.ess-glass-site .footer-store-badges .store-badge {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  gap: 8px;
+}
+.ess-glass-site .footer-store-badges .store-badge > span:last-child { min-width: 0; }
+.ess-glass-site .footer-store-badges .store-badge strong {
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 380px) {
+  /* Two badges genuinely will not fit — stack rather than clip the labels. */
+  .ess-glass-site .footer-store-badges { grid-template-columns: 1fr; }
+}
+
+/* The hint copy under the wizard is gone, so the disabled state is now the
+   only thing telling you a slot is still needed. It was inheriting the orange
+   gradient at 58% opacity, which just read as a paler button. */
+.ess-glass-site .btn-next[disabled],
+.ess-glass-site .btn-next[disabled]:hover,
+.ess-glass-site .btn-primary[disabled] {
+  background: #dce3e9 !important;
+  background-image: none !important;
+  color: #74838f !important;
+  opacity: 1;
+  cursor: not-allowed;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* ==========================================================================
+   v59 — responsive pass
+   ========================================================================== */
+
+/* Legal table of contents: below 860px this was a single nowrap row up to
+   2087px wide inside overflow-x:auto, with the scrollbar hidden — so nine of
+   the twelve sections sat off-screen with nothing to suggest they were there.
+   A legal index is for scanning, so it wraps instead of scrolling. */
+@media (max-width: 860px) {
+  .ess-glass-site .legal-toc nav {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 6px;
+  }
+  .ess-glass-site .legal-toc a {
+    white-space: normal;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* Touch targets. WCAG 2.5.8 asks for 24x24 CSS px; these standalone controls
+   were 19-32px tall. Links inline in a sentence are exempt and left alone. */
+@media (max-width: 900px) {
+  .ess-glass-site .arrow-link,
+  .ess-glass-site .story > a,
+  .ess-glass-site .channel-value {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .ess-glass-site .tab {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* ==========================================================================
+   v60 — photographic heroes
+
+   The heroes are now photographs rather than transparent-background
+   illustrations, which changes two things:
+
+   1. object-fit:contain letterboxes the photo inside its box, so the 24-30px
+      radius clipped the *element* and left the photo's own corners square.
+      cover makes the radius bite on the photo itself.
+
+   2. cover only works if the box keeps the photo's ratio. The box was
+      previously capped by max-height, which at <=700px produced a 1.77 box
+      against a 1.33 image — cover there would have cropped a third of the
+      frame. The caps are expressed as widths instead, so the box stays 4:3
+      at every width and cover crops nothing.
+   ========================================================================== */
+
+.ess-glass-site .subhero-media img,
+.ess-glass-site .glass-media-shell > img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  margin-inline: auto;
+  border-radius: 20px;
+}
+
+/* 480 = the old 360px height cap expressed at 4:3; 573 = the home hero's 430. */
+.ess-glass-site .subhero-media img { max-width: 480px !important; }
+.ess-glass-site .glass-media-shell > img { max-width: 573px !important; }
+
+@media (max-width: 700px) {
+  .ess-glass-site .subhero-media img,
+  .ess-glass-site .glass-media-shell > img { border-radius: 16px; }
+}
+
+/* ==========================================================================
+   v61 — heroes dissolve into the page
+
+   A photograph with a hard rectangular edge reads as pasted on. The image is
+   feathered on all four sides with two crossed linear-gradient masks composited
+   together, so it fades out rather than stopping.
+
+   The subpage media card has to lose its white fill, border and shadow at the
+   same time — feathering the photo into an opaque card would only move the
+   hard edge outwards onto the card instead of removing it.
+   ========================================================================== */
+
+.ess-glass-site .subhero-media,
+.ess-glass-site .glass-media-shell {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+}
+
+.ess-glass-site .subhero-media img,
+.ess-glass-site .glass-media-shell > img {
+  border-radius: 0;            /* the feather replaces the corner radius */
+  -webkit-mask-image:
+    linear-gradient(to right,  transparent 0%, #000 15%, #000 85%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+  mask-image:
+    linear-gradient(to right,  transparent 0%, #000 15%, #000 85%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+  -webkit-mask-composite: source-in;   /* Safari keyword */
+  mask-composite: intersect;           /* standard */
+}
+
+/* The mask eats into the frame, so give the photo room to stay the same
+   visual size as before the feather. */
+.ess-glass-site .subhero-media img { max-width: 560px !important; }
+.ess-glass-site .glass-media-shell > img { max-width: 660px !important; }
+
+/* ==========================================================================
+   v62 — navigation feedback
+
+   js/router.js swaps <main> in place, so without a visible cue a slow fetch
+   looks like a dead click. A spinning ESS mark covers that gap, and the new
+   content eases in rather than appearing abruptly.
+   ========================================================================== */
+
+.route-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: grid;
+  place-items: center;
+  background: rgba(248, 251, 253, .55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* The delay is the point: prefetched navigations finish well inside it, so
+     the spinner never flashes for a swap that was already instant. */
+  transition: opacity 160ms ease, visibility 0s linear 340ms;
+}
+
+body.is-navigating .route-loader {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 160ms ease 180ms, visibility 0s linear 180ms;
+}
+
+.route-loader-mark {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--ess-navy, #123f55);
+  box-shadow: 0 14px 34px rgba(18, 63, 85, .26);
+}
+
+.route-loader-mark img {
+  width: 34px;
+  height: 34px;
+  display: block;
+  animation: ess-spin 900ms linear infinite;
+}
+
+@keyframes ess-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Content easing in after the swap. */
+body.page-entering main,
+body.page-entering .site-footer { animation: none; }
+
+.ess-glass-site main[data-page-main].is-entering {
+  animation: ess-content-in 320ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes ess-content-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-loader-mark img { animation: none; }
+  .route-loader { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .ess-glass-site main[data-page-main].is-entering { animation: none; }
+}
+
+/* ==========================================================================
+   v64 — features page: product hero + product switcher
+
+   The hero follows the pattern ServiceTitan uses on its product pages: a dark
+   panel, the photo bled across it, the copy on the scrimmed side and a real
+   screenshot of the product cropped by the panel edge.
+
+   One difference worth noting: ServiceTitan bakes the darkening into the JPEG.
+   Doing it as a CSS scrim instead means any photo can be dropped in without
+   being re-exported, and the copy keeps its contrast either way (measured
+   9.3:1 against the lightest pixel behind the headline).
+   ========================================================================== */
+
+.ess-glass-site main > .product-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #0b2a3a;
+  padding: 0 !important;
+  max-width: calc(var(--shell) + 2 * var(--bleed, 0px)) !important;
+}
+
+.product-hero-photo { position: absolute; inset: 0; z-index: 0; }
+.product-hero-photo img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover;
+  object-position: 70% 50%;
+  border-radius: 0;
+  /* the feather used elsewhere would fight the scrim — this photo is a fill */
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.product-hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(8,32,46,.97) 0%, rgba(8,32,46,.93) 38%, rgba(8,32,46,.58) 66%, rgba(8,32,46,.2) 100%),
+    linear-gradient(0deg, rgba(8,32,46,.55) 0%, transparent 45%);
+}
+
+.product-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .92fr);
+  gap: 40px;
+  align-items: center;
+  padding: 64px var(--surface-pad);
+  min-height: 500px;
+}
+
+.product-brandrow { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+/* .ess-glass-site img { height:auto } outranks a single class, so scope it up */
+.product-hero .product-logo { height: 32px !important; width: auto !important; display: block; margin: 0; }
+.product-pill {
+  font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  color: #0b2a3a; background: #7fd0f0; padding: 5px 10px; border-radius: 999px;
+}
+
+.product-hero h1 {
+  margin: 0 0 18px;
+  color: #fff;
+  font-size: clamp(32px, 3.2vw, 48px);
+  line-height: 1.04;
+  letter-spacing: -.035em;
+  font-weight: 800;
+  max-width: 17ch;
+}
+.product-hero p {
+  margin: 0 0 28px;
+  color: rgba(255,255,255,.85);
+  font-size: 17px;
+  line-height: 1.62;
+  max-width: 48ch;
+}
+
+.btn-ghost-light {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 46px; padding: 0 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.34);
+  color: #fff !important;
+  font-size: 15px; font-weight: 700;
+  transition: background .18s ease, border-color .18s ease;
+}
+.btn-ghost-light:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.5); }
+
+/* The screenshot is deliberately cropped by the panel edge — it reads as a
+   window into the product rather than a framed picture of it. */
+.product-hero-ui { position: relative; min-width: 0; }
+.product-hero-ui img {
+  display: block;
+  width: 134% !important;
+  max-width: none !important;
+  height: auto !important;
+  border-radius: 14px;
+  box-shadow: 0 40px 90px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.10);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+@media (max-width: 900px) {
+  .product-hero-inner {
+    grid-template-columns: 1fr;
+    padding: 40px var(--gutter);
+    min-height: 0;
+    gap: 28px;
+  }
+  .product-hero-ui img { width: 100% !important; }
+  .product-hero-photo::after {
+    background: linear-gradient(0deg, rgba(8,32,46,.95) 34%, rgba(8,32,46,.74) 100%);
+  }
+}
+
+/* ------------------------------------------------- product switcher --- */
+
+.ess-glass-site main > .product-switch { padding-top: var(--section-pad-tight) !important; }
+
+.product-switch-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.product-switch-card {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 20px 22px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.82);
+  border: 1px solid rgba(255,255,255,.9);
+  box-shadow: 0 10px 30px rgba(18,63,85,.07);
+  color: inherit;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.product-switch-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 38px rgba(18,63,85,.12);
+}
+.product-switch-card.is-current { border-color: rgba(59,170,214,.5); }
+
+.ess-glass-site .product-switch-card img { height: 25px !important; width: auto !important; margin-bottom: 4px; }
+
+.product-switch-mark {
+  display: grid; place-items: center;
+  width: 34px; height: 34px; margin-bottom: 6px;
+  border-radius: 10px;
+  background: var(--navy); color: #fff;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .04em;
+}
+.product-switch-mark.alt { background: var(--teal-600); }
+
+.product-switch-label { font-size: 16px; font-weight: 800; color: var(--navy); letter-spacing: -.01em; }
+.product-switch-note { font-size: 13px; color: var(--grey-600); line-height: 1.45; }
+
+@media (max-width: 800px) {
+  .product-switch-row { grid-template-columns: 1fr; }
+}
+
+/* Each product band gets a scroll anchor clear of the floating header. */
+.features-page [id] { scroll-margin-top: 110px; }
+
+.section-foot {
+  margin: 18px 0 0;
+  font-size: 14px;
+  color: var(--grey-600);
+}
+
+/* ==========================================================================
+   v65 — features page corrections
+   ========================================================================== */
+
+/* The hero was the only block on the site sitting outside the content column:
+   1240px at x=152 while every other section was 1192px at x=176. It is a
+   surface, so it takes the same bleed rule as the other rounded surfaces and
+   its content lands on the shared left edge. */
+.ess-glass-site main > .product-hero {
+  --bleed-want: calc(var(--surface-pad) - var(--gutter));
+  --bleed: max(0px, min(var(--bleed-want), (100vw - var(--shell)) / 2));
+  max-width: calc(var(--shell) + 2 * var(--bleed)) !important;
+}
+.product-hero-inner { padding-left: calc(var(--gutter) + var(--bleed)); padding-right: calc(var(--gutter) + var(--bleed)); }
+
+/* No product screenshot for now — the copy sits on the scrimmed side and the
+   photograph carries the right. One column, measured rather than full-bleed. */
+.product-hero-inner { grid-template-columns: minmax(0, 1fr); }
+.product-hero-copy { max-width: 54ch; }
+
+/* "New" marker on a dropdown entry. */
+.nav-sub-label { display: inline-flex; align-items: center; gap: 8px; }
+.nav-sub-badge {
+  flex: none;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 999px;
+  color: #0b2a3a;
+  background: #7fd0f0;
+}
+/* In the stacked mobile menu the label is the whole row. */
+@media (max-width: 900px) {
+  .nav-sub-label { justify-content: flex-start; }
+}
+
+/* ==========================================================================
+   v66 — product hero clearance + opaque dropdown
+   ========================================================================== */
+
+/* Every other hero gets margin-top:28px from the shared first-surface rule,
+   which lands it 14px below the floating header. .product-hero was not in
+   that selector list, so it sat at margin-top:0 — i.e. 14px ABOVE the header
+   pill's bottom edge, tucked under the header instead of clear of it. */
+.ess-glass-site main > .product-hero {
+  margin-top: calc(var(--page-edge, 14px) * 2) !important;
+}
+
+/* The dropdown sits over a dark hero on this page, where 98.4% white was not
+   enough — the headline read straight through it. A menu gains nothing from
+   translucency, so it is opaque. */
+.nav-panel { background: #fff; }
+
+/* The hero box was positioned correctly, but its copy started only 64px in,
+   against ~139px on every other hero — so the headline crowded the floating
+   header even though the boxes never actually overlapped. Use the same two
+   padding tokens the other heroes stack. */
+.product-hero-inner {
+  padding-top: calc(var(--surface-pad) + var(--section-pad-tight));
+  padding-bottom: calc(var(--surface-pad) + var(--section-pad-tight));
+}
+
+/* Store links in the section footnote inherit --teal-600, which lands just
+   under 4.5:1 on white at 14px. */
+.ess-glass-site .section-foot a { color: var(--teal-700); font-weight: 700; }
+.ess-glass-site .section-foot a:hover { color: var(--navy); }
