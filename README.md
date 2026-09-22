@@ -613,3 +613,41 @@ page margin either side of the card; below that the section is 100% wide, so
 the card ran edge to edge and the copy sat against the screen. Measured on a
 390px viewport afterwards: the card is inset by the 16px gutter on both sides,
 with its own 16px padding inside that.
+
+
+## v88 — mobile header, and a transparent favicon
+
+**The favicon is the mark on a transparent ground.** The navy disc with white
+lettering from v87 was dropped at the client's request, so the icon is the ESS
+mark in the logo's own colours — arcs in `#54A8CC` / `#60C0E4` / `#9CD8F0`,
+lettering in `#3C3C3C`. White lettering is not an option without a dark plate
+behind it, so it went back to the logo's grey. `apple-touch-icon.png` keeps an
+opaque white plate, since iOS composites a touch icon onto black. The trade-off
+to know: on a dark tab bar the lettering recedes and the ring carries the
+identification alone.
+
+**The mobile bar keeps the CTA, and the panel drops flush.** Three defects, one
+cause each:
+
+- The Book a demo CTA was only reachable inside the open menu. It could not be
+  pulled into the bar with CSS: the panel animates with `opacity`, and no
+  descendant escapes an ancestor's opacity. So `tools/render-header.mjs` moves
+  `.header-actions` out of `.header-menu-content` and the toggle to last.
+  Desktop is untouched, because `.header-menu-content` is `display: contents`
+  there and the nav and actions are flex children of `.header-inner` either
+  way. Log in and the phone move into the panel as `.header-panel-actions`,
+  shown only below 900px, so exactly one copy of each link is ever in the
+  accessibility tree.
+- **The logo vanished and the toggle left the screen.** `.header-actions` still
+  carried the full-width grid it had as a stacked block inside the menu — 358px
+  on a 390px screen — and `.btn-header` still had the `width: 100%` the base
+  sheet gives it below 430px. The logo was the only shrinkable item in the row,
+  so it absorbed the overflow down to zero width. Both are content-width in the
+  bar now.
+- **The toggle jumped when the menu opened.** A `.menu-open` rule gives
+  `.header-actions` `order: 4`, which put it after the toggle. The bar's order
+  is set explicitly in both states.
+
+Measured at 390px: logo 16–87, CTA 210–320, toggle 330–374, identical open and
+shut, and the panel spans 0–390 flush to both edges. Verified at 320, 390 and
+768px.

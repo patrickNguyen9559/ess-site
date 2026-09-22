@@ -7659,3 +7659,146 @@ body.modern-site {
     margin-right: var(--gutter) !important;
   }
 }
+
+/* ==========================================================================
+   v88 — mobile header: panel flush to the edges, CTA stays in the bar
+
+   The dropdown was an inset rounded card floating 10px below the bar. It drops
+   flush now, edge to edge, with one hairline at its bottom — the same flat
+   treatment the bar itself took in v82.
+
+   The Book a demo CTA is visible in the bar beside the toggle. That needed the
+   markup change in tools/render-header.mjs: the panel animates with opacity,
+   and a child cannot escape an ancestor's opacity, so the CTA had to move out
+   of the panel. Log in and the phone number are in the panel instead, where
+   there is room for them.
+   ========================================================================== */
+
+.ess-glass-site .header-panel-actions { display: none; }
+
+@media (max-width: 900px) {
+  .ess-glass-site .header-menu-content,
+  .ess-glass-site .site-header.menu-open .header-menu-content {
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 8px 0 14px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--slate-200) !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    max-height: calc(100vh - 69px) !important;
+    box-shadow: 0 18px 40px rgba(18,63,85,.14) !important;
+  }
+  .ess-glass-site .header-menu-content .main-nav {
+    padding-left: var(--gutter) !important;
+    padding-right: var(--gutter) !important;
+  }
+
+  /* The bar: logo, CTA, toggle. */
+  .ess-glass-site .header-actions {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    flex: none;
+  }
+  .ess-glass-site .header-actions .header-login,
+  .ess-glass-site .header-actions .header-phone { display: none !important; }
+  .ess-glass-site .header-actions .btn-header {
+    display: inline-flex !important;
+    min-height: 40px !important;
+    padding: 0 16px !important;
+    font-size: 14px;
+  }
+  .ess-glass-site .menu-toggle { margin-left: 2px; flex: none; }
+
+  /* Log in and the phone live in the panel at this width. */
+  .ess-glass-site .header-panel-actions {
+    display: grid !important;
+    gap: 2px;
+    margin: 8px var(--gutter) 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--slate-200);
+  }
+  .ess-glass-site .header-panel-actions a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .ess-glass-site .header-panel-actions .header-login { color: var(--navy) !important; }
+  .ess-glass-site .header-panel-actions .header-phone { color: var(--accent-ink) !important; }
+  .ess-glass-site .header-panel-actions a:hover { background: var(--tint) !important; }
+}
+
+@media (max-width: 400px) {
+  .ess-glass-site .header-actions .btn-header { padding: 0 13px !important; font-size: 13.5px; }
+  .ess-glass-site .logo img { height: 36px !important; }
+}
+
+/* The base sheet gives .btn-header width:100% below 430px, from when the CTA
+   was a full-width row inside the open menu. Now that it lives in the bar that
+   stretched it to the whole content width and pushed the menu toggle off
+   screen entirely. In the bar it is content-width. */
+@media (max-width: 900px) {
+  .ess-glass-site .header-inner,
+  .option-air .header-inner {
+    flex-wrap: nowrap !important;
+    gap: 8px;
+  }
+  .ess-glass-site .header-actions .btn-header,
+  .option-air .header-actions .btn-header {
+    width: auto !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+  }
+  .ess-glass-site .logo { flex: 0 1 auto; min-width: 0; }
+  .ess-glass-site .menu-toggle,
+  .option-air .menu-toggle { flex: 0 0 auto !important; }
+}
+
+/* .header-actions still carried the full-width grid it needed back when it was
+   a stacked block inside the open menu: 358px on a 390px screen, which
+   collapsed the logo to zero and pushed the toggle off the right edge. In the
+   bar it is content-width, pinned right, with the CTA and the toggle together. */
+@media (max-width: 900px) {
+  .ess-glass-site .header-actions,
+  .option-air .header-actions,
+  .ess-glass-site .site-header.menu-open .header-actions,
+  .option-air .site-header.menu-open .header-actions {
+    display: flex !important;
+    width: auto !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+    margin: 0 0 0 auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    grid-template-columns: none !important;
+    gap: 8px;
+    align-items: center;
+  }
+  /* The logo keeps its size — it was the only shrinkable item in the row. */
+  .ess-glass-site .logo,
+  .option-air .logo { flex: 0 0 auto !important; }
+}
+
+/* With the menu open, a .menu-open rule gives .header-actions order:4, which
+   put it after the toggle — so the CTA jumped to the far right and the
+   hamburger sat next to the logo. The bar's order is fixed explicitly instead,
+   in both states: logo, then the CTA and the toggle together on the right. */
+@media (max-width: 900px) {
+  .ess-glass-site .header-inner > .logo,
+  .option-air .header-inner > .logo { order: 0 !important; }
+  .ess-glass-site .header-inner > .header-menu-content,
+  .option-air .header-inner > .header-menu-content { order: 1 !important; }
+  .ess-glass-site .header-inner > .header-actions,
+  .option-air .header-inner > .header-actions { order: 2 !important; }
+  .ess-glass-site .header-inner > .menu-toggle,
+  .option-air .header-inner > .menu-toggle { order: 3 !important; }
+}

@@ -29,6 +29,19 @@ const CARET =
 /**
  * @param {string} current  Filename of the page being rendered, e.g. "about.html".
  * @returns {string} the full <header>…</header> markup.
+ *
+ * `.header-actions` sits OUTSIDE `.header-menu-content` on purpose. The
+ * collapsible panel animates with opacity, and an element cannot escape an
+ * ancestor's opacity, so anything that has to stay visible in the bar while
+ * the menu is shut — the Book a demo CTA on a phone — cannot live inside it.
+ * On desktop `.header-menu-content` is `display: contents`, so the nav and the
+ * actions are flex children of `.header-inner` either way and the row is
+ * unchanged.
+ *
+ * `.header-panel-actions` carries Log in and the phone inside the panel for
+ * phones, where the bar only has room for the CTA. It is display:none above
+ * 900px and the bar's copies are display:none below it, so exactly one of each
+ * link is ever in the accessibility tree.
  */
 export function renderHeader(current) {
   const nav = NAV.map((item) => renderItem(item, current)).join('\n      ');
@@ -38,21 +51,27 @@ export function renderHeader(current) {
     <a href="${esc(BRAND.href)}" class="logo"><img src="${esc(BRAND.logo)}" alt="${esc(
       BRAND.alt,
     )}" width="${BRAND.width}" height="${BRAND.height}"></a>
-    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
     <div class="header-menu-content">
       <nav class="main-nav" aria-label="Main">
       ${nav}
       </nav>
-      <div class="header-actions">
-        <a class="header-phone" href="${esc(ACTIONS.phone.href)}">${esc(ACTIONS.phone.label)}</a>
+      <div class="header-panel-actions">
         <a class="header-login" href="${esc(ACTIONS.login.href)}"${
           current === ACTIONS.login.href ? ' aria-current="page"' : ''
         }>${esc(ACTIONS.login.label)}</a>
-        <a class="btn-header" href="${esc(ACTIONS.cta.href)}"${
-          current === ACTIONS.cta.href ? ' aria-current="page"' : ''
-        }>${esc(ACTIONS.cta.label)}</a>
+        <a class="header-phone" href="${esc(ACTIONS.phone.href)}">${esc(ACTIONS.phone.label)}</a>
       </div>
     </div>
+    <div class="header-actions">
+      <a class="header-phone" href="${esc(ACTIONS.phone.href)}">${esc(ACTIONS.phone.label)}</a>
+      <a class="header-login" href="${esc(ACTIONS.login.href)}"${
+        current === ACTIONS.login.href ? ' aria-current="page"' : ''
+      }>${esc(ACTIONS.login.label)}</a>
+      <a class="btn-header" href="${esc(ACTIONS.cta.href)}"${
+        current === ACTIONS.cta.href ? ' aria-current="page"' : ''
+      }>${esc(ACTIONS.cta.label)}</a>
+    </div>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
   </div>
 </header>`;
 }

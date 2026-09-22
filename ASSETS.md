@@ -77,12 +77,17 @@ They are committed to git, so deleting them is recoverable. Verify first:
 - `og-default.jpg` 1200x630 — **no page has `og:image`, `og:title` or any
   Twitter card**, so links pasted into Slack, LinkedIn or Teams show a bare
   grey box.
-- ~~`favicon.svg`~~ — **done.** A round mark: a `#123F55` circle carrying the
-  swirl and the ESS lettering in white, on a square 64 viewBox. Built from the
-  production logo's own paths (the three arcs plus the three letters), so it is
-  the real mark rather than a redraw. `favicon-32.png`, `favicon-16.png` and
-  `apple-touch-icon.png` (180) are rendered from it, and all four are declared
-  on all 24 pages.
+- ~~`favicon.svg`~~ — **done.** The round ESS mark on a transparent ground,
+  in the logo's own colours: the three swirl arcs in `#54A8CC` / `#60C0E4` /
+  `#9CD8F0` and the ESS lettering in `#3C3C3C`, inset 2px inside a square 64
+  viewBox. Built from the production logo's own paths, so it is the real mark
+  rather than a redraw. `favicon-32.png` and `favicon-16.png` are rendered from
+  it; `apple-touch-icon.png` (180) keeps an opaque white plate, because iOS
+  composites a touch icon onto black.
+  A navy disc behind the mark with white lettering was built first and then
+  dropped at the client's request. The trade-off of the transparent version:
+  on a dark tab bar the lettering recedes and the blue ring carries the
+  identification on its own.
   The old declaration pointed at the 154.8x78.33 full wordmark, which was
   unreadable squashed into a 16px tab.
 
