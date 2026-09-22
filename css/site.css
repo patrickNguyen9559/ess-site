@@ -8587,3 +8587,62 @@ body::-webkit-scrollbar { width: 0; height: 0; }
 
 .ess-glass-site .site-header.is-small .logo img,
 .option-air .site-header.is-small .logo img { filter: none !important; }
+
+/* ==========================================================================
+   v104 — the all-features page
+
+   The client gave a list of nineteen features and asked for a page that lists
+   them with a rail down the left, the way the policy pages read, but with
+   short titles in the rail.
+
+   So the page reuses the site's existing "long document with a sticky
+   contents rail" pattern rather than inventing a second one: .legal-layout,
+   .legal-toc and .legal-content, which js/site.js already builds a table of
+   contents for. The names say "legal" because the two policy pages were the
+   first to need it; the pattern is not legal-specific. Each section carries a
+   short data-toc-label, which the generator now prefers over the heading, so
+   the rail reads "Projects & job costing" while the heading keeps the
+   client's own "Project Management and Job Costing".
+
+   Most of that pattern is declared unscoped and already applies here. What
+   follows is only the handful of rules the sheet scopes to `.legal-page`,
+   restated for this page so it does not have to borrow that body class and
+   the rest of what rides on it.
+   ========================================================================== */
+
+.ess-glass-site.all-features-page .legal-subhero .subhero-inner {
+  grid-template-columns: 1fr !important;
+  min-height: 300px !important;
+}
+.ess-glass-site.all-features-page .legal-layout {
+  grid-template-columns: minmax(180px, 230px) minmax(0, 760px);
+  gap: 38px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* The rail is a jump list, so every target has to clear the sticky bar. 100px
+   is the bar at rest; it is 69px once you have scrolled, which is the state
+   any in-page jump actually lands in, so this leaves a little air. */
+.ess-glass-site.all-features-page .legal-content section { scroll-margin-top: 92px; }
+
+/* Nineteen entries is long enough that the rail needs to scroll on its own
+   rather than run past the bottom of a laptop screen. */
+.ess-glass-site.all-features-page .legal-toc {
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.ess-glass-site.all-features-page .legal-toc::-webkit-scrollbar { width: 0; height: 0; }
+
+.ess-glass-site.all-features-page .legal-content h2 {
+  font-size: 21px;
+  letter-spacing: -.01em;
+}
+.ess-glass-site.all-features-page .legal-content section { margin-bottom: 12px; }
+
+@media (max-width: 900px) {
+  .ess-glass-site.all-features-page .legal-layout { grid-template-columns: 1fr; gap: 24px; }
+  .ess-glass-site.all-features-page .legal-toc { max-height: none; overflow: visible; }
+  .ess-glass-site.all-features-page .legal-content section { scroll-margin-top: 78px; }
+}

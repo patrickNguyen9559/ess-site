@@ -1070,3 +1070,62 @@ scrolled bar was navy (L1255). L1564's `.option-air .logo img { filter: none }`
 undid it at (0,2,1), but the `.is-small` arm is (0,4,1) and kept winning. It
 had never shown because nothing ever set `is-small`. The missing arm is now
 closed.
+
+
+## v104 — a Features menu, and the page behind it
+
+The client supplied a list of nineteen features, asked for a Features group in
+the header showing the top five plus a "view all", and for a page listing all
+nineteen with a rail down the left "like the policy page, but with short
+titles".
+
+### The page
+
+`all-features.html` is new. `features.html` was left alone: it is a 300-line
+narrative tour of the actual screens, and overwriting it with a list would have
+thrown that away.
+
+The page reuses the site's existing "long document with a sticky contents rail"
+pattern — `.legal-layout`, `.legal-toc`, `.legal-content` — which
+`initLegalToc` in `js/site.js` already builds a table of contents for. The
+names say "legal" because the two policy pages needed it first; nothing about
+the pattern is legal-specific. `initLegalToc` now prefers a section's
+`data-toc-label` over its heading, so the rail reads "Projects & job costing"
+while the heading keeps the client's own "Project Management and Job Costing".
+The two policy pages set no such attribute and are unchanged.
+
+Only the handful of rules the sheet scopes to `.legal-page` had to be restated
+for `.all-features-page`, so the new page does not borrow that body class and
+everything else riding on it. The rail scrolls on its own past nineteen
+entries, and sections carry `scroll-margin-top: 92px` to clear the sticky bar.
+
+### The header
+
+`Features` sits between Platform and Industries, with the first five of the
+client's list and a "View all features" as the sixth. Its five children point
+at anchors on the new page.
+
+Two adjustments came with it:
+
+- Platform's "All features" child was relabelled **"How the platform works"**
+  and still points at `features.html`. Two differently-titled links both called
+  "all features", going to different pages, would have been the confusing part.
+- **Resources was removed from the header at the client's request**, which also
+  fixed the bar: a seventh top-level item was wrapping "Why ESS" onto two
+  lines. Nothing was orphaned — `resources.html` is in the footer and
+  `free-trial.html` is the target of a CTA on thirteen pages — but
+  `support.html` had no footer link, so it joins the Company column. All three
+  are now listed in `UNLISTED` with a note saying where each is reached from,
+  so the reachability report stays meaningful.
+
+Every dropdown subtitle was rewritten to a single short line at the client's
+request; measured in the browser, all nineteen now render on one line in all
+four panels.
+
+### Copy that needs the client's eye
+
+The nineteen descriptions were written from the feature **names alone** — no
+spec, no screens. They are deliberately pitched at what each name supports and
+use the vocabulary already on the site, but they are not verified product
+claims and should be read before launch. **Cora AI Assistant** is a single
+sentence on purpose: nothing is known about it beyond the name.

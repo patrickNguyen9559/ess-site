@@ -30,107 +30,122 @@ export const NAV = [
     blurb: 'Office, field, routing and customer self-service.',
     children: [
       {
-        label: 'All features',
+        label: 'How the platform works',
         href: 'features.html',
-        badge: 'New',
-        desc: 'Every capability across Mobile Office Manager, Mobile Service and the portal.',
+        desc: 'A tour of every screen.',
       },
       {
         label: 'Mobile Office Manager',
         href: 'mobile-office-manager.html',
-        desc: 'Nine connected modules — the back-office ERP for service contractors.',
+        desc: 'The back-office ERP.',
       },
       {
         label: 'Mobile Service',
         href: 'mobile-service.html',
-        desc: 'The field app that connects the office to the unit — offline included.',
+        desc: 'The field app, offline included.',
       },
       {
         label: 'GPS Tracker & Route Builder',
         href: 'gps-route-builder.html',
-        desc: 'Dispatch on real technician locations and cut travel time.',
+        desc: 'Live locations, shorter routes.',
       },
       {
         label: 'Customer Portal',
         href: 'customer-portal.html',
-        desc: 'The self-service portal more RFPs are asking for.',
+        desc: 'Self-service for your customers.',
+      },
+    ],
+  },
+  {
+    label: 'Features',
+    href: 'all-features.html',
+    blurb: 'Nineteen capabilities, on one database.',
+    children: [
+      {
+        label: 'Multi Branch and Sites',
+        href: 'all-features.html#multi-branch',
+        desc: 'Many branches, one database.',
+      },
+      {
+        label: 'Cora AI Assistant',
+        href: 'all-features.html#cora-ai',
+        badge: 'New',
+        desc: 'The assistant built into ESS.',
+      },
+      {
+        label: 'Mobile Service FMS',
+        href: 'all-features.html#mobile-service',
+        desc: 'Capture the job at the unit.',
+      },
+      {
+        label: 'Dispatch and Scheduling',
+        href: 'all-features.html#dispatch',
+        desc: 'One board for the day.',
+      },
+      {
+        label: 'GPS Tracking',
+        href: 'all-features.html#gps-tracking',
+        desc: 'Dispatch on real positions.',
+      },
+      {
+        label: 'View all features',
+        href: 'all-features.html',
+        desc: 'All nineteen, in one list.',
       },
     ],
   },
   {
     label: 'Industries',
     href: 'industries.html',
-    blurb: 'Built for elevator. Trusted by the trades next door.',
+    blurb: 'Built for elevator, and the trades beside it.',
     children: [
       {
         label: 'Elevator',
         href: 'industry-elevator.html',
         badge: 'Primary',
-        desc: 'MCP, category tests, callbacks, modernization and new install.',
+        desc: 'MCP, tests, callbacks, mods.',
       },
       {
         label: 'Escalator & moving walks',
         href: 'industry-escalator.html',
-        desc: 'The same unit-level service model and inspection cadence.',
+        desc: 'Same units, same cadence.',
       },
       {
         label: 'Overhead door & dock',
         href: 'industry-overhead-door.html',
-        desc: 'Commercial door service, anchored on Hamburg Overhead Door.',
+        desc: 'Commercial door and dock.',
       },
       {
         label: 'Fire & life safety',
         href: 'industry-fire-life-safety.html',
-        desc: 'Inspection-driven, code-bound, multi-year contracts.',
+        desc: 'Inspection-driven contracts.',
       },
       {
         label: 'All industries',
         href: 'industries.html',
-        desc: 'Every trade ESS serves, and the pattern they share.',
+        desc: 'Every trade ESS serves.',
       },
     ],
   },
   {
     label: 'Why ESS',
     href: 'about.html',
-    blurb: 'How ESS works and what it takes to go live.',
+    blurb: 'Who we are and how you go live.',
     children: [
       {
         label: 'About ESS',
         href: 'about.html',
-        desc: 'Over 15 years building software for service contractors.',
+        desc: '15+ years in elevator.',
       },
       {
         label: 'Customer stories',
         href: 'customer-stories.html',
-        desc: 'What changed for teams already running ESS.',
+        desc: 'What changed for real teams.',
       },
       {
         label: 'Implementation',
         href: 'implementation.html',
-        desc: 'Onboarding, data migration and the path to go-live.',
-      },
-    ],
-  },
-  {
-    label: 'Resources',
-    href: 'resources.html',
-    blurb: 'Learn the platform and get help.',
-    children: [
-      {
-        label: 'Resources library',
-        href: 'resources.html',
-        desc: 'Guides, field notes, ESS-U training and news.',
-      },
-      {
-        label: 'Support',
-        href: 'support.html',
-        desc: 'Help channels, training and technical support.',
-      },
-      {
-        label: 'Free trial',
-        href: 'free-trial.html',
-        desc: 'Request an evaluation of the platform.',
+        desc: 'Data, training, go-live.',
       },
     ],
   },
@@ -156,6 +171,9 @@ export const UNLISTED = [
   'coming-soon.html', // placeholder target
   'privacy-policy.html', // footer
   'terms-of-use.html', // footer
+  'resources.html', // footer, Company column
+  'support.html', // footer, Company column
+  'free-trial.html', // reached from the "Start a free trial" CTA on 13 pages
 ];
 
 /* ---- derived helpers, shared by the generator and the browser router ---- */

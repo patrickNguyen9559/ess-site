@@ -553,7 +553,10 @@
       if (!heading) return;
       var a = document.createElement('a');
       a.href = '#' + section.id;
-      a.textContent = heading.textContent.replace(/^\d+\.\s*/, '');
+      // A long heading makes a poor rail entry. data-toc-label lets a section
+      // keep the client's full wording in the <h2> and a short one in the rail.
+      a.textContent = section.getAttribute('data-toc-label')
+        || heading.textContent.replace(/^\d+\.\s*/, '');
       toc.appendChild(a);
     });
   }
