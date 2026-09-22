@@ -758,3 +758,17 @@ tint 5.9:1, the footer ink 5.0:1, the badge ink 6.9:1, body copy 7.7:1. The
 footer's meta line had been tuned for a darker ground and fell to 3.45:1, so it
 lightens to #96ACBF (4.61:1). The dark end of the figure gradient sits at
 3.52:1, which is AA-large — it is only ever used at 40px and above.
+
+
+## v93 — the numbered list is one panel again
+
+`.flow-list` and `.principle-list` are built as a panel whose own background
+shows through narrow gaps to draw the dividers between rows. A glass-era rule
+had made the rows 80% white and given them an 18px radius, and widened the gap
+to 10px — so instead of a hairline, the parent's pale blue showed both in the
+gaps *and* straight through the rows, framing every line in blue.
+
+The rows are opaque and square-edged again and the gap is one pixel, so the
+component reads as a single white panel with dividers, which is what the markup
+describes. It appears on ten pages; the two shapes (`01`-numbered steps and
+label/description rows) both come out clean.
