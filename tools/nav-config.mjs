@@ -27,7 +27,7 @@ export const NAV = [
   {
     label: 'Platform',
     href: 'products.html',
-    blurb: 'We Solve, You Succeed! Office, field, routing and customer self-service.',
+    blurb: 'Office, field, routing and customer self-service.',
     children: [
       {
         label: 'All features',

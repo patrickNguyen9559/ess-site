@@ -772,3 +772,29 @@ The rows are opaque and square-edged again and the gap is one pixel, so the
 component reads as a single white panel with dividers, which is what the markup
 describes. It appears on ten pages; the two shapes (`01`-numbered steps and
 label/description rows) both come out clean.
+
+
+## v94 — the header and the menu panel join the scheme
+
+The colour passes had covered the page but not the chrome. An audit of the
+header in both states, desktop and with the panel open, found it still on the
+old palette:
+
+| | was | now |
+|---|---|---|
+| `.nav-link`, `.nav-parent`, `.nav-caret` | `#315B6E` / `#31596D` | `--grey-700`, navy when active |
+| active / hover highlight | `rgba(91,189,228,.11)` | `rgba(239,108,23,.10)` |
+| `.nav-sub-badge` (NEW, PRIMARY) | `#7FD0F0` plate | `#FFEBD9` plate, `#8F3F06` ink |
+| `.nav-panel-blurb` | `#6C8494` | `--grey-500` |
+| `.header-login` | `#345A6B` | `--navy` |
+| `.menu-toggle` | `rgba(238,247,251,.88)` | neutral chip, `--surface-dark` bars |
+
+Contrast on the new pairs: nav ink 11.0:1, active ink on the warm highlight
+10.1:1, badge ink on its plate 6.3:1, blurb 5.9:1, sub-description 7.6:1.
+
+The dropdown blurb also lost the tag line. The earlier "Smart Connections →
+We Solve, You Succeed!" pass had put it there, where `.nav-panel-blurb`
+uppercases it and it appeared on every one of the 24 pages — against the
+earlier instruction that the tag line belongs on the home hero. The blurb is
+just its description now. It still appears in the footer brand block and the
+trademark line, which is where that pass intended it.

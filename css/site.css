@@ -8088,3 +8088,72 @@ body::-webkit-scrollbar { width: 0; height: 0; }
 .ess-glass-site :is(.flow-list, .principle-list) > div > span {
   color: var(--grey-700) !important;
 }
+
+/* ==========================================================================
+   v94 — the header and the menu panel join the new scheme
+
+   The colour passes had covered the page but not the chrome. An audit of the
+   header in both states, desktop and with the panel open, found it still on
+   the old palette:
+
+     nav-link                 #315B6E / #31596D   blue-tinted ink
+     nav-link.is-active       rgba(91,189,228,.11) vivid blue highlight
+     nav-sub-badge            #7FD0F0 plate        vivid blue
+     nav-panel-blurb          #6C8494              blue-grey
+     header-login             #345A6B              blue-grey
+     menu-toggle              rgba(238,247,251,.88) blue-tinted chip
+
+   All of it now reads from the grey/navy ramp, with orange for the accent —
+   the same rule the rest of the site follows.
+   ========================================================================== */
+
+.ess-glass-site :is(.nav-link, .nav-parent, .nav-caret),
+.option-air :is(.nav-link, .nav-parent, .nav-caret) {
+  color: var(--grey-700) !important;
+}
+.ess-glass-site :is(.nav-link, .nav-parent):hover,
+.ess-glass-site .nav-link.is-active,
+.ess-glass-site .nav-link[aria-current="page"],
+.ess-glass-site .nav-link[aria-current="location"],
+.option-air .nav-link.is-active,
+.option-air .nav-link[aria-current="page"] {
+  color: var(--navy) !important;
+  background: rgba(239,108,23,.10) !important;
+}
+
+.ess-glass-site .nav-sub-badge {
+  background: #FFEBD9 !important;
+  color: #8F3F06 !important;
+}
+.ess-glass-site .nav-panel-blurb { color: var(--grey-500) !important; }
+.ess-glass-site .nav-sub-label { color: var(--navy) !important; }
+.ess-glass-site .nav-sub-desc { color: var(--grey-600) !important; }
+.ess-glass-site .nav-sub:hover { background: rgba(239,108,23,.08) !important; }
+
+.ess-glass-site .header-login,
+.option-air .header-login { color: var(--navy) !important; }
+.ess-glass-site .header-login:hover { color: var(--accent-ink) !important; }
+
+.ess-glass-site .menu-toggle,
+.option-air .menu-toggle {
+  background: rgba(243,245,247,.9) !important;
+  border-color: rgba(18,63,85,.10) !important;
+}
+.ess-glass-site .menu-toggle:hover { background: rgba(239,108,23,.10) !important; }
+.ess-glass-site .menu-toggle span { background: var(--surface-dark) !important; }
+
+/* The panel's own rows, at the width where the panel exists. */
+@media (max-width: 900px) {
+  .ess-glass-site .site-header.menu-open .header-menu-content .nav-link,
+  .option-air .site-header.menu-open .header-menu-content .nav-link {
+    color: var(--grey-700) !important;
+  }
+  .ess-glass-site .site-header.menu-open .header-menu-content .nav-link:hover,
+  .ess-glass-site .site-header.menu-open .header-menu-content .nav-link.is-active,
+  .option-air .site-header.menu-open .header-menu-content .nav-link:hover {
+    color: var(--navy) !important;
+    background: rgba(239,108,23,.10) !important;
+  }
+  .ess-glass-site .header-panel-actions .header-login { color: var(--navy) !important; }
+  .ess-glass-site .header-panel-actions a:hover { background: rgba(239,108,23,.08) !important; }
+}
