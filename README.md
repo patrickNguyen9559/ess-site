@@ -498,3 +498,23 @@ rule that targets every direct child of a CTA strip, so centring the row inside
 that box left it short of the strip's real centre. Every CTA band now carries
 the same eyebrow, *Book time with us*, since they all carry the same heading
 and body; `pricing.html` keeps its own, because its CTA copy differs.
+
+
+## v82 — full-width sticky header
+
+The header was a floating pill inset by `--page-edge`. The client's own design
+has it flush to the top, the full width of the viewport, with one hairline
+under it — and still sticky. So `.site-header` is `position: sticky; top: 0`
+with a `border-bottom`, and `.header-inner` is a 68px row on the shell column
+with no radius, border, shadow or blur of its own. Scrolling now gives the bar
+a shadow instead of shrinking it.
+
+A sticky element still occupies its height in flow, so the bar pushes the
+first band down by itself. The `--header-clearance` padding that v81 had put
+on the first band is gone; the hero takes ordinary top padding
+(`--hero-pad-top`, 44–76px) instead, and `scroll-margin-top` on anchors drops
+from the pill's 110px to 84px.
+
+The scroll-progress bar is orange again. It had been caught by the v41 rule
+that keeps accents single-colour, which the blue pass rewrote along with
+everything else.

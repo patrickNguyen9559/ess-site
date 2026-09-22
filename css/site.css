@@ -7298,3 +7298,114 @@ body.modern-site {
   padding-left: var(--gutter) !important;
   padding-right: var(--gutter) !important;
 }
+
+/* ==========================================================================
+   v82 — full-width sticky header, orange scroll progress
+
+   The header was a floating pill inset by --page-edge. The client's own
+   design has it flush to the top, the full width of the viewport, with a
+   single hairline under it — and it stays sticky.
+
+   Because a sticky element still occupies its space in flow, the bar now
+   pushes the first band down on its own, so the --header-clearance padding
+   v81 put on the first band is replaced by ordinary hero padding.
+   ========================================================================== */
+
+/* The v41 "accents stay single-color" rule was swept to blue along with
+   everything else; the progress bar is an accent, so it goes back to orange. */
+.ess-glass-site .scroll-progress,
+.ess-glass-home .scroll-progress {
+  background: var(--ess-orange) !important;
+  background-image: none !important;
+}
+
+/* ------------------------------------------------------------- the bar --- */
+
+.ess-glass-site .site-header,
+.ess-glass-home .site-header,
+.option-air .site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: rgba(255, 255, 255, .85) !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--slate-200) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible;
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
+}
+
+.ess-glass-site .header-inner,
+.option-air .header-inner {
+  width: 100% !important;
+  max-width: var(--shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  min-height: 68px !important;
+  padding: 0 var(--gutter) !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  flex-wrap: nowrap;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.ess-glass-site .logo img { height: 42px !important; }
+
+/* Scrolled state: the bar keeps its height and picks up a shadow, rather than
+   shrinking the way the floating pill did. */
+.ess-glass-site .site-header.is-small,
+.ess-glass-home .site-header.is-small {
+  box-shadow: 0 6px 20px rgba(11, 27, 48, .07) !important;
+}
+.ess-glass-site .site-header.is-small .header-inner {
+  min-height: 68px !important;
+  padding: 0 var(--gutter) !important;
+}
+.ess-glass-site .site-header.is-small .logo img { height: 42px !important; }
+
+/* ----------------------------------------------- first band clearance --- */
+
+/* A sticky header occupies its own height in flow, so nothing has to be
+   pushed past it any more. The hero takes the upload's own top padding. */
+:root { --hero-pad-top: clamp(44px, 4.6vw, 76px); }
+
+.ess-glass-site main > :first-child { padding-top: 0 !important; }
+.ess-glass-site :is(.glass-hero, .subhero, .contact-hero):first-child
+  :is(.glass-hero-inner, .subhero-inner, .contact-hero-inner) {
+  padding-top: var(--hero-pad-top) !important;
+}
+.ess-glass-site main > .product-hero:first-child .product-hero-inner {
+  padding-top: var(--hero-pad-top) !important;
+}
+.ess-glass-site main > .section:first-child,
+.ess-glass-site main > .compact-section:first-child {
+  padding-top: var(--section-pad) !important;
+}
+
+/* Anchor targets sit clear of the bar rather than the old pill. */
+.ess-glass-site [id] { scroll-margin-top: 84px; }
+
+/* --------------------------------------------------- the mobile menu --- */
+
+@media (max-width: 900px) {
+  .ess-glass-site .site-header.menu-open .header-menu-content,
+  .ess-glass-site .header-menu-content {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--slate-200) !important;
+  }
+}
