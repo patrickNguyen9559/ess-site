@@ -1016,12 +1016,19 @@ Two things had to be corrected rather than just edited:
   "Equipment"; the client's own logo file has the full wording, which is what
   the copy now uses.
 
-The two kept marks are saved locally under `assets/affiliations/` rather than
-hotlinked from the live site's WordPress uploads, which is how the old markup
-referenced them. `aema.com` sits behind a Cloudflare challenge that refuses
-both curl and a headless browser, so that card carries the wordmark as type
-until the logo file lands; it is also the only card that links out, since its
-URL is the one the client supplied.
+All three cards carry a real mark, saved under `assets/affiliations/` rather
+than hotlinked from the live site's WordPress uploads, which is how the old
+markup referenced them. The AEMA logo could not be fetched at all — Cloudflare
+answers every path on `aema.com` with 403, favicon included, to curl and to a
+headless browser alike, and the Elevator World directory listing does the same
+— so the client supplied it directly. Its card is the only one that links out,
+since `https://aema.com/` is the one URL they gave.
+
+One name worth recording: the directories list the organisation as the
+**Accessibility Equipment Manufacturers Association**, formed 1990. The site's
+own title and the logo the client sent both use "An Association of Members of
+the Accessibility Equipment Industry", which is what the copy follows, since
+that is what their mark prints.
 
 One mark is still unnamed: the red-arc-and-triangle logo the client kept has
 no alt text, caption, title or link on the live site, and its WordPress media

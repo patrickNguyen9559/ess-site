@@ -8452,11 +8452,11 @@ body::-webkit-scrollbar { width: 0; height: 0; }
    written for the live site's five marks; the reviewed list is three, so the
    track count and the card proportions are restated here.
 
-   One card has no logo file: aema.com sits behind a Cloudflare challenge that
-   refuses curl and a headless browser alike, so its mark could not be
-   fetched. That card carries the wordmark as type instead, which is also the
-   only card that links out, since https://aema.com/ is the one URL the client
-   supplied.
+   All three cards carry a real mark. The AEMA logo could not be fetched —
+   Cloudflare answers every path on aema.com with 403, favicon included, to
+   curl and to a headless browser alike — so the client supplied it directly.
+   Its card is the only one that links out, since https://aema.com/ is the one
+   URL they gave.
    ========================================================================== */
 
 .ess-glass-site .affil-grid {
@@ -8486,22 +8486,6 @@ body::-webkit-scrollbar { width: 0; height: 0; }
   height: auto;
   mix-blend-mode: multiply;   /* the live site's marks are JPEGs on white */
 }
-.ess-glass-site .affil-wordmark {
-  display: block;
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: .04em;
-  color: var(--navy-900);
-}
-.ess-glass-site .affil-sub {
-  display: block;
-  max-width: 30ch;
-  margin: 0 auto;
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--muted-ink);
-}
-
 @media (max-width: 760px) {
   .ess-glass-site .affil-grid { grid-template-columns: 1fr; }
   .ess-glass-site .affil-logo-card { min-height: 140px; }
