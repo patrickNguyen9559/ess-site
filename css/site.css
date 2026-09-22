@@ -7482,3 +7482,159 @@ body.modern-site {
 .ess-glass-site main > section > .wrap > .section-head:only-child {
   margin-bottom: 0 !important;
 }
+
+/* ==========================================================================
+   v86 — subpage heroes take the product-hero image treatment
+
+   The client pointed at features.html's "Every capability, across all three
+   products." band as the example: the photograph is bled across the whole
+   hero and scrimmed, the copy sits on the dark side of that scrim, and the
+   eyebrow is a light chip. Every other hero was still presenting its photo as
+   a rounded, feathered card in the right-hand column.
+
+   This is a presentation change only — the scrim is the same rgba(8,32,46)
+   ramp the product hero already uses, and each hero keeps its own background
+   declaration underneath (the photo simply covers it).
+
+   Scoped with :has() so the heroes without a photograph — the contact hero,
+   the two legal pages and coming-soon — are untouched and stay light.
+   ========================================================================== */
+
+.ess-glass-site main > .subhero:has(.subhero-media img) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 0 !important;
+}
+
+/* The media block becomes the band's background rather than a grid column. */
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  justify-self: auto !important;
+  align-self: auto !important;
+  overflow: hidden;
+  /* .rv is the reveal-on-scroll hook; a background cannot wait for it. */
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media img {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  aspect-ratio: auto !important;
+  object-fit: cover !important;
+  object-position: 70% 50% !important;
+  border-radius: 0 !important;
+  filter: none !important;
+  transform: none !important;
+  /* the feather used on the card would fight the scrim — this photo is a fill */
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 !important;
+  filter: none !important;
+  opacity: 1 !important;
+  background:
+    linear-gradient(90deg, rgba(8,32,46,.97) 0%, rgba(8,32,46,.93) 38%, rgba(8,32,46,.58) 66%, rgba(8,32,46,.2) 100%),
+    linear-gradient(0deg, rgba(8,32,46,.55) 0%, transparent 45%) !important;
+}
+
+/* One column, copy above the scrim. */
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-inner {
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: center !important;
+  min-height: clamp(360px, 32vw, 460px);
+}
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 54ch;
+}
+
+/* --------------------------------------------------- copy on the scrim --- */
+
+.ess-glass-site main > .subhero:has(.subhero-media img) :is(h1, .h1) { color: #fff !important; }
+.ess-glass-site main > .subhero:has(.subhero-media img) :is(p, .lede, .small) {
+  color: rgba(255, 255, 255, .85) !important;
+}
+.ess-glass-site main > .subhero:has(.subhero-media img) a:not(.btn) { color: #C1E3F3 !important; }
+
+/* The example's eyebrow is a light chip, not coloured text. */
+.ess-glass-site main > .subhero:has(.subhero-media img) :is(.eyebrow, .brand-line) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px !important;
+  padding: 6px 12px;
+  border: 0 !important;
+  border-radius: 999px;
+  background: #9CD8F0 !important;
+  box-shadow: none !important;
+  color: #123F55 !important;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.ess-glass-site main > .subhero:has(.subhero-media img) .brand-line::before { display: none; }
+
+/* An outline button on the scrim inverts, as it does on every dark panel. */
+.ess-glass-site main > .subhero:has(.subhero-media img) .btn-ghost {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, .35) !important;
+  color: #fff !important;
+}
+.ess-glass-site main > .subhero:has(.subhero-media img) .btn-ghost:hover {
+  background: rgba(255, 255, 255, .12) !important;
+  border-color: rgba(255, 255, 255, .55) !important;
+  color: #fff !important;
+}
+
+/* Below tablet the scrim runs bottom-to-top, the way the product hero's does. */
+@media (max-width: 900px) {
+  .ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media::after {
+    background: linear-gradient(0deg, rgba(8,32,46,.95) 34%, rgba(8,32,46,.74) 100%) !important;
+  }
+  .ess-glass-site main > .subhero:has(.subhero-media img) .subhero-inner {
+    min-height: clamp(300px, 60vw, 380px);
+  }
+}
+
+/* The absolute media was resolving against .subhero-inner, which an earlier
+   layer positions for its own decoration — so the photo stopped at the 1240px
+   column instead of bleeding across the band. The inner row goes static for
+   these heroes; the copy keeps its own stacking via position:relative. */
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-inner {
+  position: static !important;
+}

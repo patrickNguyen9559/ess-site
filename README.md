@@ -556,3 +556,36 @@ problem measured three ways:
 
 Measured at 1440px across eight pages afterwards: every boundary is one
 `--section-pad`, and the closing band clears the footer by the same.
+
+
+## v86 — subpage heroes take the product-hero image treatment
+
+The client pointed at `features.html`'s *"Every capability, across all three
+products."* band as the example: the photograph bled across the whole hero and
+scrimmed, the copy on the dark side of that scrim, the eyebrow a light chip.
+Every other hero was still presenting its photo as a rounded, feathered card in
+the right-hand column.
+
+18 heroes now use the example's presentation. It is a presentation change only
+— the scrim is the same `rgba(8,32,46)` ramp the product hero already carried,
+and each hero keeps its own background declaration underneath; the photo simply
+covers it. Done in CSS, so no page markup moved.
+
+Scoped with `:has(.subhero-media img)`, so the four heroes without a photograph
+— the contact hero, both legal pages and coming-soon — are untouched and stay
+light.
+
+Two things had to be unpicked. `.subhero-media` carries `.rv`, the
+reveal-on-scroll hook, which starts it transparent — a background cannot wait
+for an observer, so it is forced visible. And the absolutely-positioned media
+was resolving against `.subhero-inner`, which an earlier layer positions for
+its own decoration, so the photo stopped at the 1240px column instead of
+bleeding: the inner row goes `static` for these heroes and the copy keeps its
+stacking with `position: relative`.
+
+`about.html` was the one hero with no kicker of its own — the tag line that had
+been there was withdrawn earlier — so it gets an *About ESS* eyebrow to match
+the rest.
+
+Measured on the scrim: white heading 16.0:1, lede 11.8:1, chip ink on the chip
+7.2:1.
