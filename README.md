@@ -879,10 +879,11 @@ now run on it:
 | `industries.html`, `industry-escalator.html`, `industry-overhead-door.html`, `industry-fire-life-safety.html` | `industries` |
 | `customer-stories.html` | `customer-story-elevator-one` |
 | `products.html`, `features.html` | `built-for-everyone-in-the-building` |
+| `login.html` | `login` |
 
-Seven heroes — free trial, GPS route builder, implementation, login, pricing,
-resources, support — keep the v63 photographs, because the new set has no
-counterpart for them.
+Six heroes — free trial, GPS route builder, implementation, pricing, resources
+and support — keep the v63 photographs, because the new set has no counterpart
+for them. (`login` arrived after the first twelve and is included above.)
 
 Each swap also corrects the markup around it. The source is 1672x941 where the
 old one was 1000x750, so `width`/`height` and the `srcset` widths are restated
@@ -906,8 +907,7 @@ even with `!important` of its own.
 
 **Weight.** The new files are 102–211 KB against 53–101 KB, roughly double. It
 buys sharpness the old set could not deliver: a 1000px-wide source was being
-stretched across a band wider than 1440px. Referenced hero bytes are now
-2.11 MB across 28 files, of which 1.48 MB is the new set.
+stretched across a band wider than 1440px.
 
 **Not placed.** Three of the ten name a slot that holds no photograph today,
 and each is a design decision rather than a swap, so none was invented:
@@ -919,3 +919,62 @@ no image container).
 
 The eight replaced files are kept on disk rather than deleted, so the swap is
 reversible in one edit. `ASSETS.md` carries the full mapping.
+
+
+## v100 — the header's frosted glass belongs to the bar, not to the column
+
+The header bar read as three vertical strips: a lighter middle with a greyer
+band either side of it, the seam landing exactly on the shell edges. It only
+showed once the page was scrolled, because at the top of a page there is
+nothing behind the header for it to treat differently.
+
+The header markup is a full-width `<header class="site-header">` wrapping a
+`<div class="wrap header-inner">`, and `.wrap` caps that child at the 1240px
+shell. Two rules that both predate v82 were painting the glass on the child
+instead of the bar:
+
+| line | selector | declaration |
+|---|---|---|
+| 1537 | `.modern-site .site-header` | `backdrop-filter: none !important` |
+| 3450 | `.ess-glass-site .site-header .header-inner` | `backdrop-filter: blur(18px) saturate(118%)` |
+
+v82 already asks for the opposite — blur on `.site-header`, none on
+`.header-inner` — and loses both ways: L1537 carries `!important`, and L3450 is
+(0,3,0) against v82's (0,2,0), so it wins on specificity despite coming first
+in the sheet. So the filter was applied to a 1240px column while the bar
+spanning the viewport had none. Outside the shell edges the 85%-white bar showed
+the scrolled content through unfiltered; inside them it showed it blurred and
+saturated.
+
+v100 puts the filter back on `.site-header` and takes background and filter off
+`.header-inner`, covering the `.is-small` and `.menu-open` states too — for
+those, `.modern-site .site-header.is-small` is (0,3,0) with `!important`, so the
+override has to match that specificity and win on source order. Only the
+full-width element paints, so a vertical seam is no longer expressible.
+
+**On the flicker this once fixed.** L1537 sits in a block titled "header scroll
+stability" that dropped the filter to stop repaint flicker on what was then a
+floating pill. Its stabilisers are untouched and still apply to the same
+element: `transform: translateZ(0)`, `backface-visibility: hidden`,
+`transition: none`.
+
+**Checked for collateral damage.** `transform: translateZ(0)` already made the
+header a stacking context *and* a containing block for fixed-position
+descendants, so adding `backdrop-filter` changes neither. The four fixed
+overlays — `.scroll-progress`, `.back-to-top`, `.page-transition`,
+`.route-loader` — are all appended to `document.body` by `js/site.js` and
+`js/router.js`, never inside the header, so none of them can be captured by it.
+`overflow` on the header resolves to `visible`, so the nav dropdown panels are
+not clipped. `top: 0`, `width: 100%`, `margin: 0` and `border-radius: 0` all
+still resolve from v82.
+
+**How this was verified.** Headless Chrome does not composite
+`backdrop-filter`, so a screenshot can neither show the original seam nor prove
+its removal. The diagnosis and the fix were resolved instead by computing the
+cascade — every declaration in the sheet that matches the element, ordered by
+importance, then specificity, then source order — and confirmed against
+`getComputedStyle` in the browser for all three header states. A sweep of every
+`.wrap` column on the site (`header-inner`, `footer-grid`, `footer-bottom`,
+`subhero-inner`, `trust-inner`, `glass-hero-inner`, `contact-hero-inner`) finds
+the header was the only instance of this bug; run against the pre-fix sheet the
+same sweep reports it, which is what makes the clean result meaningful.

@@ -8353,3 +8353,50 @@ body::-webkit-scrollbar { width: 0; height: 0; }
 .ess-glass-site .product-hero-photo img[width="1672"] {
   object-position: 50% 30% !important;
 }
+
+/* ==========================================================================
+   v100 — the header's frosted glass belongs to the bar, not to the column
+
+   The bar read as three vertical strips: a 1240px white middle with a greyer
+   band either side of it, the seam landing exactly on the shell edges. Two
+   rules that both predate v82 were splitting the treatment in two:
+
+     L1537  .modern-site .site-header       backdrop-filter: none !important
+     L3450  .ess-glass-site .site-header .header-inner
+                                            backdrop-filter: blur(18px) saturate(118%)
+
+   v82 already asks for the opposite — blur on the full-width `.site-header`,
+   none on `.header-inner` — but loses both ways: L1537 carries `!important`,
+   and L3450 is (0,3,0) against v82's (0,2,0), so it wins on specificity
+   despite coming first in the sheet. The result is that the glass is painted
+   on `.header-inner`, which is a `.wrap` and therefore 1240px wide, while the
+   bar that spans the viewport has no filter at all. Below the shell edges the
+   85%-white bar shows the scrolled content through unfiltered; inside them it
+   shows it blurred and saturated. At the top of a page nothing is behind the
+   header and both halves are plain white, which is why this only appears once
+   the page is scrolled.
+
+   Only the full-width element may carry a background *and* a filter, so a
+   seam is no longer expressible. L1537's block was titled "header scroll
+   stability" and dropped the filter to stop repaint flicker on what was then
+   a floating pill; its stabilisers — transform: translateZ(0),
+   backface-visibility: hidden — are still in force on the same element.
+
+   Covers .is-small and .menu-open as well: `.modern-site .site-header.is-small`
+   is (0,3,0) with `!important`, so the second selector has to match that and
+   win on source order.
+   ========================================================================== */
+
+:is(.ess-glass-site, .ess-glass-home, .option-air) .site-header,
+:is(.ess-glass-site, .ess-glass-home, .option-air) .site-header:is(.is-small, .menu-open) {
+  -webkit-backdrop-filter: saturate(180%) blur(14px) !important;
+  backdrop-filter: saturate(180%) blur(14px) !important;
+}
+
+:is(.ess-glass-site, .ess-glass-home, .option-air) .site-header .header-inner,
+:is(.ess-glass-site, .ess-glass-home, .option-air) .site-header:is(.is-small, .menu-open) .header-inner {
+  background: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}

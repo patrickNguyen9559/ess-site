@@ -11,8 +11,8 @@ retina without shipping anything bigger than that.
 ## Status: the client's new hero photographs (v99)
 
 The client supplied a second, ESS-branded hero set under `assets/heroes/`,
-named after the page or section each one is for. Twelve of the site's
-nineteen hero slots now run on it; the other seven keep the v63 photographs
+named after the page or section each one is for. Thirteen of the site's
+nineteen hero slots now run on it; the other six keep the v63 photographs
 because the new set has no counterpart for them.
 
 | | v63 set | new set |
@@ -37,6 +37,7 @@ being upscaled past 1440px. These are 1672px and land near 1:1.
 | `industries.webp` | `industries.html` + the three non-elevator industry pages | escalator, elevator and overhead door being serviced in one concourse |
 | `customer-story-elevator-one.webp` | `customer-stories.html` | the lead story's own subject — Elevator One running time and payroll |
 | `built-for-everyone-in-the-building.webp` | `products.html`, `features.html` | four roles on one job, which is what both pages argue |
+| `login.webp` | `login.html` | signing in to the workspace from a dispatch office, a technician at work in the next bay |
 
 ### Not placed yet
 
@@ -77,9 +78,10 @@ framing they have today.
 
 ### Retired, still on disk
 
-These eight (plus their `@sm` variants) are no longer referenced by any page:
+These nine (plus their `@sm` variants) are no longer referenced by any page:
 `hero-home`, `hero-about`, `hero-customer-portal`, `hero-customer-stories`,
-`hero-office-erp`, `hero-mobile-service`, `hero-industries`, `hero-products`.
+`hero-office-erp`, `hero-mobile-service`, `hero-industries`, `hero-products`,
+`hero-login`.
 They are kept, not deleted, so the swap stays reversible in one edit.
 
 ---
