@@ -452,3 +452,49 @@ verified in Chrome at 1440px.
 short by rate limits twice. The deterministic checks above all pass, but the
 copy on those pages has had one writing pass and one mechanical audit, not a
 second editorial read.
+
+
+## v79–v81 — the client's revisions
+
+Three rounds of client feedback after the rebuild, two of which reverse
+earlier decisions in this same pass.
+
+**The orange is back.** v68 and v76 retired it because the upload had none;
+the client asked for it again — *"I like the orange with the ESS blue."* So
+orange carries action and accent (filled buttons, eyebrows, kickers, arrow
+links, list markers, dots) and the blue carries structure (navy headings, blue
+links, bars, icons, the headline accent, the big figures). Because the v56
+discipline routes every accent-as-text through `--accent-ink` and every brand
+fill through `--ess-orange`, setting those two tokens back re-coloured most of
+the site in one move.
+
+The contrast ledger reverts with it: `--accent-ink` `#B4530A` is 5.02:1 on
+white, so orange used as text passes AA, and white on the filled `#ef6c17` is
+3.08:1 — the long-standing brand exception, and once again the only one.
+
+**No floating card.** The client marked the hero's rounded edge and asked for
+the flat shell their own design has. The page is white, the heroes and the
+footer run the full viewport width with square corners and a straight
+`border-bottom`, and their content stays on the shell column. Cards and panels
+keep the upload's 22px radius and buttons stay pills — the ask was straight
+lines *between sections*, not square cards.
+
+Two rules had to be worked around. `main` carried the whole
+`--header-clearance` as padding, which would have stopped the hero's background
+short of the top; the clearance sits on the first band's inner padding now.
+And v54 zeroes a `.wrap` that is a direct child of a section, so that a
+self-padding section cannot inset its content twice — with the bands no longer
+padding themselves, their `.wrap` has to carry the column again, at a
+specificity that clears that rule.
+
+**"Smart Connections" → "We Solve, You Succeed!"** The platform name is
+replaced by the tag line everywhere. Six sentences used the old name as a noun
+("Smart Connections for elevator service contractors…"), so those were rewritten
+rather than swapped, and the trademark line now reads *Mobile Office Manager™ ·
+Mobile Service™ · We Solve, You Succeed!™*.
+
+**Also in this round.** The CTA button row had been capped at 920px by a v46
+rule that targets every direct child of a CTA strip, so centring the row inside
+that box left it short of the strip's real centre. Every CTA band now carries
+the same eyebrow, *Book time with us*, since they all carry the same heading
+and body; `pricing.html` keeps its own, because its CTA copy differs.

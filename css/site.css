@@ -7060,3 +7060,241 @@ body { color: var(--ink); line-height: 1.55; }
   justify-self: auto !important;
   min-width: 0 !important;
 }
+
+/* ==========================================================================
+   v80 — the ESS orange is back, alongside the blue
+
+   v68 and v76 retired the orange because the client upload had none. The
+   client has since asked for it back: orange carries action and accent, the
+   ESS blue carries structure — navy headings, blue links, bars, icons, the
+   headline accent and the big figures.
+
+   The tokens do most of this on their own, because the v56 discipline routes
+   every "accent used as text" through --accent-ink and every brand fill
+   through --ess-orange. Setting those two back re-colours eyebrows, kickers,
+   arrow links, list markers and dots in one move. Filled buttons are set
+   explicitly, since v76 pinned them to blue with !important.
+
+   Contrast, continuing the ledger: --accent-ink #B4530A is 5.02:1 on white,
+   so orange used as text passes AA. White on the filled orange #ef6c17 is
+   3.08:1 — the long-standing, deliberate brand exception, and the only one on
+   the site again now that the blue button is gone.
+   ========================================================================== */
+
+:root {
+  --accent-ink: #B4530A;
+  --accent-ink-deep: #97430A;
+}
+.ess-glass-site {
+  --ess-orange: #ef6c17;
+  --ess-orange-deep: #d85a08;
+}
+
+/* Filled controls: flat orange, as they were before the blue pass. */
+.ess-glass-site .btn-primary,
+.ess-glass-site .btn-header,
+.ess-glass-site .btn-next,
+.ess-glass-site .tab[aria-selected="true"] {
+  background: var(--ess-orange) !important;
+  background-image: none !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 6px 20px -6px rgba(239,108,23,.50);
+}
+.ess-glass-site .btn-primary:hover,
+.ess-glass-site .btn-header:hover,
+.ess-glass-site .btn-next:hover,
+.ess-glass-site .tab[aria-selected="true"]:hover {
+  background: var(--ess-orange-deep) !important;
+  background-image: none !important;
+  color: #fff !important;
+}
+.ess-glass-site .btn-primary:disabled,
+.ess-glass-site .btn-next:disabled {
+  background: var(--slate-200) !important;
+  color: var(--slate-500) !important;
+  box-shadow: none;
+  transform: none;
+}
+
+/* An outline button warms on hover instead of going blue. */
+.ess-glass-site .btn-ghost:hover,
+.ess-glass-site .btn-quiet:hover {
+  border-color: var(--ess-orange) !important;
+  color: var(--accent-ink) !important;
+}
+
+/* Accent on dark surfaces: the warm tint that clears 4.5:1 on navy. */
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta,
+                    .pricing-card.featured, .story, .pull-quote, .resource-band,
+                    .outcome-band, .story-panel, .cta-band)
+  :is(.eyebrow, .eyebrow-sm, .page-card-kicker, .chain-step, time) {
+  color: #ffad73 !important;
+}
+
+/* Small accents the earlier sweep had turned blue. */
+.ess-glass-site .news-list article { border-top-color: var(--ess-orange) !important; }
+.ess-glass-site .step-card > span { background: #fff3eb !important; color: var(--accent-ink) !important; }
+.ess-glass-site .tick-list li::before { background: #fff1e6 !important; color: var(--accent-ink) !important; }
+.ess-glass-site .mini-dot { background: var(--ess-orange) !important; }
+.ess-glass-site .brand-line::before {
+  background: var(--ess-orange);
+  box-shadow: 0 0 0 4px rgba(239,108,23,.14);
+}
+.ess-glass-site .op-status.is-disp { background: var(--blue-100); color: #12608c; }
+
+/* The blue keeps structure: links, the headline accent, bars, the big figures
+   and the live chip all stay as they are. */
+.ess-glass-site .glass-kicker { color: var(--accent-ink) !important; }
+.ess-glass-site .glass-kicker-dot { background: var(--ess-orange) !important; }
+
+/* ==========================================================================
+   v81 — flat shell: straight section edges, no floating card
+
+   The page had been a tinted ground with every band floating on it as a
+   rounded card, so the hero showed a visible curved edge the client's own
+   design does not have. The shell is flat now:
+
+   - the page is white, so a white band has no edge to show;
+   - the hero, the contact hero, the product hero and the footer run the full
+     width with square corners, and their content stays on the shell column;
+   - section boundaries are straight 1px rules, not curves;
+   - buttons stay pills, and cards keep the upload's 22px radius — the client
+     asked for straight lines between sections and round buttons, not for
+     square cards.
+   ========================================================================== */
+
+html,
+body.ess-glass-site,
+body.modern-site {
+  background: #FFFFFF !important;
+  background-image: none !important;
+}
+
+/* --- the heroes and the footer stop being cards ------------------------ */
+
+.ess-glass-site main > .glass-hero,
+.ess-glass-home main > .glass-hero,
+.ess-glass-site main > .subhero,
+.ess-glass-site main > .contact-hero,
+.ess-glass-site main > .product-hero,
+.option-air main > .hero {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  border-bottom: 1px solid var(--slate-200) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* The upload's hero ground: white into blue-50, with two soft blue blooms. */
+.ess-glass-site main > .glass-hero,
+.ess-glass-home main > .glass-hero,
+.ess-glass-site main > .subhero {
+  background:
+    radial-gradient(900px 500px at 88% -100px, rgba(45,165,218,.16), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgba(45,165,218,.09), transparent 60%),
+    linear-gradient(180deg, #FFFFFF 0%, var(--blue-50) 100%) !important;
+}
+
+/* Content stays on the shared column inside the full-width band. */
+.ess-glass-site :is(.glass-hero-inner, .subhero-inner, .contact-hero-inner,
+                    .product-hero-inner) {
+  width: 100% !important;
+  max-width: var(--shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--gutter) !important;
+  padding-right: var(--gutter) !important;
+}
+
+/* The floating header no longer needs the whole main pushed down — the first
+   band carries the clearance itself, so its background reaches the top. */
+.ess-glass-site main,
+.ess-glass-site .subpage-main {
+  padding-top: 0 !important;
+}
+.ess-glass-site main > :first-child {
+  padding-top: var(--header-clearance) !important;
+}
+.ess-glass-site main > :is(.glass-hero, .subhero, .contact-hero, .product-hero):first-child {
+  padding-top: 0 !important;
+}
+.ess-glass-site :is(.glass-hero, .subhero, .contact-hero):first-child
+  :is(.glass-hero-inner, .subhero-inner, .contact-hero-inner) {
+  padding-top: calc(var(--header-clearance) - 18px) !important;
+}
+.ess-glass-site main > .product-hero:first-child .product-hero-inner {
+  padding-top: calc(var(--header-clearance) - 18px) !important;
+}
+
+/* The orbs were decoration for a rounded card; the band gradient replaces them. */
+.ess-glass-home .glass-hero-orb { display: none; }
+
+/* --- footer ------------------------------------------------------------- */
+
+.ess-glass-site .site-footer,
+.option-air .site-footer {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* --- straight section rules -------------------------------------------- */
+
+/* The logo strip keeps a single hairline under it so the first band below the
+   hero reads as its own section without a box around it. */
+.ess-glass-site main > .trust {
+  width: 100% !important;
+  max-width: none !important;
+  margin-top: 0 !important;
+  border-bottom: 1px solid var(--slate-200) !important;
+}
+.ess-glass-site .trust-inner {
+  width: 100% !important;
+  max-width: var(--shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--gutter) !important;
+  padding-right: var(--gutter) !important;
+}
+
+/* Large panels inside a section stay rounded — they are cards, not the page. */
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta, .cta-band,
+                    .outcome-band, .story-panel, .resource-band) {
+  border-radius: var(--radius-lg) !important;
+}
+
+/* The v54 sheet zeroes a `.wrap` that is a direct child of a section, so a
+   section padding its own edges cannot inset its content twice. The bands
+   above no longer pad themselves, so their `.wrap` has to carry the column
+   again — and at a specificity that clears that rule. */
+.ess-glass-site main > .glass-hero > .wrap,
+.ess-glass-home main > .glass-hero > .wrap,
+.ess-glass-site main > .subhero > .wrap,
+.ess-glass-site main > .contact-hero > .wrap,
+.ess-glass-site main > .trust > .wrap,
+.option-air main > .hero > .wrap {
+  width: 100% !important;
+  max-width: var(--shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--gutter) !important;
+  padding-right: var(--gutter) !important;
+}
+.ess-glass-site main > .product-hero .product-hero-inner {
+  width: 100% !important;
+  max-width: var(--shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: var(--gutter) !important;
+  padding-right: var(--gutter) !important;
+}
