@@ -7638,3 +7638,24 @@ body.modern-site {
 .ess-glass-site main > .subhero:has(.subhero-media img) .subhero-inner {
   position: static !important;
 }
+
+/* ==========================================================================
+   v87 — a CTA that is its own section needs a side inset below the column
+
+   .callout-strip and .pricing-cta sit on the <section>, so the dark card and
+   the section are one box. Above 1240px the section is capped at --shell and
+   centred, which leaves page margin either side of the card. Below that the
+   section is 100% wide, so the card ran edge to edge and the copy sat against
+   the screen — most visible on the "Book time with us" band on a phone.
+
+   Side margins now, so the card is inset by the same gutter every other
+   section's text uses. Its own padding is unchanged.
+   ========================================================================== */
+
+@media (max-width: 1239px) {
+  .ess-glass-site main > section:is(.callout-strip, .pricing-cta) {
+    width: auto !important;
+    margin-left: var(--gutter) !important;
+    margin-right: var(--gutter) !important;
+  }
+}

@@ -589,3 +589,27 @@ the rest.
 
 Measured on the scrim: white heading 16.0:1, lede 11.8:1, chip ink on the chip
 7.2:1.
+
+
+## v87 — favicon, and a side inset for CTA sections on small screens
+
+**The tab icon is the round ESS mark.** It had been pointing at
+`assets/ess-logo-2026.svg`, the 154.8x78.33 full wordmark, which squashes into
+a 16px tab as an unreadable smudge. `assets/favicon.svg` is now a `#123F55`
+circle carrying the swirl and the ESS lettering in white, on a square 64
+viewBox — built from the production logo's own path data (the three arcs plus
+the three letters, lifted out and recoloured), so it is the real mark and not a
+redraw. `favicon-32.png`, `favicon-16.png` and `apple-touch-icon.png` (180) are
+rendered from it, and all four are declared on all 24 pages.
+
+The lettering keeps the mark's native proportions. A version with the letters
+optically enlarged for small sizes was tried and dropped: at 180px the second S
+crowded the ring, and at 16px it bought almost nothing.
+
+**CTA sections needed a side inset below the column.** `.callout-strip` and
+`.pricing-cta` sit on the `<section>`, so the dark card and the section are one
+box. Above 1240px the section is capped at `--shell` and centred, which leaves
+page margin either side of the card; below that the section is 100% wide, so
+the card ran edge to edge and the copy sat against the screen. Measured on a
+390px viewport afterwards: the card is inset by the 16px gutter on both sides,
+with its own 16px padding inside that.
