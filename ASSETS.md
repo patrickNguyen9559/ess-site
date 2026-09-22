@@ -8,7 +8,83 @@ retina without shipping anything bigger than that.
 
 ---
 
-## Status: heroes replaced (v63)
+## Status: the client's new hero photographs (v99)
+
+The client supplied a second, ESS-branded hero set under `assets/heroes/`,
+named after the page or section each one is for. Twelve of the site's
+nineteen hero slots now run on it; the other seven keep the v63 photographs
+because the new set has no counterpart for them.
+
+| | v63 set | new set |
+|---|---|---|
+| Aspect / size | 4:3, 1000x750 (1200x900 home) | **16:9, 1672x941** |
+| `@sm` variant | `name@sm.webp`, 700x525 | **`name-sm.webp`, 960x540** |
+| Subject | generic field-service stock | **ESS-branded: ESS logo on screens, vans, mugs, workwear** |
+| Per-file weight | 53–101 KB | **102–211 KB** |
+
+The new files are roughly 2x heavier. That buys sharpness the old ones did not
+have: v86 bleeds every hero across the full band, so a 1000px-wide source was
+being upscaled past 1440px. These are 1672px and land near 1:1.
+
+### Where each new file goes
+
+| file | page(s) | why |
+|---|---|---|
+| `about-ess.webp` | `about.html` | manager and technician reading the platform on a wall screen |
+| `mobile-office-manager.webp` | `mobile-office-manager.html` | dispatch, invoices, contracts, service orders on two office screens |
+| `mobile-service.webp` | `mobile-service.html`, `industry-elevator.html` | technician on a tablet at an open controller cabinet |
+| `customer-portal.webp` | `customer-portal.html` | property manager on the portal from a building lobby |
+| `industries.webp` | `industries.html` + the three non-elevator industry pages | escalator, elevator and overhead door being serviced in one concourse |
+| `customer-story-elevator-one.webp` | `customer-stories.html` | the lead story's own subject — Elevator One running time and payroll |
+| `built-for-everyone-in-the-building.webp` | `products.html`, `features.html` | four roles on one job, which is what both pages argue |
+
+### Not placed yet
+
+Three files name a slot that has no photograph today. Each one is a design
+decision rather than a swap, so none was invented:
+
+| file | named slot | what stands in the way |
+|---|---|---|
+| `home-hero.webp` | `index.html` hero | the slot holds the client index's `.op-card` dashboard mock |
+| `book-a-demo.webp` | `contact-demo.html` hero | `.contact-hero` is deliberately photoless and light (v86, v98) |
+| `outcomes-our-customers-actually-feel.webp` | the Outcomes band on `index.html` / `about.html` | the band is a figure grid with no image container |
+
+### Markup in use
+
+```html
+<img src="assets/heroes/about-ess.webp"
+     srcset="assets/heroes/about-ess-sm.webp  960w,
+             assets/heroes/about-ess.webp    1672w"
+     sizes="100vw"
+     width="1672" height="941" alt="…"
+     loading="eager" fetchpriority="high" decoding="async">
+```
+
+`sizes` is `100vw` rather than the v63 column width: since v86 every one of
+these heroes is a full-bleed band background, not a 486px card in the right
+column. `loading="eager" fetchpriority="high"` is now on all of them — four
+industry pages still had `loading="lazy"` from when the photo was a side
+card, which delays the band's own background.
+
+### Framing
+
+v86 fills the band with `object-fit: cover` at a focal point of `70% 50%`.
+On a ~3:1 band that crops about 21% off a 16:9 source, and the people in the
+new photographs stand high in the frame — every hard hat and head was being
+cut. v99 moves the focal point to `50% 30%` for this set only, keyed on
+`[width="1672"]`, so the seven heroes still on 4:3 photographs keep the
+framing they have today.
+
+### Retired, still on disk
+
+These eight (plus their `@sm` variants) are no longer referenced by any page:
+`hero-home`, `hero-about`, `hero-customer-portal`, `hero-customer-stories`,
+`hero-office-erp`, `hero-mobile-service`, `hero-industries`, `hero-products`.
+They are kept, not deleted, so the swap stays reversible in one edit.
+
+---
+
+## Status: heroes replaced (v63) — superseded above for 12 of 19 slots
 
 All 15 page heroes are now the new WebP set under `assets/heroes/`, wired with
 `srcset` so phones download the `@sm` variant. Everything below reflects what

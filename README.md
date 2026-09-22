@@ -862,3 +862,60 @@ fields, and body links inside its FAQ answers.
 Scoping it to a body class rather than editing the v97 block back out means the
 rest of the site keeps the orange accents, including `.chip` and `.slot` where
 they also appear on `features.html`.
+
+
+## v99 — the client's new hero photographs
+
+The client added an ESS-branded 16:9 hero set to `assets/heroes/`, each file
+named after the page or section it is for. Twelve of the nineteen hero slots
+now run on it:
+
+| page | new photograph |
+|---|---|
+| `about.html` | `about-ess` |
+| `mobile-office-manager.html` | `mobile-office-manager` |
+| `mobile-service.html`, `industry-elevator.html` | `mobile-service` |
+| `customer-portal.html` | `customer-portal` |
+| `industries.html`, `industry-escalator.html`, `industry-overhead-door.html`, `industry-fire-life-safety.html` | `industries` |
+| `customer-stories.html` | `customer-story-elevator-one` |
+| `products.html`, `features.html` | `built-for-everyone-in-the-building` |
+
+Seven heroes — free trial, GPS route builder, implementation, login, pricing,
+resources, support — keep the v63 photographs, because the new set has no
+counterpart for them.
+
+Each swap also corrects the markup around it. The source is 1672x941 where the
+old one was 1000x750, so `width`/`height` and the `srcset` widths are restated
+from the real files; `sizes` becomes `100vw`, because since v86 these are
+full-bleed band backgrounds rather than 486px cards in the right-hand column;
+and the four industry pages lose `loading="lazy"`, which they still carried
+from when the photo was a side card and which delays the band's own background.
+Alt text is rewritten to describe the new photograph — the old text said
+"illustration" for what were already photographs.
+
+**Framing.** v86 fills the band with `object-fit: cover` at a focal point of
+`70% 50%`. On a band near 3:1 that crops roughly 21% off a 16:9 source, and the
+people in these photographs stand high in the frame, so every hard hat and head
+was being cut. A v99 rule moves the focal point to `50% 30%` and is keyed on
+`[width="1672"]` — the new set's intrinsic width — so the seven heroes still on
+4:3 photographs keep exactly the framing they have today, and pick the rule up
+on their own when they are replaced. The selector has to carry v86's own
+specificity: `.ess-glass-site main > .subhero:has(.subhero-media img)
+.subhero-media img` is (0,4,3) with `!important`, so a shorter selector loses
+even with `!important` of its own.
+
+**Weight.** The new files are 102–211 KB against 53–101 KB, roughly double. It
+buys sharpness the old set could not deliver: a 1000px-wide source was being
+stretched across a band wider than 1440px. Referenced hero bytes are now
+2.11 MB across 28 files, of which 1.48 MB is the new set.
+
+**Not placed.** Three of the ten name a slot that holds no photograph today,
+and each is a design decision rather than a swap, so none was invented:
+`home-hero` (the home hero's visual slot holds the client index's `.op-card`
+dashboard mock), `book-a-demo` (`.contact-hero` is deliberately photoless and
+light — v86 excluded it, v98 restored its own colours), and
+`outcomes-our-customers-actually-feel` (the Outcomes band is a figure grid with
+no image container).
+
+The eight replaced files are kept on disk rather than deleted, so the swap is
+reversible in one edit. `ASSETS.md` carries the full mapping.

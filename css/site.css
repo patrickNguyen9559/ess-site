@@ -8328,3 +8328,28 @@ body::-webkit-scrollbar { width: 0; height: 0; }
    fields, and body links inside its FAQ answers. Say the word if those should
    go back too.
    ========================================================================== */
+
+/* ==========================================================================
+   v99 — the client's new hero photographs
+
+   The new set is 16:9 (1672x941) where the retired set was 4:3 (1000x750),
+   and the people in them stand high in the frame. v86 bleeds every hero photo
+   across its band with object-fit:cover and a focal point of 70% 50%, which
+   on a 3:1 band crops ~21% off the top — enough to take the hard hats and
+   heads off every one of the new photos.
+
+   Raising the focal point to 30% keeps the faces and leaves the floor, desks
+   and tools to be cropped instead. The horizontal 70% was there to push the
+   subject out from under the scrim; with the wider source the whole width is
+   visible at desktop, so it only reads below 900px, where 50% frames these
+   photos' centre subject better than 70% did.
+
+   Keyed on [width="1672"] — the new set's intrinsic width — so the seven
+   heroes still on the old 4:3 photographs keep exactly the framing they have
+   today. When those are replaced, this selector picks them up on its own.
+   ========================================================================== */
+
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media img[width="1672"],
+.ess-glass-site .product-hero-photo img[width="1672"] {
+  object-position: 50% 30% !important;
+}
