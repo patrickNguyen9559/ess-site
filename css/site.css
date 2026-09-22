@@ -7848,3 +7848,133 @@ body::-webkit-scrollbar { width: 0; height: 0; }
   width: 0;
   height: 0;
 }
+
+/* ==========================================================================
+   v91 — one dark, orange for the accents, no stray blue text
+
+   Three things the client asked for, and a colour audit of the rendered pages
+   to find them. Every text and background colour actually painted on six
+   pages was collected and grouped; what follows is what that turned up.
+
+   1. ONE DARK. The footer is --navy-950 (#0B3046) but the dark panels were
+      four different navies: #0B3046 on the outcomes band, #123F55 on the CTA
+      strips and the story panel, #1A5772 as the CTA gradient's second stop,
+      and #0b2a3a on the product hero. They all take the footer's navy now.
+
+   2. THE VIVID BLUES GO ORANGE. #5BBDE4, #3D9BC7 and #9CD8F0 were still
+      carrying decoration — the footer phone, the industry tags and badges,
+      the quote mark, the hero pips, the big figures. Orange is the accent
+      colour, so those are orange.
+
+      Left blue on purpose: the op-card's progress bars and its "Dispatched"
+      chip. That card is a simulated product screen and those are data, not
+      decoration — orange there would read as a warning on every row.
+
+   3. STRAY BLUE TEXT. #5C7483, #5F7482, #516B7C and #0D3550 were blue-tinted
+      greys and near-navies left over from earlier passes, on about 55 nodes
+      of body copy. They join the grey ramp and the one navy.
+   ========================================================================== */
+
+/* ------------------------------------------------- 1. a single dark --- */
+
+.ess-glass-site :is(.callout-strip, .pricing-cta, .pricing-card.featured,
+                    .chain-panel, .story-panel, .outcome-band, .trade-card,
+                    .voice-avatar, .product-switch-mark) {
+  background: var(--navy-950) !important;
+  background-image: none !important;
+}
+.ess-glass-site .trade-card.is-primary {
+  background: var(--navy-950) !important;
+  border-color: rgba(91,189,228,.22) !important;
+}
+.ess-glass-site .cta-band {
+  background:
+    radial-gradient(800px 400px at 90% -50%, rgba(239,108,23,.20), transparent 60%),
+    var(--navy-950) !important;
+}
+.ess-glass-site main > .product-hero { background: var(--navy-950) !important; }
+.ess-glass-site .product-hero-photo::after {
+  background:
+    linear-gradient(90deg, rgba(11,48,70,.97) 0%, rgba(11,48,70,.93) 38%, rgba(11,48,70,.58) 66%, rgba(11,48,70,.2) 100%),
+    linear-gradient(0deg, rgba(11,48,70,.55) 0%, transparent 45%) !important;
+}
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media::after {
+  background:
+    linear-gradient(90deg, rgba(11,48,70,.97) 0%, rgba(11,48,70,.93) 38%, rgba(11,48,70,.58) 66%, rgba(11,48,70,.2) 100%),
+    linear-gradient(0deg, rgba(11,48,70,.55) 0%, transparent 45%) !important;
+}
+@media (max-width: 900px) {
+  .ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media::after {
+    background: linear-gradient(0deg, rgba(11,48,70,.95) 34%, rgba(11,48,70,.74) 100%) !important;
+  }
+}
+
+/* --------------------------------------- 2. the accents are orange --- */
+
+.ess-glass-site .site-footer .footer-phone { color: #FFAD73 !important; }
+.ess-glass-site .site-footer .footer-phone:hover { color: #FFFFFF !important; }
+
+.ess-glass-site .trade-tag { color: #FFAD73 !important; }
+.ess-glass-site .trade-badge {
+  background: rgba(239,108,23,.18) !important;
+  border-color: rgba(239,108,23,.42) !important;
+  color: #FFC79B !important;
+}
+
+.ess-glass-site .voice-mark { color: var(--ess-orange) !important; }
+.ess-glass-home .glass-benefits .pip { background: var(--ess-orange) !important; }
+
+/* The big figures were a blue clipped gradient. */
+/* The !important on the `background` shorthand carries to its longhands, so it
+   reset background-clip to border-box and beat a plain `background-clip: text`
+   — the figures painted as solid orange blocks with invisible glyphs. The clip
+   and the fill have to be !important too. */
+.ess-glass-site :is(.outcome-n, .story-figure-n) {
+  background: linear-gradient(90deg, #FFB47A, var(--ess-orange)) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+@supports not (background-clip: text) {
+  .ess-glass-site :is(.outcome-n, .story-figure-n) {
+    -webkit-text-fill-color: currentColor;
+    color: #FFAD73 !important;
+  }
+}
+
+/* The chip on a photo hero: an orange plate, dark enough ink to clear AA. */
+.ess-glass-site main > .subhero:has(.subhero-media img) :is(.eyebrow, .brand-line) {
+  background: #FFEBD9 !important;
+  color: #8F3F06 !important;
+}
+
+.ess-glass-home .glass-hero-orb { display: none; }
+
+/* --------------------------------------- 3. no stray blue-grey text --- */
+
+.ess-glass-site :is(.lede, .glass-lede) { color: var(--grey-600) !important; }
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta, .cta-band,
+                    .outcome-band, .story-panel) .lede {
+  color: rgba(255,255,255,.82) !important;
+}
+.ess-glass-site :is(.glass-title, .h1, h1) { color: var(--navy-950) !important; }
+.ess-glass-site main > .subhero:has(.subhero-media img) :is(h1, .h1) { color: #fff !important; }
+.ess-glass-site .product-hero h1 { color: #fff !important; }
+.ess-glass-site .product-card .trade-mark { color: var(--accent-ink) !important; }
+.ess-glass-site .site-footer .aff-badge { color: #C3D0DC !important; }
+
+/* The last two blue-tinted leftovers the audit turned up: the Why-ESS card
+   copy at #5f7482, and --glass-navy (#0d3550) which the home hero's secondary
+   button still inherits. Plus the small navy chips, so the site really does
+   have one dark rather than two that differ by a shade. */
+.ess-glass-site .advantage p { color: var(--grey-600) !important; }
+.ess-glass-home { --glass-navy: #0B3046; --glass-navy-2: #123F55; }
+.ess-glass-site :is(.op-mark, .product-icon, .a-sm, .logo-mark, .route-loader-mark) {
+  background: var(--navy-950) !important;
+  background-image: none !important;
+}
+
+/* .flow-list paints its dividers by showing its own background through 2px
+   gaps, and it was using a one-off #CEE6F0 rather than the site's hairline. */
+.ess-glass-site :is(.flow-list, .principle-list) { background: var(--sky-50) !important; }

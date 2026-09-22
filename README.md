@@ -695,3 +695,41 @@ until it is hard-reloaded, because the stale entry belongs to that tab rather
 than to the URL. And over `file://` Chrome's favicon handling is unreliable
 regardless of the URL — check the icon over `python3 -m http.server`, not by
 double-clicking the file.
+
+
+## v91 — one dark, orange accents, no stray blue
+
+Driven by a colour audit rather than by reading the sheet: every text and
+background colour actually painted on six pages was collected from the browser
+and grouped by frequency. That found all three of the things the client asked
+for, and two leftovers nobody had reported.
+
+**One dark.** The footer was `--navy-950` (#0B3046) while the dark panels were
+four different navies — #0B3046 on the outcomes band, #123F55 on the CTA strips
+and the story panel, #1A5772 as the CTA gradient's second stop, #0b2a3a on the
+product hero — plus #123F55 on the small chips. Every dark surface is the
+footer's navy now, including the photo-hero scrims, so the audit reports one
+dark background and not five.
+
+**The vivid blues are orange.** #5BBDE4, #3D9BC7 and #9CD8F0 were still
+carrying decoration: the footer phone, the industry tags and badges, the quote
+mark, the hero pips and the big figures. All orange.
+
+Left blue deliberately, and worth knowing: the op-card's progress bars and its
+"Dispatched" chip. That card is a simulated product screen, so those are data
+rather than decoration — orange there would read as a warning on every row. The
+footer's ink ramp (#9DB3C8 / #7E94AA) also stays, since it is the readable
+slate the client's own footer uses, not an accent.
+
+**Stray blue text.** #5C7483, #5F7482, #516B7C and `--glass-navy` (#0D3550)
+were blue-tinted greys and near-navies left from earlier passes, on about 55
+nodes of body copy. They join the grey ramp and the one navy. `.flow-list` was
+also drawing its dividers in a one-off #CEE6F0 instead of the site's hairline.
+
+**One bug found on the way.** The big figures rendered as solid orange blocks
+with invisible glyphs. `!important` on a `background` shorthand carries to its
+longhands, so it reset `background-clip` to `border-box` and outranked a plain
+`background-clip: text`. The clip and the text-fill need `!important` too.
+
+Contrast re-checked on every new pair: nothing below AA-large, and the only
+sub-AA value is the documented white-on-orange button.
