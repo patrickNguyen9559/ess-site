@@ -8157,3 +8157,155 @@ body::-webkit-scrollbar { width: 0; height: 0; }
   .ess-glass-site .header-panel-actions .header-login { color: var(--navy) !important; }
   .ess-glass-site .header-panel-actions a:hover { background: rgba(239,108,23,.08) !important; }
 }
+
+/* ==========================================================================
+   v95 — the accents the earlier passes missed
+
+   An HSL scan of the whole sheet turned up 109 vivid-blue declarations. Most
+   are already overridden by a later layer; these are the ones that were still
+   painting, found by checking each against what actually wins:
+
+     .product-pill                    #7fd0f0 plate      features hero
+     .product-switch-card.is-current  rgba(59,170,214,.5) border
+     .advantage::before               #62bade             the Why-ESS card rules
+     .nav-panel                       rgba(91,189,228,.28) mobile menu's left bar
+     .nav-sub.is-active               rgba(91,189,228,.16)
+     .chain-card / .chain-step        rgba(156,216,240,…) borders and the 01 chip
+     .footer-title                    rgba(156,216,240,.16) heading underline
+     .trade-card.is-primary           rgba(91,189,228,.22) border
+     focus rings, input focus         rgba(61,155,199,…)
+     .sweep                           rgba(156,216,240,.28) the ERP mock
+
+   Left blue on purpose: the pale hero wash (rgba(91,189,228,.09-.16)), which
+   is the page's light ground rather than an accent, and the op-card's
+   "Dispatched" chip, which is data.
+   ========================================================================== */
+
+.ess-glass-site .product-pill,
+.product-pill {
+  background: #FFEBD9 !important;
+  color: #8F3F06 !important;
+}
+.ess-glass-site .product-switch-card.is-current {
+  border-color: rgba(239,108,23,.45) !important;
+}
+
+.ess-glass-site .advantage::before,
+.option-air .advantage::before {
+  background: var(--ess-orange) !important;
+  background-image: none !important;
+}
+
+/* The chain panel: hairlines on navy, and the step chip. */
+.ess-glass-site .chain-card { border-color: rgba(255,255,255,.12) !important; }
+.ess-glass-site .chain-card.is-key { border-color: rgba(239,108,23,.42) !important; }
+.ess-glass-site .chain-step {
+  background: rgba(239,108,23,.16) !important;
+  color: #FFAD73 !important;
+}
+
+.ess-glass-site .site-footer .footer-title {
+  border-bottom-color: rgba(255,255,255,.14) !important;
+}
+.ess-glass-site .trade-card.is-primary { border-color: rgba(239,108,23,.28) !important; }
+.ess-glass-site .sweep { background: rgba(255,255,255,.26) !important; }
+
+/* Focus: the ring is the accent colour like everything else, and still the
+   3px offset ring the v58 pass settled on. */
+.ess-glass-site :is(a, button, .btn, .btn-header, .btn-next, .btn-quiet,
+                    input, select, textarea):focus-visible {
+  outline: 3px solid rgba(239,108,23,.55) !important;
+  outline-offset: 2px;
+}
+.ess-glass-site :is(.field input, .field select, .field textarea,
+                    .simple-form input, .simple-form select):focus {
+  border-color: rgba(239,108,23,.62) !important;
+  box-shadow: 0 0 0 3px rgba(239,108,23,.12) !important;
+}
+
+/* The mobile panel's left accent bar and the active sub-row. */
+@media (max-width: 900px) {
+  .ess-glass-site .nav-panel,
+  .option-air .nav-panel { border-left-color: rgba(239,108,23,.30) !important; }
+}
+.ess-glass-site .nav-sub.is-active,
+.option-air .nav-sub.is-active { background: rgba(239,108,23,.12) !important; }
+
+/* The "Explore …" link is the card's closing action, so it belongs on the
+   bottom edge, level across the row, rather than wherever its own list
+   happens to end. The sheet already does this for .feature-page-card and
+   .story-full; .product-card needs to be a column for it to work. */
+.ess-glass-site .product-card {
+  display: flex;
+  flex-direction: column;
+}
+.ess-glass-site .product-card .arrow-link {
+  margin-top: auto;
+  padding-top: 22px;
+}
+.ess-glass-site .product-card .tick-list { margin-bottom: 0; }
+
+/* ==========================================================================
+   v97 — the last accents, from a 24-page render audit
+
+   The audit's own filter flags #1B4157 as a blue, which it technically is —
+   that is the unified dark surface, so most of its 45 hits were correct. What
+   was genuinely still on the old palette:
+
+     body links                 --teal-600 #2A7CA3   legal, login, features, demo
+     .resource-band             #164E66              a dark panel not in the set
+     the booking wizard         --teal-500/-700      rail, slot, chip, timeline
+     .channel-label             #2A7CA3
+
+   Still blue by decision, so the audit will keep reporting them:
+     - the pale hero wash, rgba(91,189,228,.16) — the page's light ground
+     - .op-status.is-disp and the .mock-window chart bars — simulated product
+       screens, where those are data rather than decoration
+   ========================================================================== */
+
+.ess-glass-site :is(.legal-content, .legal-layout, .login-card, .login-option,
+                    .channel-card, .faq-body, .section-foot, .small,
+                    .chain-note, .story-attrib) a:not(.btn),
+.ess-glass-site main :is(p, li, dd) a:not(.btn) {
+  color: var(--accent-ink) !important;
+  font-weight: 600;
+}
+.ess-glass-site :is(.legal-content, .legal-layout, .login-card, .channel-card,
+                    .faq-body) a:not(.btn):hover {
+  color: var(--accent-ink-deep) !important;
+}
+/* Links on a dark panel stay light — they were already handled, keep them. */
+.ess-glass-site :is(.chain-panel, .callout-strip, .pricing-cta, .cta-band,
+                    .outcome-band, .story-panel, .resource-band) a:not(.btn) {
+  color: #FFC79B !important;
+}
+
+.ess-glass-site .resource-band {
+  background: var(--surface-dark) !important;
+  background-image: none !important;
+}
+
+/* The booking wizard on contact-demo.html. */
+.ess-glass-site :is(.timeline-n, .slot, .channel-label) { color: var(--accent-ink) !important; }
+.ess-glass-site .chip { border-color: rgba(239,108,23,.40) !important; color: var(--accent-ink) !important; }
+.ess-glass-site .rail-dot { border-color: rgba(239,108,23,.45) !important; }
+.ess-glass-site .rail-fill {
+  background: linear-gradient(90deg, #FFB47A, var(--ess-orange)) !important;
+}
+.ess-glass-site .dot-live { background: var(--ess-orange) !important; }
+
+/* The last three the audit pinned down by element path:
+   .badge span on the demo page, the booking wizard's own .progress bar (the
+   sibling of .rail-fill, which v97 caught), and the .mock-row placeholder
+   bars — those stand in for text rather than data, so they go neutral. The
+   .mock-chart bars stay in the ESS blue: that window is a simulated product
+   screen and a chart drawn entirely in the CTA colour reads as an alert.
+   Also pin .logo's inherited link colour, which an <img> never paints but
+   which kept showing up in the audit. */
+.ess-glass-site .badge,
+.ess-glass-site .badge span { color: var(--accent-ink) !important; }
+.ess-glass-site .progress > span {
+  background: linear-gradient(90deg, #FFB47A, var(--ess-orange)) !important;
+}
+.ess-glass-site .mock-row :is(.k, .v, .p) { background: var(--grey-200) !important; }
+.ess-glass-site .logo { color: inherit; }

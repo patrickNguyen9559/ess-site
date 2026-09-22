@@ -798,3 +798,45 @@ uppercases it and it appeared on every one of the 24 pages — against the
 earlier instruction that the tag line belongs on the home hero. The blurb is
 just its description now. It still appears in the footer brand block and the
 trademark line, which is where that pass intended it.
+
+
+## v95–v97 — the accents the earlier passes missed
+
+`.product-pill` was still `#7fd0f0`, which prompted a full sweep instead of
+another spot fix. Two audits were run:
+
+1. **An HSL scan of the whole sheet** — every colour literal converted to HSL
+   and flagged if hue 178–235°, saturation ≥ .33, lightness .22–.82. It found
+   109 vivid-blue declarations, most already overridden by a later layer.
+2. **A render audit of all 24 pages** — every element's computed colour,
+   background, border, outline and gradient stops collected from the browser
+   and matched against the same test, so only what actually paints is reported.
+
+What was still on the old palette, and is not now:
+
+| | was |
+|---|---|
+| `.product-pill` | `#7fd0f0` plate |
+| `.product-switch-card.is-current` | `rgba(59,170,214,.5)` border |
+| `.advantage::before` (the Why-ESS rules) | `#62bade` |
+| `.nav-panel` left bar, `.nav-sub.is-active` | `rgba(91,189,228,.28/.16)` |
+| `.chain-card` borders, `.chain-step` chip | `rgba(156,216,240,…)` |
+| `.footer-title` underline | `rgba(156,216,240,.16)` |
+| `.trade-card.is-primary` border | `rgba(91,189,228,.22)` |
+| focus rings, input focus | `rgba(61,155,199,…)` |
+| body links (legal, login, features, demo) | `--teal-600` `#2A7CA3` |
+| `.resource-band` | `#164E66` — a dark panel outside the unified set |
+| the booking wizard: rail, progress, slot, chip, timeline, badge | `--teal-500` / `--teal-700` |
+| `.mock-row` placeholder bars | `#3D9BC7` |
+
+**Still blue, by decision.** The audit will keep reporting these, so they are
+listed rather than left to be rediscovered: the pale hero wash
+(`rgba(91,189,228,.16)`), which is the page's light ground rather than an
+accent; and two simulated product screens — the op-card's progress fills and
+the `.mock-chart` bars — where the blue is standing in for data. A chart drawn
+entirely in the CTA colour reads as an alert.
+
+Also in this pass: the **"Explore …" link in each product card sits on the
+card's bottom edge**, level across the row, instead of wherever its own tick
+list happened to end. `.product-card` becomes a flex column so the link can
+take `margin-top: auto`, which is how `.feature-page-card` already worked.
