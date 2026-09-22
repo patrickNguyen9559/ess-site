@@ -7802,3 +7802,49 @@ body.modern-site {
   .ess-glass-site .header-inner > .menu-toggle,
   .option-air .header-inner > .menu-toggle { order: 3 !important; }
 }
+
+/* ==========================================================================
+   v89 — the bar keeps one height, and the scrollbars are hidden
+
+   Opening the menu shrank the bar from 68px to 62px, because a v37-era rule,
+   `.option-air .site-header.menu-open .header-inner`, is (0,4,0) and beat the
+   (0,2,0) rule v82 used to set the flat bar's height. The bar is pinned to one
+   height in both states, at a specificity that clears it.
+
+   Scrollbars are hidden site-wide at the client's request. Scrolling itself is
+   untouched — wheel, touch, keyboard and the scroll-anchored orange progress
+   bar at the top all still work; only the native track is not painted.
+   ========================================================================== */
+
+.ess-glass-site .site-header .header-inner,
+.ess-glass-site .site-header.menu-open .header-inner,
+.ess-glass-site .site-header.is-small .header-inner,
+.option-air .site-header .header-inner,
+.option-air .site-header.menu-open .header-inner,
+.option-air .site-header.is-small .header-inner {
+  min-height: 68px !important;
+  padding: 0 var(--gutter) !important;
+  flex-wrap: nowrap !important;
+}
+
+/* ------------------------------------------------------- scrollbars --- */
+
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { width: 0; height: 0; }
+
+/* The panels that scroll inside the page hide theirs too. */
+.ess-glass-site :is(.header-menu-content, .legal-toc, .module-tabs, .mq-wrap,
+                    .module-panel, .board, .wizard) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.ess-glass-site :is(.header-menu-content, .legal-toc, .module-tabs, .mq-wrap,
+                    .module-panel, .board, .wizard)::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}

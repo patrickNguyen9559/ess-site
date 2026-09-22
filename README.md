@@ -651,3 +651,22 @@ cause each:
 Measured at 390px: logo 16–87, CTA 210–320, toggle 330–374, identical open and
 shut, and the panel spans 0–390 flush to both edges. Verified at 320, 390 and
 768px.
+
+
+## v89 — one bar height, and hidden scrollbars
+
+**The bar no longer resizes when the menu opens.** It went 69px → 63px,
+because a v37-era rule — `.option-air .site-header.menu-open .header-inner`,
+specificity (0,4,0) with `!important` — outranked the (0,2,0) rule v82 used to
+set the flat bar's height, and it only applies while the menu is open. The bar
+is pinned to one height in the shut, open and scrolled states at a specificity
+that clears it. Measured: 69px in every state, at 390px and at 1440px.
+
+**Scrollbars are hidden site-wide**, at the client's request: `scrollbar-width:
+none` plus the WebKit pseudo-element on `html`/`body` and on the panels that
+scroll inside the page (the mobile menu, the legal table of contents, the
+module tabs, the logo row). Scrolling itself is untouched — wheel, touch,
+keyboard and anchor jumps all work, and the orange scroll-progress bar at the
+top of the page still shows position, which is the reason hiding the native
+track is tolerable here. Verified that the document width now equals the window
+width at both 390px and 1440px, i.e. no track is reserving space.
