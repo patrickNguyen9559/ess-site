@@ -42,11 +42,38 @@
 
   /* ----------------------------------------------- stable floating header --- */
 
+  var headerScrollBound = false;
+
   function initHeader() {
     var header = document.querySelector('[data-header]');
     if (!header) return;
-    // Keep the floating header visually stable while scrolling.
-    header.classList.remove('is-small');
+
+    // The client's current site carries a tall logo at the top of the page and
+    // collapses the whole bar once you start scrolling. `is-small` is the class
+    // the sheet sizes both states from; this is what drives it.
+    //
+    // initHeader runs again on every router content swap, but the <header> is
+    // never replaced — only <main> is — so the listener is bound once and the
+    // state is simply re-applied on each swap.
+    var SHRINK_AT = 28;
+    var ticking = false;
+
+    function apply() {
+      ticking = false;
+      var small = (window.pageYOffset || document.documentElement.scrollTop) > SHRINK_AT;
+      header.classList.toggle('is-small', small);
+    }
+
+    apply();
+
+    if (!headerScrollBound) {
+      headerScrollBound = true;
+      window.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(apply);
+      }, { passive: true });
+    }
   }
 
 

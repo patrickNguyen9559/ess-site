@@ -8418,3 +8418,188 @@ body::-webkit-scrollbar { width: 0; height: 0; }
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
+
+/* ==========================================================================
+   v101 — affiliations: an AEMA badge that is also a link
+
+   The client's review of the live site's Affiliations row crossed out three
+   of the five marks — Elevator Conference of New York, Capterra and
+   TransNational — kept NAEC, and asked for AEMA (https://aema.com/) to be
+   added. The rebuild carried no logo row; it carried the claim as text badges
+   in the footer of every page, and two of those badges, NAESA and IDA, appear
+   nowhere in the client's own materials. They are gone.
+
+   One badge is now an <a>. `.aff-badge` is a class selector, so the chip
+   styling applies to the anchor unchanged; what an anchor adds is an
+   underline and a hover, which the chip has to answer for itself.
+   ========================================================================== */
+
+.ess-glass-site a.aff-badge {
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+.ess-glass-site .site-footer a.aff-badge:hover,
+.ess-glass-site .site-footer a.aff-badge:focus-visible {
+  border-color: rgba(255, 255, 255, .42) !important;
+  color: #FFBF8F !important;
+}
+
+/* ==========================================================================
+   v102 — the Affiliations row is back, and it is three wide
+
+   The client asked for the section on the home page, the way the live site
+   carries it. The grid classes survive from the pre-rebuild sheet but were
+   written for the live site's five marks; the reviewed list is three, so the
+   track count and the card proportions are restated here.
+
+   One card has no logo file: aema.com sits behind a Cloudflare challenge that
+   refuses curl and a headless browser alike, so its mark could not be
+   fetched. That card carries the wordmark as type instead, which is also the
+   only card that links out, since https://aema.com/ is the one URL the client
+   supplied.
+   ========================================================================== */
+
+.ess-glass-site .affil-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.ess-glass-site .affil-logo-card {
+  min-height: 170px;
+  gap: 8px;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius);
+  background: #FFFFFF;
+  text-decoration: none;
+  text-align: center;
+  align-content: center;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.ess-glass-site a.affil-logo-card:hover,
+.ess-glass-site a.affil-logo-card:focus-visible {
+  border-color: var(--ess-orange);
+  box-shadow: 0 10px 28px rgba(18, 63, 85, .08);
+}
+.ess-glass-site .affil-logo-card img {
+  max-width: 150px;
+  max-height: 120px;
+  width: auto;
+  height: auto;
+  mix-blend-mode: multiply;   /* the live site's marks are JPEGs on white */
+}
+.ess-glass-site .affil-wordmark {
+  display: block;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--navy-900);
+}
+.ess-glass-site .affil-sub {
+  display: block;
+  max-width: 30ch;
+  margin: 0 auto;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted-ink);
+}
+
+@media (max-width: 760px) {
+  .ess-glass-site .affil-grid { grid-template-columns: 1fr; }
+  .ess-glass-site .affil-logo-card { min-height: 140px; }
+}
+
+/* ==========================================================================
+   v103 — a tall logo at the top of the page, a compact bar once you scroll
+
+   The client asked for the header logo to match their current site, which
+   renders it at 111px (style="height: 111px" on logo-final-210x104.jpg), and
+   for the whole bar to collapse on scroll the way that site's does. The
+   rebuild had neither: `.logo img` resolved to 42px in a bar pinned to 68px,
+   and js/site.js's initHeader did nothing but strip `is-small`, so no scroll
+   state existed at all. The handler now sets `is-small` past 28px of scroll.
+
+   v89 pinned `.header-inner` to one height across the plain, `.menu-open` and
+   `.is-small` states at (0,4,0) with `!important`, because opening the mobile
+   menu used to resize the bar. That still has to hold — the bar must not move
+   when the menu opens — but it can no longer be one height for all three, so
+   the rule is restated per scroll state: `.menu-open` follows whichever scroll
+   state is current, which keeps the menu from changing the height while
+   letting the scroll do so.
+
+   The SVG is a 154.8 x 78.33 lockup, very close to 2:1, so 111px tall puts it
+   at ~219px wide against the live site's ~224px.
+
+   Below 1100px the logo steps down rather than holding 111px: the nav and the
+   CTA need the width, and a bar a seventh of a phone screen tall is not worth
+   the mark. The proportion — tall at rest, compact scrolled — is kept at every
+   width.
+   ========================================================================== */
+
+/* -------------------------------------------------------------- at rest --- */
+.ess-glass-site .site-header .logo img,
+.option-air .site-header .logo img { height: 79px !important; }
+
+.ess-glass-site .site-header .header-inner,
+.ess-glass-site .site-header.menu-open .header-inner,
+.option-air .site-header .header-inner,
+.option-air .site-header.menu-open .header-inner { min-height: 100px !important; }
+
+/* ------------------------------------------------------------- scrolled --- */
+.ess-glass-site .site-header.is-small .logo img,
+.option-air .site-header.is-small .logo img { height: 42px !important; }
+
+.ess-glass-site .site-header.is-small .header-inner,
+.ess-glass-site .site-header.is-small.menu-open .header-inner,
+.option-air .site-header.is-small .header-inner,
+.option-air .site-header.is-small.menu-open .header-inner { min-height: 69px !important; }
+
+/* ----------------------------------------------------------- the change --- */
+.ess-glass-site .site-header .logo img,
+.option-air .site-header .logo img { transition: height 240ms ease !important; }
+.ess-glass-site .site-header .header-inner,
+.option-air .site-header .header-inner { transition: min-height 240ms ease !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ess-glass-site .site-header .logo img,
+  .option-air .site-header .logo img,
+  .ess-glass-site .site-header .header-inner,
+  .option-air .site-header .header-inner { transition: none !important; }
+}
+
+/* ---------------------------------------------------------- narrower --- */
+@media (max-width: 1100px) {
+  .ess-glass-site .site-header .logo img,
+  .option-air .site-header .logo img { height: 68px !important; }
+  .ess-glass-site .site-header .header-inner,
+  .ess-glass-site .site-header.menu-open .header-inner,
+  .option-air .site-header .header-inner,
+  .option-air .site-header.menu-open .header-inner { min-height: 90px !important; }
+}
+
+@media (max-width: 900px) {
+  .ess-glass-site .site-header .logo img,
+  .option-air .site-header .logo img { height: 58px !important; }
+  .ess-glass-site .site-header .header-inner,
+  .ess-glass-site .site-header.menu-open .header-inner,
+  .option-air .site-header .header-inner,
+  .option-air .site-header.menu-open .header-inner { min-height: 84px !important; }
+
+  .ess-glass-site .site-header.is-small .logo img,
+  .option-air .site-header.is-small .logo img { height: 38px !important; }
+  .ess-glass-site .site-header.is-small .header-inner,
+  .ess-glass-site .site-header.is-small.menu-open .header-inner,
+  .option-air .site-header.is-small .header-inner,
+  .option-air .site-header.is-small.menu-open .header-inner { min-height: 62px !important; }
+}
+
+/* --- v103 fix: the scrolled logo was being painted white ------------------
+   L1264 carries `.modern-site .logo img, .modern-site .site-header.is-small
+   .logo img { filter: brightness(0) invert(1) }` — a white-out from when the
+   scrolled bar was navy (L1255, background: rgba(18,63,85,.97)). L1564's
+   `.option-air .logo img { filter: none }` undid it, but only at (0,2,1): the
+   `.is-small` arm is (0,4,1) and kept winning. Nothing ever set `is-small`,
+   because initHeader only stripped it, so the white logo was never seen. The
+   moment v103 gave the bar a scroll state the logo turned white on a white
+   bar and disappeared. This closes the arm L1564 missed. */
+
+.ess-glass-site .site-header.is-small .logo img,
+.option-air .site-header.is-small .logo img { filter: none !important; }

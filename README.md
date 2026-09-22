@@ -991,3 +991,75 @@ importance, then specificity, then source order — and confirmed against
 `subhero-inner`, `trust-inner`, `glass-hero-inner`, `contact-hero-inner`) finds
 the header was the only instance of this bug; run against the pre-fix sheet the
 same sweep reports it, which is what makes the clean result meaningful.
+
+
+## v101–v103 — client review: affiliations, and the header logo
+
+Three items from the client's review of the live site.
+
+### Affiliations (v101, v102)
+
+The review crossed out three of the five marks on the live site's Affiliations
+row — Elevator Conference of New York, Capterra and TransNational — kept two,
+and asked for AEMA (https://aema.com/) to be added. The row is now on the home
+page as well, which the client asked for separately.
+
+Two things had to be corrected rather than just edited:
+
+- The rebuild carried no logo row at all. It had turned the affiliation claim
+  into text badges in the footer of every page, and two of those badges —
+  **NAESA** and **IDA** — appear nowhere in the client's own materials. They
+  were invented during the rebuild and are gone from the footer and from
+  `about.html`'s copy.
+- The organisation's full name is **An Association of Members of the
+  Accessibility Equipment Industry**. A web search returned it without
+  "Equipment"; the client's own logo file has the full wording, which is what
+  the copy now uses.
+
+The two kept marks are saved locally under `assets/affiliations/` rather than
+hotlinked from the live site's WordPress uploads, which is how the old markup
+referenced them. `aema.com` sits behind a Cloudflare challenge that refuses
+both curl and a headless browser, so that card carries the wordmark as type
+until the logo file lands; it is also the only card that links out, since its
+URL is the one the client supplied.
+
+One mark is still unnamed: the red-arc-and-triangle logo the client kept has
+no alt text, caption, title or link on the live site, and its WordPress media
+record is titled only `logo1a`. It is in the row with neutral alt text pending
+a name.
+
+### Header logo (v103)
+
+The client asked for the logo to match their current site and for the bar to
+collapse on scroll, but for the bar itself **not** to be as tall as the old
+one. The live site renders its logo at 111px (`style="height: 111px"`); the
+rebuild resolved to 42px in a bar pinned to 68px, and `initHeader` in
+`js/site.js` did nothing but strip `is-small`, so no scroll state existed.
+
+Now: 79px logo in a 100px bar at rest, 42px in a 69px bar once past 28px of
+scroll, stepping down to 68/90 below 1100px and 58/84 below 900px.
+
+79px is measured, not guessed. The inline `height: 111px` is not what the live
+site renders: screenshotting it at 1440px and taking the ink bounds of the
+header region gives an ESS ring of 80x79 and a full lockup of 160x79. The same
+measurement against this build gives 79x79 and 156x79 — the 4px of width is the
+SVG lockup being fractionally tighter (1.976 against 2.03). The bar stays at
+100px against the live site's ~132px, which is the part the client asked not to
+copy. The scroll
+handler binds once — `initHeader` runs on every router content swap, but the
+`<header>` is never replaced, only `<main>` — and re-applies state per swap.
+
+v89 had pinned `.header-inner` to one height across the plain, `.menu-open`
+and `.is-small` states, because opening the mobile menu used to resize the
+bar. That still holds: the height is now restated per *scroll* state, and
+`.menu-open` follows whichever scroll state is current, so the menu still
+cannot change it.
+
+**The white logo.** Turning the scroll state on exposed a latent bug the
+client spotted immediately: the logo vanished when scrolled. L1264 carries
+`filter: brightness(0) invert(1)` on `.modern-site .logo img` *and* on
+`.modern-site .site-header.is-small .logo img` — a white-out from when the
+scrolled bar was navy (L1255). L1564's `.option-air .logo img { filter: none }`
+undid it at (0,2,1), but the `.is-small` arm is (0,4,1) and kept winning. It
+had never shown because nothing ever set `is-small`. The missing arm is now
+closed.
