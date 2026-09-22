@@ -518,3 +518,41 @@ from the pill's 110px to 84px.
 The scroll-progress bar is orange again. It had been caught by the v41 rule
 that keeps accents single-colour, which the blue pass rewrote along with
 everything else.
+
+
+## v83–v85 — spacing, and the palette back to main
+
+**The palette is main's again.** The client asked for the ESS blue that was on
+`main`, not the upload's brighter one, so `css/site.css` was rebuilt as
+main's sheet plus the new layout layers rather than by sweeping values a second
+time: the in-place colour edits are gone and every rule main shipped is back
+byte-for-byte. The layout layers keep the upload's token *names*, because the
+new components reference them, but those names now resolve to ESS values —
+`--blue-500` is `#3D9BC7`, `--navy-900` is `#123F55`, `--slate-200` is the
+site's `#DCEEF8` hairline. 37 upload-palette literals inside the new layers
+were re-pointed the same way, and the two swept hexes in `contact-demo.html`'s
+inline SVG were reverted.
+
+One consequence worth knowing: main's home page paints the headline accent
+orange, so *One system.* and its underline are orange again rather than blue.
+That is main's design, not a side effect — say the word and it goes back to
+`--teal-500`.
+
+**One gap per section boundary.** Three separate reports — the CTA sitting on
+the footer on Platform, the same on Pricing, and the ESS-U band on Resources
+reading further from its neighbours than anything else — turned out to be one
+problem measured three ways:
+
+- `.section` pads only its top; `.compact-section` pads top *and* bottom. Two
+  compact sections in a row therefore produced 160px where the rest of the site
+  had 80. Resources has three in a row.
+- A CTA that carries `.callout-strip` on the `<section>` itself is the card and
+  the section at once, so the section's 80px landed *inside* the card. Measured
+  on `products.html`: 49px of padding at the top, 80px at the bottom, and a 0px
+  gap to the footer. A card cannot pad its way to an outer gap, so the padding
+  is even now and the rhythm is a margin.
+- A band that is nothing but its own heading — the About line on the home page
+  — added the head's 44px bottom margin on top of the gap, giving 124px.
+
+Measured at 1440px across eight pages afterwards: every boundary is one
+`--section-pad`, and the closing band clears the footer by the same.
