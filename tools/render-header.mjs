@@ -89,17 +89,24 @@ function renderItem(item, current) {
 
   // Active when the parent page itself, or any page inside the group, is open.
   const within = self || kids.some((k) => k.href === current);
-  // When the parent's own page is also listed as a child, the child announces
-  // it — two aria-current="page" in one nav is noise for a screen reader.
-  const owns = self && !kids.some((k) => k.href === item.href);
+  // The parent announces the current page whenever it is the one open. It used
+  // to defer to a child that pointed at the same page, but the panel no longer
+  // marks anything while the group's own page is open, so deferring would leave
+  // the nav with no aria-current at all.
+  const owns = self;
   const id = `nav-panel-${slug(item.label)}`;
   const labelId = `nav-label-${slug(item.label)}`;
 
   const subs = kids
     .map((k) => {
-      const on = k.href === current;
+      // When the group's own landing page is open, the parent already carries
+      // the state. Marking entries inside the panel as well reads as "all of
+      // this is selected", which is what a panel full of anchors into the
+      // current page looks like. So the panel just lists.
+      const on = !self && k.href === current;
+      const flag = (on ? ' is-active' : '') + (k.standout ? ' is-standout' : '');
       return (
-        `<a class="nav-sub${on ? ' is-active' : ''}" href="${esc(k.href)}"` +
+        `<a class="nav-sub${flag}" href="${esc(k.href)}"` +
         `${on ? ' aria-current="page"' : ''}>` +
         `<span class="nav-sub-label">${esc(k.label)}` +
         (k.badge ? `<span class="nav-sub-badge">${esc(k.badge)}</span>` : '') +

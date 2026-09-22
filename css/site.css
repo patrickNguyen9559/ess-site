@@ -8646,3 +8646,67 @@ body::-webkit-scrollbar { width: 0; height: 0; }
   .ess-glass-site.all-features-page .legal-toc { max-height: none; overflow: visible; }
   .ess-glass-site.all-features-page .legal-content section { scroll-margin-top: 78px; }
 }
+
+/* ==========================================================================
+   v105 — the Features panel: one standout entry, and a rail that fits
+
+   Two things the client saw in one look.
+
+   1. The panel read as "everything is selected". Only one entry actually
+      carried `is-active` — "View all features", the one whose href is the page
+      you are on — but `.nav-sub.is-active` is a pale blue wash that is hard to
+      tell from the plain state, and the other five are anchors into that same
+      page. render-header now leaves the panel unmarked whenever the group's own
+      landing page is open: the parent nav link already carries that state, so
+      the panel just lists.
+
+   2. "View all features" looked like a sixth feature. It is the way out of the
+      list, so it gets the accent colour and an arrow rather than the same navy
+      as its neighbours. --accent-ink is the AA-safe orange from the v56 ledger
+      (#B4530A, 5.02:1 on white), so this stays readable as text.
+
+   3. The contents rail was stuck at `top: 132px`, a figure from when the header
+      was a floating pill inset from the top of the window. The bar is 69px once
+      you have scrolled, which is the state you are in while reading, so 132px
+      threw away 63px before the list even started — and with `max-height:
+      calc(100vh - 140px)` a nineteen-item rail lost 147px off the bottom on a
+      700px viewport. Since v89 hides scrollbars site-wide there was nothing to
+      show it had been clipped. Top and max-height are now derived from the bar
+      that is actually there, and this page's rail is tightened so nineteen
+      entries fit a laptop without scrolling at all.
+   ========================================================================== */
+
+/* ------------------------------------------------- the way out of the list --- */
+.ess-glass-site .nav-sub.is-standout .nav-sub-label {
+  color: var(--accent-ink) !important;
+}
+.ess-glass-site .nav-sub.is-standout .nav-sub-label::after {
+  content: " \2192";
+  font-weight: 800;
+}
+.ess-glass-site .nav-sub.is-standout {
+  background: rgba(239, 108, 23, .07);
+}
+.ess-glass-site .nav-sub.is-standout:hover,
+.ess-glass-site .nav-sub.is-standout:focus-visible {
+  background: rgba(239, 108, 23, .14) !important;
+}
+
+/* ------------------------------------------------------------- the rail --- */
+/* 69px is the scrolled bar; 16px is the gap it reads with. */
+.ess-glass-site .legal-toc { top: 85px; }
+
+.ess-glass-site.all-features-page .legal-toc {
+  max-height: calc(100vh - 104px);
+  padding: 12px;
+}
+.ess-glass-site.all-features-page .legal-toc nav { gap: 1px; }
+.ess-glass-site.all-features-page .legal-toc a {
+  padding: 4px 9px;
+  font-size: 12.5px;
+}
+.ess-glass-site.all-features-page .legal-toc-title { margin-bottom: 8px; }
+
+@media (max-width: 900px) {
+  .ess-glass-site .legal-toc { top: 78px; }
+}

@@ -1129,3 +1129,43 @@ spec, no screens. They are deliberately pitched at what each name supports and
 use the vocabulary already on the site, but they are not verified product
 claims and should be read before launch. **Cora AI Assistant** is a single
 sentence on purpose: nothing is known about it beyond the name.
+
+
+## v105 — the Features panel, and a rail that fits
+
+Three things, from one look at the page.
+
+**The panel read as "everything is selected".** Only one entry actually carried
+`is-active` — "View all features", whose href *is* the page you are on — but
+`.nav-sub.is-active` is a pale blue wash that barely separates from the plain
+state, and the other five are anchors into that same page, so the whole panel
+looked uniformly lit. `render-header.mjs` now leaves the panel unmarked
+whenever the group's own landing page is open; the parent nav link already
+carries that state.
+
+That change moved `aria-current="page"`. The parent used to defer to a child
+pointing at the same page, to avoid announcing it twice. With the panel no
+longer marking anything, deferring would have left the nav with no
+`aria-current` at all — so `owns` is now simply `self`. Verified: exactly one
+`aria-current="page"` per page, on the right item, on `all-features.html`,
+`industries.html`, `products.html` and `index.html`.
+
+**"View all features" looked like a sixth feature.** It is the way out of the
+list, so it takes `--accent-ink` (#B4530A, 5.02:1 on white, the v56 ledger
+figure) plus an arrow and a faint orange tint. A `standout: true` flag in
+`nav-config.mjs` drives it, so any future "view all" entry can opt in;
+Industries' "All industries" has not, and can on request.
+
+**The contents rail was clipping.** It sat at `top: 132px`, a number from when
+the header was a floating pill inset from the top of the window. The bar is
+69px once you have scrolled — the state you are actually in while reading — so
+132px threw away 63px before the list began, and `max-height: calc(100vh -
+140px)` then took more off the bottom. On a 700px viewport a nineteen-entry
+rail needed 707px and got 560px: 147px hidden, with no scrollbar to say so,
+since v89 hides them site-wide.
+
+Top and max-height now come from the bar that is really there (85px and
+`calc(100vh - 104px)`), and this page's rail is tightened — 12px padding, 4px
+row padding, 12.5px type. Measured after: the rail needs 541px and fits without
+scrolling at viewport heights of 900, 800, 750, 700 and 650px. The policy pages
+keep their roomier spacing; only `top` changed for them, which helps them too.

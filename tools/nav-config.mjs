@@ -90,6 +90,7 @@ export const NAV = [
       {
         label: 'View all features',
         href: 'all-features.html',
+        standout: true,
         desc: 'All nineteen, in one list.',
       },
     ],
