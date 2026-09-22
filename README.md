@@ -733,3 +733,28 @@ longhands, so it reset `background-clip` to `border-box` and outranked a plain
 
 Contrast re-checked on every new pair: nothing below AA-large, and the only
 sub-AA value is the documented white-on-orange button.
+
+
+## v92 — the dark surface is main's footer colour
+
+The client asked for the footer colour from `main`, applied to every section.
+The declaration that wins the cascade there is
+
+    .ess-glass-site .site-footer { background: rgba(13,53,76,.94) }
+
+which composites to **#1B4157** over the page ground. That is now
+`--surface-dark`, and the footer, the CTA strips, the outcomes band, the story
+panel, the industry cards, the product hero and every small navy chip all read
+from it — so they are the same colour by construction rather than by four rules
+happening to agree.
+
+It is held as a solid rather than as the original translucent value. A
+translucent panel shifts with whatever is behind it, and these panels sit on
+white, on the tinted hero and over photographs. The photo scrims keep an rgba
+ramp of the same colour, because a scrim has to let the picture through.
+
+Contrast re-measured against the new, lighter dark: white 10.8:1, the eyebrow
+tint 5.9:1, the footer ink 5.0:1, the badge ink 6.9:1, body copy 7.7:1. The
+footer's meta line had been tuned for a darker ground and fell to 3.45:1, so it
+lightens to #96ACBF (4.61:1). The dark end of the figure gradient sits at
+3.52:1, which is AA-large — it is only ever used at 40px and above.

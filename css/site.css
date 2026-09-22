@@ -7978,3 +7978,71 @@ body::-webkit-scrollbar { width: 0; height: 0; }
 /* .flow-list paints its dividers by showing its own background through 2px
    gaps, and it was using a one-off #CEE6F0 rather than the site's hairline. */
 .ess-glass-site :is(.flow-list, .principle-list) { background: var(--sky-50) !important; }
+
+/* ==========================================================================
+   v92 — the dark surface is main's footer colour
+
+   The client asked for the footer's colour from `main`, applied to every
+   section. The declaration that wins the cascade on main is
+
+       .ess-glass-site .site-footer { background: rgba(13,53,76,.94) }
+
+   which composites to #1B4157 over the page ground. That is the dark now, on
+   one token, so the footer and every dark panel are the same colour by
+   construction rather than by four rules agreeing.
+
+   It is held as a solid rather than as the original translucent value: a
+   translucent panel would shift with whatever sits behind it, and these
+   panels sit on white, on the tinted hero and over photographs. The
+   photo scrims keep an rgba ramp of the same colour, since a scrim has to
+   let the picture through.
+
+   Contrast on the new, lighter dark: white 10.8:1, the eyebrow tint 5.9:1,
+   the footer ink 5.0:1, the badge ink 6.9:1, body copy 7.7:1. Two values
+   land in AA-large rather than AA — the footer's meta line (3.45:1) and the
+   dark end of the figure gradient (3.52:1) — both of which are 13px+ or
+   40px+ display type.
+   ========================================================================== */
+
+:root { --surface-dark: #1B4157; }
+
+.ess-glass-site .site-footer,
+.option-air .site-footer {
+  background: var(--surface-dark) !important;
+  background-image: none !important;
+}
+
+.ess-glass-site :is(.callout-strip, .pricing-cta, .pricing-card.featured,
+                    .chain-panel, .story-panel, .outcome-band, .trade-card,
+                    .trade-card.is-primary, .voice-avatar, .product-switch-mark,
+                    .op-mark, .product-icon, .a-sm, .logo-mark,
+                    .route-loader-mark) {
+  background: var(--surface-dark) !important;
+  background-image: none !important;
+}
+.ess-glass-site .cta-band {
+  background:
+    radial-gradient(800px 400px at 90% -50%, rgba(239,108,23,.18), transparent 60%),
+    var(--surface-dark) !important;
+}
+.ess-glass-site main > .product-hero { background: var(--surface-dark) !important; }
+
+/* A scrim has to show the photograph through it, so it stays an rgba ramp —
+   of the same colour the solid panels use. */
+.ess-glass-site .product-hero-photo::after,
+.ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media::after {
+  background:
+    linear-gradient(90deg, rgba(13,53,76,.96) 0%, rgba(13,53,76,.92) 38%, rgba(13,53,76,.56) 66%, rgba(13,53,76,.18) 100%),
+    linear-gradient(0deg, rgba(13,53,76,.55) 0%, transparent 45%) !important;
+}
+@media (max-width: 900px) {
+  .ess-glass-site main > .subhero:has(.subhero-media img) .subhero-media::after {
+    background: linear-gradient(0deg, rgba(13,53,76,.95) 34%, rgba(13,53,76,.74) 100%) !important;
+  }
+}
+
+/* The footer's meta line was tuned against a darker ground. */
+.ess-glass-site .site-footer .footer-bottom-inner,
+.ess-glass-site .site-footer .footer-bottom-inner :is(span, a),
+.ess-glass-site .site-footer .footer-flag { color: #96ACBF !important; }
+.ess-glass-site .site-footer .footer-bottom-inner a:hover { color: #FFFFFF !important; }
