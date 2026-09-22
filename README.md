@@ -946,11 +946,24 @@ spanning the viewport had none. Outside the shell edges the 85%-white bar showed
 the scrolled content through unfiltered; inside them it showed it blurred and
 saturated.
 
-v100 puts the filter back on `.site-header` and takes background and filter off
-`.header-inner`, covering the `.is-small` and `.menu-open` states too — for
-those, `.modern-site .site-header.is-small` is (0,3,0) with `!important`, so the
-override has to match that specificity and win on source order. Only the
-full-width element paints, so a vertical seam is no longer expressible.
+To be precise about what was wrong: `.header-inner` never carried a background.
+L7335 already set it `transparent !important` and beat the pill-era
+`rgba(255,255,255,.80)` and `.76` on source order at equal specificity. The seam
+was the *filter alone*, acting on a transparent 1240px box over the bar's own
+85% white — which is why the middle read lighter and more saturated rather than
+a different colour.
+
+v100 puts the filter back on `.site-header` and takes filter and background off
+`.header-inner`; the background there is defensive, keeping any future one off
+the column. It also covers `.is-small`, whose `!important` rule — L1541,
+`.modern-site .site-header.is-small` — has to be matched at (0,3,0) and beaten
+on source order. `.menu-open` is listed alongside it for readability only: L1541
+names no other state, so the first selector's (0,2,0) already wins there.
+
+Only the full-width element paints, so a vertical seam is no longer
+expressible. The sheet already does exactly this one band further down: L6966
+puts the logo bar's white and hairlines on `main > .trust` and L6971 strips them
+off `.trust-inner`. The header was the one place that had drifted.
 
 **On the flicker this once fixed.** L1537 sits in a block titled "header scroll
 stability" that dropped the filter to stop repaint flicker on what was then a

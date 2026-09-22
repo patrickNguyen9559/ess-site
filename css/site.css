@@ -4652,11 +4652,14 @@ body.ess-glass-site {
   max-width: min(600px, calc(100vw - 32px));
   padding: 14px;
   border-radius: 20px;
-  /* Deliberately near-opaque. The panel sits inside .header-inner, which
-     already has a backdrop-filter, and a backdrop-filter establishes a new
-     backdrop root for its descendants — so a blur here would sample the
-     header, not the page, and the content underneath would stay sharp and
-     unreadable through the panel. */
+  /* Deliberately near-opaque. The panel sits inside the header, which has a
+     backdrop-filter, and a backdrop-filter establishes a new backdrop root
+     for its descendants — so a blur here would sample the header, not the
+     page, and the content underneath would stay sharp and unreadable through
+     the panel. (v100 moved that filter from .header-inner up to .site-header;
+     still an ancestor of this panel, so the reasoning is unchanged. This
+     particular value is also moot since v66 — L5749 makes .nav-panel fully
+     opaque.) */
   background: rgba(255, 255, 255, .985);
   border: 1px solid rgba(255, 255, 255, .95);
   box-shadow: 0 24px 60px rgba(18, 63, 85, .18), 0 2px 8px rgba(18, 63, 85, .06),
@@ -4780,9 +4783,10 @@ body.ess-glass-site {
     overscroll-behavior: contain;
   }
 
-  /* Same backdrop-root problem as .nav-panel above: the declared blur never
-     applies, so the panel has to carry its own opacity to stay readable over
-     page content. */
+  /* Same backdrop-root problem as .nav-panel above — the root is on
+     .site-header since v100, still an ancestor either way: the declared blur
+     never applies, so the panel has to carry its own opacity to stay
+     readable over page content. */
   .ess-glass-site .header-menu-content {
     background: #fff !important;
     box-shadow: 0 20px 52px rgba(18, 63, 85, .20), 0 2px 8px rgba(18, 63, 85, .07) !important;
@@ -8376,15 +8380,29 @@ body::-webkit-scrollbar { width: 0; height: 0; }
    header and both halves are plain white, which is why this only appears once
    the page is scrolled.
 
-   Only the full-width element may carry a background *and* a filter, so a
-   seam is no longer expressible. L1537's block was titled "header scroll
-   stability" and dropped the filter to stop repaint flicker on what was then
-   a floating pill; its stabilisers — transform: translateZ(0),
-   backface-visibility: hidden — are still in force on the same element.
+   To be precise about what was wrong: `.header-inner` never carried a
+   background. L7335 already set it `transparent !important` and beat the
+   pill-era `rgba(255,255,255,.80)` and `.76` on source order at equal
+   specificity. The seam was the *filter alone*, acting on a transparent
+   1240px box sitting over the bar's own 85% white — which is why the middle
+   read lighter and more saturated rather than differently coloured. The
+   `background: transparent !important` below is therefore defensive, not
+   corrective: it keeps any future background off the column.
 
-   Covers .is-small and .menu-open as well: `.modern-site .site-header.is-small`
-   is (0,3,0) with `!important`, so the second selector has to match that and
-   win on source order.
+   After this, only the full-width element paints, so a seam is no longer
+   expressible. The sheet already does exactly this one band further down —
+   L6966 puts the logo bar's white and hairlines on `main > .trust` and L6971
+   strips them off `.trust-inner`. The header was the one place that drifted.
+
+   L1537's block was titled "header scroll stability" and dropped the filter
+   to stop repaint flicker on what was then a floating pill; its stabilisers —
+   transform: translateZ(0), backface-visibility: hidden — are still in force
+   on the same element.
+
+   Only `.is-small` actually needs the second selector: the `!important` rule
+   it has to beat, L1541, is `.modern-site .site-header.is-small` and names no
+   other state, so the first selector's (0,2,0) already wins for `.menu-open`.
+   `.menu-open` is listed with it to keep the two states reading as one pair.
    ========================================================================== */
 
 :is(.ess-glass-site, .ess-glass-home, .option-air) .site-header,
