@@ -670,3 +670,28 @@ keyboard and anchor jumps all work, and the orange scroll-progress bar at the
 top of the page still shows position, which is the reason hiding the native
 track is tolerable here. Verified that the document width now equals the window
 width at both 390px and 1440px, i.e. no track is reserving space.
+
+
+## v90 — the tab icon kept showing the old version
+
+The markup was right: all 24 pages pointed at `assets/favicon.svg` and the
+files on disk were the current mark. `js/router.js` was not the cause either —
+it updates the title and the meta description on a content swap and never
+touches the icon links.
+
+It was the browser's favicon cache, which is separate from the ordinary HTTP
+cache and far more stubborn. `assets/favicon.svg` had been rewritten twice at
+the same URL, so the browser kept serving whichever version it had stored
+first.
+
+Each icon href now carries `?v=<first 8 of the file's sha1>`, and
+`tools/sync-layout.mjs` maintains it: change an icon, run the tool, and every
+page points at a URL the browser has never seen. The stamp is content-derived,
+so re-running the tool with unchanged icons is a no-op and `--check` stays
+clean.
+
+Two things to expect even so. A tab that is already open may hold the old icon
+until it is hard-reloaded, because the stale entry belongs to that tab rather
+than to the URL. And over `file://` Chrome's favicon handling is unreliable
+regardless of the URL — check the icon over `python3 -m http.server`, not by
+double-clicking the file.

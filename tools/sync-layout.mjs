@@ -10,10 +10,11 @@
    (tools/partials/footer.html), and makes sure js/router.js is loaded.
 
    Pages keep their own <main>, <title>, meta and body classes — only the
-   shared chrome is rewritten.
+   shared chrome is rewritten, plus the ?v= stamp on the favicon hrefs.
    ========================================================================== */
 
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, basename } from 'node:path';
 
@@ -24,6 +25,24 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CHECK = process.argv.includes('--check');
 
 const FOOTER = readFileSync(join(ROOT, 'tools/partials/footer.html'), 'utf8').trim();
+
+/* Favicons are cached by the browser far more stubbornly than anything else,
+   and separately from the ordinary HTTP cache — change the file and the old
+   icon keeps showing in the tab. Each icon href therefore carries ?v=<hash of
+   the file>, which sync-layout keeps current. Change an icon, run this, and
+   every page points at a URL the browser has never seen. */
+const ICONS = [
+  'assets/favicon.svg',
+  'assets/favicon-32.png',
+  'assets/favicon-16.png',
+  'assets/apple-touch-icon.png',
+];
+const iconVersion = new Map(
+  ICONS.filter((f) => existsSync(join(ROOT, f))).map((f) => [
+    f,
+    createHash('sha1').update(readFileSync(join(ROOT, f))).digest('hex').slice(0, 8),
+  ]),
+);
 const ROUTER_TAG = '<script src="js/router.js" defer></script>';
 const SITE_TAG_RE = /<script\s+src="js\/site\.js"[^>]*><\/script>/i;
 
@@ -62,6 +81,15 @@ for (const page of pages) {
     } else {
       after = after.replace(/<\/body>/i, `${ROUTER_TAG}</body>`);
     }
+  }
+
+  // --- icon cache-busting -------------------------------------------------
+  for (const [file, hash] of iconVersion) {
+    const re = new RegExp(
+      `(["'])${file.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\?v=[0-9a-f]+)?(["'])`,
+      'g',
+    );
+    after = after.replace(re, `$1${file}?v=${hash}$2`);
   }
 
   // --- main needs a swap target + a focus target --------------------------
