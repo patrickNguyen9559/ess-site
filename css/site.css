@@ -8286,13 +8286,13 @@ body::-webkit-scrollbar { width: 0; height: 0; }
 }
 
 /* The booking wizard on contact-demo.html. */
-.ess-glass-site :is(.timeline-n, .slot, .channel-label) { color: var(--accent-ink) !important; }
-.ess-glass-site .chip { border-color: rgba(239,108,23,.40) !important; color: var(--accent-ink) !important; }
-.ess-glass-site .rail-dot { border-color: rgba(239,108,23,.45) !important; }
-.ess-glass-site .rail-fill {
+.ess-glass-site:not(.demo-page) :is(.timeline-n, .slot, .channel-label) { color: var(--accent-ink) !important; }
+.ess-glass-site:not(.demo-page) .chip { border-color: rgba(239,108,23,.40) !important; color: var(--accent-ink) !important; }
+.ess-glass-site:not(.demo-page) .rail-dot { border-color: rgba(239,108,23,.45) !important; }
+.ess-glass-site:not(.demo-page) .rail-fill {
   background: linear-gradient(90deg, #FFB47A, var(--ess-orange)) !important;
 }
-.ess-glass-site .dot-live { background: var(--ess-orange) !important; }
+.ess-glass-site:not(.demo-page) .dot-live { background: var(--ess-orange) !important; }
 
 /* The last three the audit pinned down by element path:
    .badge span on the demo page, the booking wizard's own .progress bar (the
@@ -8302,10 +8302,29 @@ body::-webkit-scrollbar { width: 0; height: 0; }
    screen and a chart drawn entirely in the CTA colour reads as an alert.
    Also pin .logo's inherited link colour, which an <img> never paints but
    which kept showing up in the audit. */
-.ess-glass-site .badge,
-.ess-glass-site .badge span { color: var(--accent-ink) !important; }
-.ess-glass-site .progress > span {
+.ess-glass-site:not(.demo-page) .badge,
+.ess-glass-site:not(.demo-page) .badge span { color: var(--accent-ink) !important; }
+.ess-glass-site:not(.demo-page) .progress > span {
   background: linear-gradient(90deg, #FFB47A, var(--ess-orange)) !important;
 }
 .ess-glass-site .mock-row :is(.k, .v, .p) { background: var(--grey-200) !important; }
 .ess-glass-site .logo { color: inherit; }
+
+/* ==========================================================================
+   v98 — the booking page keeps its original colours
+
+   The client asked for the demo page's own palette back. Rather than re-type
+   the old values from memory, contact-demo.html carries a `demo-page` body
+   class and the v97 accent overrides are scoped `:not(.demo-page)` — so the
+   rules that were already in the sheet apply again and the page is exactly
+   what it was: the step badge, the progress rail, the timeline numbers, the
+   slot times, the chips and the live dot all back in the ESS blue.
+
+   The brand CTA is unaffected: Continue / Book a demo were orange before this
+   pass and still are.
+
+   Two things on that page are deliberately NOT reverted, since they belong to
+   the sitewide system rather than to this section: the focus ring on its form
+   fields, and body links inside its FAQ answers. Say the word if those should
+   go back too.
+   ========================================================================== */

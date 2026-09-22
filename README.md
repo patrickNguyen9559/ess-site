@@ -840,3 +840,25 @@ Also in this pass: the **"Explore …" link in each product card sits on the
 card's bottom edge**, level across the row, instead of wherever its own tick
 list happened to end. `.product-card` becomes a flex column so the link can
 take `margin-top: auto`, which is how `.feature-page-card` already worked.
+
+
+## v98 — the booking page keeps its original colours
+
+The client asked for the demo page's own palette back. Rather than re-type the
+old values from memory, `contact-demo.html` now carries a `demo-page` body
+class and the v97 accent overrides are scoped `:not(.demo-page)` — so the rules
+already in the sheet apply again and the page is exactly what it was. The step
+badge, the progress rail, the timeline numbers, the slot times, the chips and
+the live dot are back in the ESS blue.
+
+The brand CTA is untouched: **Continue** and **Book a demo** were orange before
+this pass and still are. So is `STEP 1 OF 3`, which takes its colour from the
+v56 eyebrow rule that predates all of this.
+
+Two things on that page are deliberately *not* reverted, because they belong to
+the sitewide system rather than to this section: the focus ring on its form
+fields, and body links inside its FAQ answers.
+
+Scoping it to a body class rather than editing the v97 block back out means the
+rest of the site keeps the orange accents, including `.chip` and `.slot` where
+they also appear on `features.html`.
