@@ -1169,3 +1169,85 @@ Top and max-height now come from the bar that is really there (85px and
 row padding, 12.5px type. Measured after: the rail needs 541px and fits without
 scrolling at viewport heights of 900, 800, 750, 700 and 650px. The policy pages
 keep their roomier spacing; only `top` changed for them, which helps them too.
+
+
+## v106–v111 — client review: the feature list, the home hero, the booking page
+
+### The feature list grew to 22 (v106)
+
+The client re-sent the list pasted out of a multi-column document, which
+flattened into something ambiguous. Read as columns it is 22 features, three of
+them new: **APIs**, **Document Management** and **Compliance and
+inspection/testing records**. Their descriptions are written from the names
+alone, like the other nineteen, and still need the client's eye.
+
+The Features panel shows six of them — Multi Branch and Sites, Cora AI
+Assistant, Mobile Service FMS, Accounting, Customer Portal, APIs — in a single
+vertical column, and "View all features →" moved to the right edge of a head
+row opposite the panel blurb. `render-header.mjs` lifts any child marked
+`standout` into that row, which means v105's `.nav-sub.is-standout` styling
+could no longer be reached and has gone with it. The two-column `wide` variant
+is no longer emitted for any panel; its rule stays in the sheet so a panel can
+opt back in.
+
+### The home hero (v107, v108)
+
+New lede copy, supplied verbatim. Three phrases — **Next Level ERP**, **Cora**
+and **We Solve, You Succeed** — are marked with `<b class="lede-mark">`.
+
+The colour took two passes. The orange `--accent-ink` went in first; the client
+asked for the ESS blue instead. "Next Level" has no identity in this repo, so
+the blue had to come from the sheet's own ramp, and contrast decides it —
+measured against the hero band's palest point (`--blue-50`, #F2F9FD) rather
+than white, since that is the worst case:
+
+| token | on #F2F9FD | |
+|---|---|---|
+| `--blue-500` #3D9BC7 | 3.13:1 | the logo blue — fails |
+| `--blue-600` #2A7CA3 | 4.38:1 | fails on the band, passes only on white |
+| **`--navy-700` #1C5A78** | **7.09:1** | used |
+| `--navy-900` #123F55 | 10.57:1 | passes, but it is the heading colour |
+
+Top padding is halved by dividing `--hero-pad-top` rather than restating a
+number, so the clamp stays the one source. The same treatment then went on the
+booking hero.
+
+### The booking page is one step (v109–v111)
+
+The three-step wizard — who you are, how the week runs, pick a slot — is a
+single form: four identity fields and one free-text box, submitted once. Nine
+chips, eleven slot buttons, the progress bar, the Back button and the step
+label are gone from the markup.
+
+`initWizard` now reads the step count off the DOM and treats the progress bar,
+the Back button, the hint and the slot picker as optional, so one handler still
+drives either shape and the confirmation pane survives. The summary only prints
+rows that have something in them; the one-step form collects far less than the
+three-step one did, and a column of "Not specified" reads as broken.
+
+Copy follows the client's mockup: an intro call of fifteen minutes rather than
+a thirty-minute demo. The confirmation no longer promises to load a work order
+into a demo tenant, which the new hero explicitly says there is not.
+
+Spacing is tighter than the mockup, at the client's request: the hero band went
+764px to 690px. Fields are 14px with 12.5px labels, placeholders are #828F9C —
+3.30:1, below the 4.5 body text wants, which is deliberate: every field carries
+a persistent visible label, so the placeholder is an example and nothing is
+carried by it alone. The form card centres against the left column;
+`align-items` on the grid could not do it because `.wizard` sets
+`align-self: start` on itself at L519, and an item's own alignment wins.
+
+### The phone field is masked by the browser's region
+
+`(704) 555-0148` for a US visitor, `0912 345 678` for a Vietnamese one, and so
+on for GB, FR, AU, SG, CA and IN. Anything outside that table is **not masked**
+— national formats are inconsistent enough that a wrong mask mangles a valid
+number, so the field simply accepts what is typed and the placeholder falls
+back to a neutral "Phone number" rather than showing a US example the code is
+deliberately not applying. A value beginning with `+` is never masked either:
+the caller has stated their own country and it may not be the browser's.
+
+Region comes from `navigator.languages`; a tag with no region falls back to a
+timezone map covering only those same countries. Verified by overriding
+`navigator.languages` ahead of `site.js` across eight locales — Chrome's
+`--lang` flag does not move `navigator.language` in headless.

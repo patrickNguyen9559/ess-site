@@ -97,14 +97,20 @@ function renderItem(item, current) {
   const id = `nav-panel-${slug(item.label)}`;
   const labelId = `nav-label-${slug(item.label)}`;
 
-  const subs = kids
+  // A `standout` child is the way out of the panel, not one of its entries. It
+  // is lifted into the panel's head row and sits at the right edge, opposite
+  // the blurb, so the list below reads as one plain column.
+  const exit = kids.find((k) => k.standout);
+  const listed = kids.filter((k) => !k.standout);
+
+  const subs = listed
     .map((k) => {
       // When the group's own landing page is open, the parent already carries
       // the state. Marking entries inside the panel as well reads as "all of
       // this is selected", which is what a panel full of anchors into the
       // current page looks like. So the panel just lists.
       const on = !self && k.href === current;
-      const flag = (on ? ' is-active' : '') + (k.standout ? ' is-standout' : '');
+      const flag = on ? ' is-active' : '';
       return (
         `<a class="nav-sub${flag}" href="${esc(k.href)}"` +
         `${on ? ' aria-current="page"' : ''}>` +
@@ -117,8 +123,10 @@ function renderItem(item, current) {
     })
     .join('\n            ');
 
-  // Four or more entries read better as two columns than one tall list.
-  const wide = kids.length >= 4 ? ' wide' : '';
+  // The client asked for one vertical column, so the two-column `wide` variant
+  // is no longer used. Kept out of the markup rather than out of the sheet, so
+  // the rule stays available if a panel ever needs it back.
+  const wide = '';
 
   return `<div class="nav-group" data-nav-group>
         <a class="nav-link nav-parent${within ? ' is-active' : ''}" href="${esc(item.href)}"
@@ -126,7 +134,17 @@ function renderItem(item, current) {
              owns ? ' aria-current="page"' : ''
            }>${esc(item.label)}${CARET}</a>
         <div class="nav-panel${wide}" id="${id}" role="group" aria-labelledby="${labelId}">
-          ${item.blurb ? `<p class="nav-panel-blurb">${esc(item.blurb)}</p>\n          ` : ''}<div class="nav-panel-list">
+          ${
+            item.blurb || exit
+              ? `<div class="nav-panel-head">` +
+                (item.blurb ? `<p class="nav-panel-blurb">${esc(item.blurb)}</p>` : '<span></span>') +
+                (exit
+                  ? `<a class="nav-panel-exit" href="${esc(exit.href)}">${esc(exit.label)}` +
+                    `<span aria-hidden="true">\u2192</span></a>`
+                  : '') +
+                `</div>\n          `
+              : ''
+          }<div class="nav-panel-list">
             ${subs}
           </div>
         </div>

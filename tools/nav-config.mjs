@@ -59,7 +59,7 @@ export const NAV = [
   {
     label: 'Features',
     href: 'all-features.html',
-    blurb: 'Nineteen capabilities, on one database.',
+    blurb: 'Twenty-two capabilities, on one database.',
     children: [
       {
         label: 'Multi Branch and Sites',
@@ -78,20 +78,24 @@ export const NAV = [
         desc: 'Capture the job at the unit.',
       },
       {
-        label: 'Dispatch and Scheduling',
-        href: 'all-features.html#dispatch',
-        desc: 'One board for the day.',
+        label: 'Accounting',
+        href: 'all-features.html#accounting',
+        desc: 'One set of books, not two.',
       },
       {
-        label: 'GPS Tracking',
-        href: 'all-features.html#gps-tracking',
-        desc: 'Dispatch on real positions.',
+        label: 'Customer Portal',
+        href: 'all-features.html#customer-portal',
+        desc: 'Self-service for your customers.',
+      },
+      {
+        label: 'APIs',
+        href: 'all-features.html#apis',
+        desc: 'Connect the rest of your stack.',
       },
       {
         label: 'View all features',
         href: 'all-features.html',
         standout: true,
-        desc: 'All nineteen, in one list.',
       },
     ],
   },

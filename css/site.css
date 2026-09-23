@@ -8676,22 +8676,6 @@ body::-webkit-scrollbar { width: 0; height: 0; }
       entries fit a laptop without scrolling at all.
    ========================================================================== */
 
-/* ------------------------------------------------- the way out of the list --- */
-.ess-glass-site .nav-sub.is-standout .nav-sub-label {
-  color: var(--accent-ink) !important;
-}
-.ess-glass-site .nav-sub.is-standout .nav-sub-label::after {
-  content: " \2192";
-  font-weight: 800;
-}
-.ess-glass-site .nav-sub.is-standout {
-  background: rgba(239, 108, 23, .07);
-}
-.ess-glass-site .nav-sub.is-standout:hover,
-.ess-glass-site .nav-sub.is-standout:focus-visible {
-  background: rgba(239, 108, 23, .14) !important;
-}
-
 /* ------------------------------------------------------------- the rail --- */
 /* 69px is the scrolled bar; 16px is the gap it reads with. */
 .ess-glass-site .legal-toc { top: 85px; }
@@ -8710,3 +8694,237 @@ body::-webkit-scrollbar { width: 0; height: 0; }
 @media (max-width: 900px) {
   .ess-glass-site .legal-toc { top: 78px; }
 }
+
+/* ==========================================================================
+   v106 — one vertical column, and the way out on the right edge
+
+   The client asked for the panel to read as a single column rather than the
+   two-up grid, and for "View all features" to sit at the right edge of the
+   popup instead of being a seventh tile in the list.
+
+   So render-header lifts any child marked `standout` out of the list into a
+   head row: the panel's blurb on the left, the exit link on the right. That
+   row is the only place a standout child can appear now, which is why v105's
+   `.nav-sub.is-standout` styling has gone with it — nothing could reach it.
+
+   The `wide` two-column variant is no longer emitted. Its rule is left in the
+   sheet at .nav-panel.wide so a panel can have it back by adding the class.
+   ========================================================================== */
+
+.nav-panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 10px;
+  padding: 0 6px 10px;
+  border-bottom: 1px solid var(--slate-200);
+}
+.nav-panel-head .nav-panel-blurb { margin: 0; }
+
+.nav-panel-exit {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--accent-ink);
+  transition: color 160ms ease;
+}
+.ess-glass-site .nav-panel-exit { color: var(--accent-ink) !important; }
+.nav-panel-exit:hover,
+.nav-panel-exit:focus-visible { color: var(--accent-ink-deep); }
+.ess-glass-site .nav-panel-exit:hover,
+.ess-glass-site .nav-panel-exit:focus-visible { color: var(--accent-ink-deep) !important; }
+
+/* One column needs a little more width than a two-up cell had. */
+.nav-panel { min-width: 320px; }
+
+@media (max-width: 900px) {
+  /* The blurb is hidden in the mobile menu, so the row is just the exit link. */
+  .nav-panel-head {
+    justify-content: flex-end;
+    margin-bottom: 6px;
+    padding: 0 4px 8px;
+  }
+  .nav-panel { min-width: 0; }
+}
+
+/* ==========================================================================
+   v107 — half the top padding on the home hero
+
+   The home hero's inner column sat on --hero-pad-top, clamp(44px, 4.6vw,
+   76px), which v82 gave to every first-band inner at (0,4,0) with
+   !important. The client asked for half of it on .glass-hero-inner only, so
+   this matches that specificity, comes later, and divides the token rather
+   than restating numbers — the clamp stays the single source, and the
+   subhero, contact hero and product hero keep the full value.
+   ========================================================================== */
+
+.ess-glass-site :is(.glass-hero, .subhero, .contact-hero):first-child .glass-hero-inner,
+.ess-glass-home :is(.glass-hero, .subhero, .contact-hero):first-child .glass-hero-inner {
+  padding-top: calc(var(--hero-pad-top) / 2) !important;
+}
+
+/* ==========================================================================
+   v108 — the three marked phrases in the home hero lede
+
+   The client asked for "Next Level ERP", "Cora" and "We Solve, You Succeed"
+   to read bold and in another colour inside the hero paragraph.
+
+   The client asked for the ESS blue rather than the orange. "Next Level" has
+   no identity in this repo, so the blue has to come from the sheet's own ramp,
+   and the choice is constrained by contrast — this is body copy, so it needs
+   4.5:1, measured against the hero band's palest point (--blue-50, #F2F9FD)
+   rather than against white:
+
+     --blue-500  #3D9BC7   3.13:1   the logo blue — fails
+     --blue-600  #2A7CA3   4.38:1   fails on blue-50, passes only on white
+     --navy-700  #1C5A78   7.09:1   clears AA with room
+     --navy-900  #123F55  10.57:1   clears, but it is the heading colour
+
+   So --navy-700. It still reads as ESS blue, and being two steps off the
+   heading navy the marks read as an accent rather than as stray headings. The
+   brand orange (#EF6C17) is 3.08:1 and is only ever a surface behind white,
+   never text, so it was never an option either.
+
+   Weight is set on the token rather than left to the browser's <b>, because
+   the lede runs at 600 on the variable font and the default bold would be
+   heavier than the rest of the page's emphasis.
+   ========================================================================== */
+
+.ess-glass-site .glass-lede .lede-mark,
+.ess-glass-home .glass-lede .lede-mark {
+  color: var(--navy-700) !important;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   v109 — the booking form is one step
+
+   The three-step wizard — who you are, how the week runs, pick a slot — is now
+   a single form: the identity fields plus one free-text box, submitted once.
+   The chips, the slot picker, the progress bar and the Back button are gone
+   from the markup, and initWizard reads the step count off the DOM instead of
+   assuming three, so the same handler still drives the confirmation pane.
+
+   Two classes are new. `.wizard-alt` is the "or call sales instead" link
+   sitting beside the submit button, and `.field-opt` is the lighter
+   "(optional)" inside a field label. This page keeps its own colours (v98), so
+   the link takes the blue the rest of its chrome uses rather than the sitewide
+   orange.
+   ========================================================================== */
+
+.wizard-alt {
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--navy-700);
+  transition: color 160ms ease;
+}
+.wizard-alt:hover,
+.wizard-alt:focus-visible { color: var(--navy-900); }
+.ess-glass-site .wizard-alt { color: var(--navy-700) !important; }
+.ess-glass-site .wizard-alt:hover,
+.ess-glass-site .wizard-alt:focus-visible { color: var(--navy-900) !important; }
+
+/* .field is a grid, so a bare text node and a sibling <span> become separate
+   rows. The question and its "(optional)" are wrapped in one .field-label —
+   the class already carries this label's type — and the qualifier is inline
+   inside it. */
+.field-opt {
+  font-weight: 500;
+  color: var(--grey-500);
+}
+
+/* The foot was a Back/Continue pair pushed apart; it is now a button and a
+   link that belong together. */
+.ess-glass-site.demo-page .wizard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+/* One step, so the head row carries no progress bar under it. */
+.ess-glass-site.demo-page .wizard-head { margin-bottom: 18px; }
+
+/* ==========================================================================
+   v110 — the booking hero, tightened
+
+   The client asked for the first band to be more compact and explicitly not
+   to copy the spacing from the mockup they sent. The step label and the
+   "takes about 30 seconds" line are gone from the markup with the rest of the
+   wizard chrome, so the form card now opens on its own question.
+
+   The top padding is halved the same way v107 halves the home hero: by
+   dividing --hero-pad-top rather than restating a number, so the clamp stays
+   the one source. The column gaps come down with it — 28px between the three
+   blocks and 14px inside the numbered list were set when the band carried a
+   three-step form beside it and had height to spare.
+   ========================================================================== */
+
+/* v82 sets the top padding at (0,4,0) with !important via
+   `.ess-glass-site :is(.glass-hero,.subhero,.contact-hero):first-child
+   :is(...-inner)`, so this has to carry :first-child too or it loses. */
+.ess-glass-site.demo-page .contact-hero:first-child .contact-hero-inner {
+  padding-top: calc(var(--hero-pad-top) / 2) !important;
+  padding-bottom: 34px !important;
+}
+
+.ess-glass-site.demo-page .contact-intro { gap: 20px; }
+.ess-glass-site.demo-page .timeline { gap: 10px; }
+.ess-glass-site.demo-page .hero-copy { margin-top: 14px; }
+.ess-glass-site.demo-page .contact-hero h1 { margin-bottom: 12px; }
+.ess-glass-site.demo-page .seed-card { padding: 18px 20px; }
+
+@media (max-width: 900px) {
+  .ess-glass-site.demo-page .contact-hero-inner { padding-bottom: 26px !important; }
+  .ess-glass-site.demo-page .contact-intro { gap: 16px; }
+}
+
+/* ==========================================================================
+   v111 — the booking fields: paler placeholders, smaller type, centred card
+
+   Placeholders were the browser default, roughly #757575 at 4.61:1 on the
+   white field. The client asked for paler. #828F9C is 3.30:1 — under the 4.5
+   that body text needs, which is a deliberate trade here: every field carries
+   a persistent visible <label>, so the placeholder is an example rather than
+   the only label, and nothing is conveyed by it alone. It stays above 3:1
+   rather than going to the pale greys that read as an empty box.
+
+   Field type drops 15px -> 14px and the label 13px -> 12.5px, with the input
+   padding brought in to match so the boxes do not keep their old height
+   around smaller text.
+
+   The card is centred against the left column rather than pinned to the top:
+   .contact-hero-inner is a grid at align-items:start, and the two columns
+   differ by about 66px, so the card hung high.
+   ========================================================================== */
+
+.ess-glass-site.demo-page .field input::placeholder,
+.ess-glass-site.demo-page .field textarea::placeholder {
+  color: #828F9C;
+  opacity: 1;               /* Firefox dims placeholders again on top of the colour */
+}
+
+.ess-glass-site.demo-page .field input,
+.ess-glass-site.demo-page .field textarea {
+  font-size: 14px;
+  padding: 10px 13px;
+}
+.ess-glass-site.demo-page .field,
+.ess-glass-site.demo-page .field-label { font-size: 12.5px; }
+
+.ess-glass-site.demo-page .contact-hero:first-child .contact-hero-inner {
+  align-items: center;
+}
+/* .wizard sets align-self:start on itself (L519), which an align-items on the
+   container cannot override — the item's own alignment wins. */
+.ess-glass-site.demo-page .wizard { align-self: center; }

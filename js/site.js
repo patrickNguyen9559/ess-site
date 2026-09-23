@@ -388,6 +388,12 @@
 
     var step = 0;
     var slot = null;
+    // The booking form went from three steps to one. Everything below reads the
+    // step count off the DOM and treats the progress bar, the back button, the
+    // hint and the slot picker as optional, so the same handler drives either
+    // shape without a second code path.
+    var stepCount = steps.length || 1;
+    var last = stepCount - 1;
 
     var HINTS = [
       'We never sell this list.',
@@ -396,22 +402,26 @@
     ];
 
     function canContinue() {
-      return step < 2 || slot !== null;
+      // A slot only gates the final step when there is a slot picker at all.
+      return step < last || !slotGroup || slot !== null;
     }
 
     function render() {
       steps.forEach(function (el) {
         el.hidden = Number(el.dataset.step) !== step;
       });
-      stepLabel.textContent = 'Step ' + (step + 1) + ' of 3';
-      progress.style.width = ((step + 1) / 3 * 100) + '%';
-      backBtn.hidden = step === 0;
-      nextBtn.textContent = step === 2 ? 'Confirm the demo' : 'Continue';
+      if (stepLabel) stepLabel.textContent = 'Step ' + (step + 1) + ' of ' + stepCount;
+      if (progress) progress.style.width = ((step + 1) / stepCount * 100) + '%';
+      if (backBtn) backBtn.hidden = step === 0;
+      // With one step the button keeps whatever the markup called it.
+      if (stepCount > 1) {
+        nextBtn.textContent = step === last ? 'Confirm the demo' : 'Continue';
+      }
       nextBtn.disabled = !canContinue();
       if (hint) {
-        hint.textContent = (step === 2 && slot)
+        hint.textContent = (step === last && slot)
           ? 'Calendar invite sent on confirm.'
-          : HINTS[step];
+          : (HINTS[step] || '');
       }
     }
 
@@ -461,12 +471,15 @@
       var company = form.elements.company.value.trim() || 'Southern Elevator';
       var stack = pickedValues(stackGroup);
 
-      var rows = [
-        ['Who', name + ' · ' + company],
-        ['When', slot ? slot.day + ' · ' + slot.time + ' ET' : 'To be confirmed'],
-        ['Portfolio', pickedValue(fleetGroup) || 'Not specified'],
-        ['Running today', stack.length ? stack.join(', ') : 'Not specified']
-      ];
+      var notes = form.elements.notes ? form.elements.notes.value.trim() : '';
+
+      // Only rows that have something to say — the one-step form collects far
+      // less than the three-step one did, and blank rows read as broken.
+      var rows = [['Who', name + ' · ' + company]];
+      if (slot) rows.push(['When', slot.day + ' · ' + slot.time + ' ET']);
+      if (pickedValue(fleetGroup)) rows.push(['Portfolio', pickedValue(fleetGroup)]);
+      if (stack.length) rows.push(['Running today', stack.join(', ')]);
+      if (notes) rows.push(['To cover', notes]);
 
       summaryEl.textContent = '';
       rows.forEach(function (row) {
@@ -503,7 +516,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!canContinue()) return;
-      if (step === 2) {
+      if (step === last) {
         submit();
       } else {
         step += 1;
@@ -511,10 +524,12 @@
       }
     });
 
-    backBtn.addEventListener('click', function () {
-      step = Math.max(0, step - 1);
-      render();
-    });
+    if (backBtn) {
+      backBtn.addEventListener('click', function () {
+        step = Math.max(0, step - 1);
+        render();
+      });
+    }
 
     resetBtn.addEventListener('click', function () {
       step = 0;
@@ -525,6 +540,153 @@
     });
 
     render();
+  }
+
+  /* --------------------------------------------------- phone formatting --- */
+
+  /* Groups a phone number as it is typed, using the browser's own region.
+
+     National formats are genuinely inconsistent, and a mask applied to the
+     wrong country mangles a valid number. So this carries only the formats it
+     can state confidently, and any region outside that table is left
+     unmasked — the field still accepts the number, it simply is not grouped.
+     A value beginning with "+" is never masked either: the caller has said
+     what country they are in and it may not be this one.
+
+     `groups` are digit counts; `wrap` puts the first group in brackets. */
+  var PHONE_FORMATS = {
+    US: { groups: [3, 3, 4], wrap: true, sep: '-', example: '(704) 555-0148' },
+    CA: { groups: [3, 3, 4], wrap: true, sep: '-', example: '(604) 555-0148' },
+    VN: { groups: [4, 3, 3], sep: ' ', example: '0912 345 678' },
+    GB: { groups: [5, 6], sep: ' ', example: '07700 900123' },
+    AU: { groups: [4, 3, 3], sep: ' ', example: '0412 345 678' },
+    FR: { groups: [2, 2, 2, 2, 2], sep: ' ', example: '06 12 34 56 78' },
+    SG: { groups: [4, 4], sep: ' ', example: '8123 4567' },
+    IN: { groups: [5, 5], sep: ' ', example: '98765 43210' }
+  };
+
+  /* Only for regions the table covers — a timezone map for the whole world
+     would be a liability, and the language tag carries the region already in
+     almost every case. */
+  var ZONE_REGION = {
+    'Asia/Ho_Chi_Minh': 'VN',
+    'Asia/Saigon': 'VN',
+    'Europe/London': 'GB',
+    'Europe/Paris': 'FR',
+    'Asia/Singapore': 'SG',
+    'Asia/Kolkata': 'IN',
+    'Asia/Calcutta': 'IN'
+  };
+
+  function browserRegion() {
+    var tags = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || ''];
+
+    for (var i = 0; i < tags.length; i++) {
+      var hit = /[-_]([A-Za-z]{2})(?:[-_]|$)/.exec(tags[i] || '');
+      if (hit) {
+        var code = hit[1].toUpperCase();
+        if (PHONE_FORMATS[code]) return code;
+      }
+    }
+
+    // A tag like plain "en" carries no region; the timezone may still say.
+    try {
+      var zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (ZONE_REGION[zone]) return ZONE_REGION[zone];
+    } catch (err) { /* Intl unavailable */ }
+
+    return null;
+  }
+
+  function initPhoneMask() {
+    var fields = document.querySelectorAll('[data-phone-mask]');
+    if (!fields.length) return;
+
+    var region = browserRegion();
+    var fmt = region ? PHONE_FORMATS[region] : null;
+
+    function format(digits) {
+      if (!digits || !fmt) return digits;
+      var out = '';
+      var at = 0;
+      for (var g = 0; g < fmt.groups.length && at < digits.length; g++) {
+        var part = digits.slice(at, at + fmt.groups[g]);
+        if (g === 0) {
+          out += fmt.wrap ? '(' + part : part;
+          if (fmt.wrap && part.length === fmt.groups[0]) out += ')';
+        } else {
+          out += (g === 1 ? (fmt.wrap ? ' ' : fmt.sep) : fmt.sep) + part;
+        }
+        at += fmt.groups[g];
+      }
+      return out;
+    }
+
+    var maxDigits = fmt
+      ? fmt.groups.reduce(function (a, b) { return a + b; }, 0)
+      : 0;
+
+    function digitsBefore(value, pos) {
+      var n = 0;
+      for (var i = 0; i < pos && i < value.length; i++) {
+        if (value.charAt(i) >= '0' && value.charAt(i) <= '9') n += 1;
+      }
+      return n;
+    }
+
+    function caretAfter(value, count) {
+      if (count <= 0) return 0;
+      var seen = 0;
+      for (var i = 0; i < value.length; i++) {
+        if (value.charAt(i) >= '0' && value.charAt(i) <= '9') {
+          seen += 1;
+          if (seen === count) return i + 1;
+        }
+      }
+      return value.length;
+    }
+
+    Array.prototype.forEach.call(fields, function (el) {
+      /* The markup's placeholder is a US example, which is the right no-JS
+         fallback for the audience but wrong for anyone else. Show the local
+         shape where there is one, and a neutral label where there is not —
+         leaving a US number in front of a visitor whose number this code is
+         deliberately not formatting would be worse than no example. */
+      if (el.placeholder) el.placeholder = fmt ? fmt.example : 'Phone number';
+
+      var lastCount = el.value.replace(/\D/g, '').length;
+
+      el.addEventListener('input', function (e) {
+        var raw = el.value;
+
+        // "+" means the caller stated their own country. Leave it be.
+        if (raw.charAt(0) === '+' || !fmt) {
+          var kept = raw.replace(/[^\d+\s().-]/g, '');
+          if (kept !== raw) el.value = kept;
+          lastCount = kept.replace(/\D/g, '').length;
+          return;
+        }
+
+        var caret = typeof el.selectionStart === 'number' ? el.selectionStart : raw.length;
+        var before = digitsBefore(raw, caret);
+        var digits = raw.replace(/\D/g, '').slice(0, maxDigits);
+
+        /* Backspacing onto a bracket, space or dash removes only that
+           character, so the digits are unchanged and the caret would bounce
+           straight back. Take the digit in front of it instead. */
+        if (e.inputType === 'deleteContentBackward' && digits.length === lastCount && before > 0) {
+          digits = digits.slice(0, before - 1) + digits.slice(before);
+          before -= 1;
+        }
+
+        el.value = format(digits);
+        lastCount = digits.length;
+        var pos = caretAfter(el.value, before);
+        try { el.setSelectionRange(pos, pos); } catch (err) { /* not a text input */ }
+      });
+    });
   }
 
   /* ------------------------------------------- coming soon page label --- */
@@ -575,6 +737,7 @@
     initWizard();
     initComingSoon();
     initLegalToc();
+    initPhoneMask();
   }
 
   /* Behaviour attached to the header, body or window. The router keeps those
